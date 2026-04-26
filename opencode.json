@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    [
+      "./src/index.ts",
+      {
+        "greeting": "Hello from the harness engineering plugin"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "opencode-harness-agents",
+  "version": "0.1.0",
+  "description": "OpenCode plugin bundle for harness-engineering agents and guardrails.",
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run clean && tsc -p tsconfig.json",
+    "check": "pnpm run typecheck && pnpm run test && pnpm run docs:check",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "docs:check": "tsx scripts/check-docs.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepack": "pnpm run build",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.14.25"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "prettier": "^3.8.3",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22",
+    "opencode": ">=1.14.0"
+  },
+  "sideEffects": false
+}
