@@ -10,4 +10,6 @@
 
 ## Current Posture
 
-The starter plugin only registers an in-memory greeting tool. It does not access the network, shell, filesystem, or environment.
+The plugin registers an in-memory greeting tool and a `human_plan` agent config. Plugin initialization does not access the network, shell, filesystem, or environment.
+
+The `human_plan` agent denies bash permissions by default, allows edits only to dated active plan files under `docs/exec-plans/active/`, allows narrow user questions, and only allows task delegation to the read-oriented `explore` agent.

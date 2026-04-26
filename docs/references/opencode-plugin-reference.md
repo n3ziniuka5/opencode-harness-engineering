@@ -53,6 +53,28 @@ return {
 };
 ```
 
+## Config Hooks And Agents
+
+OpenCode server plugins can also return a `config` hook. The hook receives the resolved OpenCode config object and may mutate it before OpenCode builds its agent registry.
+
+This plugin uses that hook to add `config.agent.human_plan` instead of registering an agent named `plan`, because OpenCode already ships a native `plan` agent.
+
+```ts
+return {
+  async config(input) {
+    input.agent ??= {};
+    input.agent.human_plan ??= {
+      mode: "all",
+      model: "openai/gpt-5.5",
+      variant: "high",
+      prompt: "...",
+    };
+  },
+};
+```
+
+Agent config supports fields such as `description`, `mode`, `model`, `variant`, `prompt`, `permission`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `high` when the selected model exposes that variant.
+
 ## Local Development
 
 `opencode.json` can load a local file plugin:

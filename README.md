@@ -2,7 +2,7 @@
 
 OpenCode plugin bundle for harness-engineering agents, tools, and repository guardrails.
 
-This starter ships one server plugin, `harness.hello-world`, that registers a `hello_world` tool. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
+This starter ships one server plugin, `harness.hello-world`, that registers a `hello_world` tool and a `human_plan` agent. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
 
 ## Quick Start
 
@@ -54,6 +54,7 @@ For a built npm package, OpenCode resolves the server plugin from the `./server`
 - `AGENTS.md`: agent-facing entry point and table of contents.
 - `ARCHITECTURE.md`: package boundaries and runtime shape.
 - `src/index.ts`: OpenCode v1 server plugin module.
+- `src/agents/human-plan.ts`: `human_plan` agent prompt and config.
 - `test/hello-world.test.ts`: executable contract tests for the starter plugin.
 - `docs/index.md`: knowledge-base index for harness-engineering documentation.
 - `scripts/check-docs.ts`: mechanical check that required knowledge files exist and are linked.

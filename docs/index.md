@@ -9,6 +9,7 @@ This directory is the repository system of record. `AGENTS.md` points here so ag
 - `design-docs/core-beliefs.md`: agent-first principles for this plugin bundle.
 - `references/harness-engineering.md`: harness-engineering reference summary.
 - `references/opencode-plugin-reference.md`: OpenCode plugin reference extracted from the adjacent repo.
+- `references/openai-gpt-5.5-prompting.md`: GPT-5.5 model and prompting references for bundled agent prompts.
 
 ## Operating Docs
 

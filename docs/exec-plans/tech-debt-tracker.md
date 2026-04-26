@@ -3,7 +3,7 @@
 ## Current Debt
 
 - No CI workflow exists yet. Add one when the repository is connected to a remote host.
-- The starter has one tool and no bundled agent catalog yet. Add structure under `src/agents/` only when the second agent lands.
+- There is no OpenCode integration smoke test that boots the plugin and lists `human_plan` through the real CLI.
 
 ## Cleanup Rule
 

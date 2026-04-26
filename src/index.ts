@@ -1,7 +1,17 @@
 import type { Plugin, PluginModule, PluginOptions } from "@opencode-ai/plugin";
 import { tool } from "@opencode-ai/plugin";
+import {
+  HUMAN_PLAN_AGENT_CONFIG,
+  HUMAN_PLAN_AGENT_NAME,
+} from "./agents/human-plan.js";
 
 const PLUGIN_ID = "harness.hello-world";
+
+type MutableAgentConfig = Record<string, unknown>;
+type MutableAgentMap = Record<string, MutableAgentConfig | undefined>;
+type MutableConfig = {
+  agent?: MutableAgentMap;
+};
 
 function optionString(
   options: PluginOptions | undefined,
@@ -15,10 +25,18 @@ function optionString(
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
+function registerHumanPlanAgent(config: MutableConfig) {
+  config.agent ??= {};
+  config.agent[HUMAN_PLAN_AGENT_NAME] ??= HUMAN_PLAN_AGENT_CONFIG;
+}
+
 const server: Plugin = async (_input, options) => {
   const greeting = optionString(options, "greeting", "Hello");
 
   return {
+    async config(input) {
+      registerHumanPlanAgent(input as MutableConfig);
+    },
     tool: {
       hello_world: tool({
         description:
@@ -61,5 +79,11 @@ const plugin: PluginModule & { id: string } = {
   server,
 };
 
-export { PLUGIN_ID, server };
+export {
+  HUMAN_PLAN_AGENT_CONFIG,
+  HUMAN_PLAN_AGENT_DESCRIPTION,
+  HUMAN_PLAN_AGENT_NAME,
+  HUMAN_PLAN_AGENT_PROMPT,
+} from "./agents/human-plan.js";
+export { PLUGIN_ID, registerHumanPlanAgent, server };
 export default plugin;

@@ -12,6 +12,7 @@ const requiredFiles = [
   "docs/exec-plans/tech-debt-tracker.md",
   "docs/references/harness-engineering.md",
   "docs/references/opencode-plugin-reference.md",
+  "docs/references/openai-gpt-5.5-prompting.md",
   "docs/QUALITY_SCORE.md",
   "docs/RELIABILITY.md",
   "docs/SECURITY.md",
