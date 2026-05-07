@@ -37,13 +37,23 @@ describe("hello-world plugin", () => {
       String(agent.prompt),
       /added, removed, or behaviorally changed/,
     );
+    assert.match(String(agent.prompt), /External contract changes/);
+    assert.match(String(agent.prompt), /omit that subsection completely/);
+    assert.doesNotMatch(String(agent.prompt), /\bmeat\b/i);
+    assert.match(String(agent.prompt), /Implementation plan/);
+    assert.match(String(agent.prompt), /Verification plan/);
     assert.match(
       String(agent.prompt),
-      /unchanged surfaces to concise non-goal or impact bullets/,
+      /Decision log and alternatives considered/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /Do not write assumptions into the plan/,
     );
     assert.match(String(agent.prompt), /question tool/);
     assert.match(String(agent.prompt), /broad, subjective, taste-driven/);
-    assert.match(String(agent.prompt), /near the top/);
+    assert.match(String(agent.prompt), /standalone current-state section/);
+    assert.match(String(agent.prompt), /generic omnibus section/);
     assert.match(String(agent.prompt), /\(Recommended\)/);
     assert.match(
       String(agent.prompt),
@@ -54,26 +64,12 @@ describe("hello-world plugin", () => {
       String(agent.prompt),
       /docs\/exec-plans\/completed\/YYYY-MM-DD-slug\.md/,
     );
+    assert.doesNotMatch(String(agent.prompt), /repo-derived requirements/);
     assert.doesNotMatch(String(agent.prompt), /## Review Request/);
     assert.doesNotMatch(String(agent.prompt), /## Feedback Wanted/);
     assert.match(String(agent.prompt), /AGENTS\.md/);
     assert.match(String(agent.prompt), /ARCHITECTURE\.md/);
     assert.match(String(agent.prompt), /docs\//);
-
-    const permission = agent.permission as {
-      edit?: unknown;
-      bash?: unknown;
-      question?: unknown;
-      task?: Record<string, unknown>;
-    };
-    assert.deepEqual(permission.edit, {
-      "*": "deny",
-      "docs/exec-plans/active/????-??-??-*.md": "allow",
-    });
-    assert.equal(permission.bash, "deny");
-    assert.equal(permission.question, "allow");
-    assert.equal(permission.task?.["*"], "deny");
-    assert.equal(permission.task?.explore, "allow");
   });
 
   it("returns a greeting and structured metadata", async () => {

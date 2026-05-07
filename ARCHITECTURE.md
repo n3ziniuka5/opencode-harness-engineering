@@ -30,7 +30,7 @@ This package is a TypeScript OpenCode server plugin. It uses pnpm for reproducib
 
 - `human_plan`: non-native planning agent for human-reviewed implementation plans. It is named to avoid clashing with OpenCode's built-in `plan` agent.
 - `human_plan` uses `openai/gpt-5.5` with the `high` variant and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
-- `human_plan` denies bash, allows edits only to dated active plan files under `docs/exec-plans/active/`, allows narrow user questions, and only allows task delegation to the read-oriented `explore` agent.
+- `human_plan` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to the read-oriented `explore` agent. It does not explicitly grant bash through an agent-level permission override, but bash is still available as a tool and can be used if the agent chooses to use it.
 
 ## Growth Path
 
