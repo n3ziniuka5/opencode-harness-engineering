@@ -53,11 +53,11 @@ return {
 };
 ```
 
-## Config Hooks And Agents
+## Config Hooks, Agents, And Commands
 
 OpenCode server plugins can also return a `config` hook. The hook receives the resolved OpenCode config object and may mutate it before OpenCode builds its agent registry.
 
-This plugin uses that hook to add `config.agent.human_plan` instead of registering an agent named `plan`, because OpenCode already ships a native `plan` agent.
+This plugin uses that hook to add `config.agent.human_plan` instead of registering an agent named `plan`, because OpenCode already ships a native `plan` agent. It also adds `config.command["init-harness-engineering"]` so OpenCode surfaces `/init-harness-engineering`.
 
 ```ts
 return {
@@ -74,6 +74,8 @@ return {
 ```
 
 Agent config supports fields such as `description`, `mode`, `model`, `variant`, `prompt`, `permission`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `high` when the selected model exposes that variant.
+
+Command config supports a `template` prompt and optional fields such as `description`, `agent`, `model`, and `subtask`. This plugin intentionally leaves `agent`, `model`, and `subtask` unset for `/init-harness-engineering` so the command runs with the user's current/default implementation agent and normal file-edit permissions. Registration uses `??=` so local user commands with the same name are not overwritten.
 
 ## Local Development
 
