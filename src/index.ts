@@ -4,13 +4,26 @@ import {
   HUMAN_PLAN_AGENT_CONFIG,
   HUMAN_PLAN_AGENT_NAME,
 } from "./agents/human-plan.js";
+import {
+  INIT_HARNESS_ENGINEERING_COMMAND_CONFIG,
+  INIT_HARNESS_ENGINEERING_COMMAND_NAME,
+} from "./commands/init-harness-engineering.js";
 
 const PLUGIN_ID = "harness.hello-world";
 
 type MutableAgentConfig = Record<string, unknown>;
 type MutableAgentMap = Record<string, MutableAgentConfig | undefined>;
+type MutableCommandConfig = {
+  template: string;
+  description?: string;
+  agent?: string;
+  model?: string;
+  subtask?: boolean;
+};
+type MutableCommandMap = Record<string, MutableCommandConfig | undefined>;
 type MutableConfig = {
   agent?: MutableAgentMap;
+  command?: MutableCommandMap;
 };
 
 function optionString(
@@ -30,12 +43,20 @@ function registerHumanPlanAgent(config: MutableConfig) {
   config.agent[HUMAN_PLAN_AGENT_NAME] ??= HUMAN_PLAN_AGENT_CONFIG;
 }
 
+function registerInitHarnessEngineeringCommand(config: MutableConfig) {
+  config.command ??= {};
+  config.command[INIT_HARNESS_ENGINEERING_COMMAND_NAME] ??=
+    INIT_HARNESS_ENGINEERING_COMMAND_CONFIG;
+}
+
 const server: Plugin = async (_input, options) => {
   const greeting = optionString(options, "greeting", "Hello");
 
   return {
     async config(input) {
-      registerHumanPlanAgent(input as MutableConfig);
+      const mutableConfig = input as MutableConfig;
+      registerHumanPlanAgent(mutableConfig);
+      registerInitHarnessEngineeringCommand(mutableConfig);
     },
     tool: {
       hello_world: tool({
@@ -85,5 +106,16 @@ export {
   HUMAN_PLAN_AGENT_NAME,
   HUMAN_PLAN_AGENT_PROMPT,
 } from "./agents/human-plan.js";
-export { PLUGIN_ID, registerHumanPlanAgent, server };
+export {
+  INIT_HARNESS_ENGINEERING_COMMAND_CONFIG,
+  INIT_HARNESS_ENGINEERING_COMMAND_DESCRIPTION,
+  INIT_HARNESS_ENGINEERING_COMMAND_NAME,
+  INIT_HARNESS_ENGINEERING_COMMAND_TEMPLATE,
+} from "./commands/init-harness-engineering.js";
+export {
+  PLUGIN_ID,
+  registerHumanPlanAgent,
+  registerInitHarnessEngineeringCommand,
+  server,
+};
 export default plugin;
