@@ -157,7 +157,7 @@ Use these meanings so generated docs and index tables stay consistent:
 - \`docs/generated/<generated-reference>.md\`: optional generated or source-derived reference selected from actual repository tooling. Generated references are useful when understanding current state from many source files would be slower or more error-prone than reading a regenerated summary. Examples include \`db-schema.md\`, \`dependency-graph.md\`, \`openapi.md\`, \`graphql-schema.md\`, \`protobuf.md\`, \`event-catalog.md\`, \`cli-reference.md\`, \`config-reference.md\`, \`env-vars.md\`, \`permissions-matrix.md\`, \`feature-flags.md\`, \`route-map.md\`, or package dependency references. Only create generated docs that can be regenerated from a clear source of truth.
 - \`docs/exec-plans/index.md\`: execution-plan lifecycle rules for when to create, complete, delete, or archive task-specific plans. Do not include references to child files.
 - \`docs/exec-plans/active/\`: temporary home for active execution plans named \`YYYY-MM-DD-feature-or-fix.md\`. Active plans must be moved, summarized, or deleted when the task completes.
-- \`docs/exec-plans/completed/\`: optional archive for completed execution summaries when the execution history has durable debugging, audit, rollout, or handoff value. Do not use completed plans as the source of truth for current behavior; move lasting decisions into ADRs, feature docs, architecture docs, runbooks, quality docs, or engineering docs.
+- \`docs/exec-plans/completed/\`: optional archive for completed execution summaries when the remaining execution history has durable debugging, audit, rollout, or handoff value. Do not use completed plans as the source of truth for current behavior.
 - \`docs/quality/index.md\`: quality documentation map.
 - \`docs/quality/scorecard.md\`: quality rubric with area, grade, confidence, known issues, and last-reviewed columns.
 - \`docs/quality/tech-debt-tracker.md\`: known debt, priority, and cleanup plan. If a line exists in this file, the debt is still active. Track in-progress half-migrations, dead code, unused configs, stale feature flags, abandoned TODOs, deprecated endpoints, and similar cleanup work here while it remains active.
@@ -208,12 +208,16 @@ Last reviewed: YYYY-MM-DD
 Explain these lifecycle rules in \`docs/exec-plans/index.md\`:
 
 - Treat files under \`docs/exec-plans/active/\` as single-task active execution plans, not reusable process documentation.
-- Do not create an active execution-plan example file during scaffold initialization.
 - Do not create \`docs/exec-plans/active/index.md\` or \`docs/exec-plans/completed/index.md\`.
 - Do not include references to child files in \`docs/exec-plans/index.md\`; keep it focused on lifecycle rules.
+- Do not use completed plans as the source of truth for current behavior.
+
+Then add an archival rule explaining:
+
+- Before deleting or archiving an active plan, move every still-useful fact, decision, contract, and operational note into the appropriate long-term repo documentation, such as ADRs, feature docs, architecture docs, runbooks, quality docs, or engineering docs.
 - For most small tasks, delete the active plan after completion once durable docs are updated.
-- Use \`docs/exec-plans/completed/\` only when execution history has durable debugging, audit, rollout, or handoff value.
-- Do not use completed plans as the source of truth for current behavior; move lasting decisions into ADRs, feature docs, architecture docs, runbooks, quality docs, or engineering docs.
+- Use \`docs/exec-plans/completed/\` only when the remaining execution history has durable debugging, audit, rollout, or handoff value.
+- If archiving, heavily rewrite the plan to preserve only the remaining information that is crucial to remember long-term, and keep it brief.
 
 Delete rather than archive when:
 

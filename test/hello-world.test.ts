@@ -54,6 +54,9 @@ describe("hello-world plugin", () => {
     assert.match(String(agent.prompt), /broad, subjective, taste-driven/);
     assert.match(String(agent.prompt), /standalone current-state section/);
     assert.match(String(agent.prompt), /generic omnibus section/);
+    assert.match(String(agent.prompt), /`mermaid` diagrams only when/);
+    assert.match(String(agent.prompt), /module dependency graph/);
+    assert.match(String(agent.prompt), /complex flow diagram/);
     assert.match(String(agent.prompt), /\(Recommended\)/);
     assert.match(
       String(agent.prompt),
@@ -62,7 +65,31 @@ describe("hello-world plugin", () => {
     assert.match(String(agent.prompt), /Completion archive instructions/);
     assert.match(
       String(agent.prompt),
-      /docs\/exec-plans\/completed\/YYYY-MM-DD-slug\.md/,
+      /Use repository-specific execution-plan lifecycle or completion\/archive instructions/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /If the repository has no such instructions/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /first move every still-useful fact, decision, contract, and operational note from the plan into the appropriate long-term repo documentation/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /delete the active plan unless the remaining execution history itself still has durable debugging, audit, rollout, or handoff value/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /If there is still long-term value in the remaining plan content, move it to docs\/exec-plans\/completed\/YYYY-MM-DD-slug\.md/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /Delete rather than archive when the plan was only a temporary checklist/,
+    );
+    assert.doesNotMatch(
+      String(agent.prompt),
+      /Do not use completed plans as the source of truth for current behavior/,
     );
     assert.doesNotMatch(String(agent.prompt), /repo-derived requirements/);
     assert.doesNotMatch(String(agent.prompt), /## Review Request/);
