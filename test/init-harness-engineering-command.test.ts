@@ -36,6 +36,16 @@ describe("init-harness-engineering command", () => {
     assert.match(command.template, /## Harness-Engineering Posture/);
     assert.match(command.template, /keep code\/config\/docs agent-legible/);
     assert.match(command.template, /mechanical checks/);
+    assert.match(command.template, /Then add an archival rule explaining/);
+    assert.match(
+      command.template,
+      /Before deleting or archiving an active plan, move every still-useful fact, decision, contract, and operational note/,
+    );
+    assert.match(
+      command.template,
+      /Use `docs\/exec-plans\/completed\/` only when the remaining execution history has durable debugging, audit, rollout, or handoff value/,
+    );
+    assert.match(command.template, /Delete rather than archive when/);
     assert.doesNotMatch(command.template, /product requirement/i);
     assert.doesNotMatch(command.template, /\bprd\b/i);
     assert.equal(command.agent, undefined);

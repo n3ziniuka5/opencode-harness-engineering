@@ -19,9 +19,10 @@
 - The prompt is outcome-first and tailored for implementation plans that a human can critique before code is written.
 - The agent must inspect enough repository context to make the plan concrete.
 - The agent must ask a focused question before writing when materially different valid outcomes remain.
+- The agent may include `mermaid` diagrams only when they materially clarify larger plans, such as module dependencies or complex flows; routine or small plans should not include diagrams.
 - The agent writes active plan files under `docs/exec-plans/active/YYYY-MM-DD-slug.md`.
 - The agent must not implement the plan or edit files outside the active plan path.
-- Completion instructions tell implementers to heavily rewrite plans before archiving or delete temporary plans when no durable history is needed.
+- Completion instructions tell implementers to follow repo-specific execution-plan lifecycle rules when available, otherwise move durable plan content into long-term docs before deleting or briefly archiving only valuable remaining execution history.
 
 ## Permission Contract
 

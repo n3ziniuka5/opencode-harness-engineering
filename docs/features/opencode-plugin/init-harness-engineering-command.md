@@ -27,7 +27,7 @@
 - `README.md` should include a concise `## Harness-Engineering Posture` section when a repository adopts this scaffold.
 - The scaffold includes product, feature, architecture, engineering, runbook, generated, execution-plan, quality, and reference documentation areas when appropriate for the target repository.
 - Every scaffold `index.md` except `docs/exec-plans/index.md` must include a short purpose and a `## Files` table with columns `File`, `Purpose`, and `Read when`.
-- `docs/exec-plans/index.md` explains lifecycle rules and must not list child plan files.
+- `docs/exec-plans/index.md` explains lifecycle rules, separates archival rules from source-of-truth rules, and must not list child plan files.
 - Optional generated and reference docs are created only when relevant and supported by a clear source of truth.
 
 ## Non-Obvious Constraints
