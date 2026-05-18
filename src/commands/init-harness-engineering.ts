@@ -214,7 +214,8 @@ Explain these lifecycle rules in \`docs/exec-plans/index.md\`:
 
 Then add an archival rule explaining:
 
-- Before deleting or archiving an active plan, move every still-useful fact, decision, contract, and operational note into the appropriate long-term repo documentation, such as ADRs, feature docs, architecture docs, runbooks, quality docs, or engineering docs.
+- Completing implementation includes resolving the active plan's lifecycle before reporting the task done.
+- Before deleting or archiving an active plan, update the appropriate long-term repo documentation to reflect what was actually built, changed, verified, and decided, such as ADRs, feature docs, architecture docs, runbooks, quality docs, or engineering docs. Use the completed implementation and final code/tests as the source of truth; do not mechanically copy or move stale plan text.
 - For most small tasks, delete the active plan after completion once durable docs are updated.
 - Use \`docs/exec-plans/completed/\` only when the remaining execution history has durable debugging, audit, rollout, or handoff value.
 - If archiving, heavily rewrite the plan to preserve only the remaining information that is crucial to remember long-term, and keep it brief.

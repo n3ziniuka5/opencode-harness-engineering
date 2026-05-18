@@ -39,7 +39,15 @@ describe("init-harness-engineering command", () => {
     assert.match(command.template, /Then add an archival rule explaining/);
     assert.match(
       command.template,
-      /Before deleting or archiving an active plan, move every still-useful fact, decision, contract, and operational note/,
+      /Completing implementation includes resolving the active plan's lifecycle before reporting the task done/,
+    );
+    assert.match(
+      command.template,
+      /update the appropriate long-term repo documentation to reflect what was actually built, changed, verified, and decided/,
+    );
+    assert.match(
+      command.template,
+      /do not mechanically copy or move stale plan text/,
     );
     assert.match(
       command.template,
