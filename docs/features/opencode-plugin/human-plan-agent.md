@@ -22,7 +22,7 @@
 - The agent may include `mermaid` diagrams only when they materially clarify larger plans, such as module dependencies or complex flows; routine or small plans should not include diagrams.
 - The agent writes active plan files under `docs/exec-plans/active/YYYY-MM-DD-slug.md`.
 - The agent must not implement the plan or edit files outside the active plan path.
-- Completion instructions tell implementers to follow repo-specific execution-plan lifecycle rules when available, otherwise move durable plan content into long-term docs before deleting or briefly archiving only valuable remaining execution history.
+- Completion instructions tell implementers that finishing implementation includes resolving the active plan's lifecycle. They must follow repo-specific execution-plan lifecycle rules when available, otherwise update long-term docs from the final implementation before deleting or briefly archiving only valuable remaining execution history.
 
 ## Permission Contract
 

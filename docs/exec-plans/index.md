@@ -12,7 +12,8 @@ Execution plans are temporary, single-task coordination documents. They help age
 
 ## Completion Rules
 
-- Before deleting or archiving an active plan, move every still-useful fact, decision, contract, and operational note into the appropriate long-term repository documentation.
+- Completing implementation includes resolving the active plan's lifecycle before reporting the task done.
+- Before deleting or archiving an active plan, update the appropriate long-term repository documentation to reflect what was actually built, changed, verified, and decided. Use the completed implementation and final code/tests as the source of truth; do not mechanically copy or move stale plan text.
 - Use ADRs for durable architecture decisions and tradeoffs.
 - Use feature docs for durable behavior, edge cases, responsibility splits, and source-of-truth code pointers.
 - Use architecture docs for boundaries, dependency rules, data model intent, and public contracts.

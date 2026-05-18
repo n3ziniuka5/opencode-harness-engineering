@@ -73,7 +73,15 @@ describe("hello-world plugin", () => {
     );
     assert.match(
       String(agent.prompt),
-      /first move every still-useful fact, decision, contract, and operational note from the plan into the appropriate long-term repo documentation/,
+      /completing the implementation includes resolving the active plan's lifecycle/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /update the appropriate long-term repository documentation to reflect what was actually built, changed, verified, and decided/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /do not mechanically copy or move stale plan text/,
     );
     assert.match(
       String(agent.prompt),
