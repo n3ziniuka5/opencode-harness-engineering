@@ -10,19 +10,15 @@ The package name is `opencode-harness-agents`. It is ESM (`type: module`) and ex
 
 Source of truth: `src/index.ts`.
 
-The default export is a plugin module with explicit id `harness.hello-world` and a `server` function. The server returns a config hook and a `tool` map.
-
-## Tool Contract
-
-Source of truth: `src/index.ts` and `docs/features/opencode-plugin/hello-world-tool.md`.
-
-`hello_world` accepts optional `name`, returns `{ output, metadata }`, and records OpenCode tool metadata. Changes to arg shape, return shape, metadata, or default greeting behavior are public behavior changes and need tests.
+The default export is a plugin module with explicit id `harness.agents` and a `server` function. The server returns a config hook.
 
 ## Agent Contract
 
-Source of truth: `src/agents/human-plan.ts` and `docs/features/opencode-plugin/human-plan-agent.md`.
+Source of truth: `src/agents/explore.ts`, `src/agents/plan.ts`, `docs/features/opencode-plugin/explore-agent.md`, and `docs/features/opencode-plugin/plan-agent.md`.
 
-`human_plan` is registered through `config.agent.human_plan ??=`. Changes to id, mode, model, variant, prompt requirements, permissions, or active plan path are user-visible behavior changes.
+`explore` is assigned to `config.agent.explore`. It is a read-only subagent using `openai/gpt-5.4-mini` with variant `low`; its permissions deny wildcard access, edits, nested tasks, and todowrite, while allowing local read/search tools, read-only bash when needed, and documentation tools. Because OpenCode also has a native `explore` agent, this config replaces the native key when present.
+
+`plan` is assigned to `config.agent.plan`. Its prompt requirements include a plan-specific `# Discovery` section for repository context and durable docs, identifying documentation files for implementers to revisit, and conforming generated plans to relevant repository documentation and local instructions discovered during planning. Changes to id, mode, model, variant, prompt requirements, permissions, or active plan path are user-visible behavior changes.
 
 ## Command Contract
 
@@ -34,7 +30,7 @@ Source of truth: `src/commands/init-harness-engineering.ts` and `docs/features/o
 
 Source of truth: `opencode.json`.
 
-Local OpenCode usage loads `./src/index.ts` and passes the `greeting` option `Hello from the harness engineering plugin`.
+Local OpenCode usage loads `./src/index.ts` without plugin options.
 
 ## Documentation Scaffold Contract
 

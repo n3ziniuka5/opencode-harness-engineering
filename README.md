@@ -1,8 +1,8 @@
 # OpenCode Harness Agents
 
-OpenCode plugin bundle for harness-engineering agents, tools, and repository guardrails.
+OpenCode plugin bundle for harness-engineering agents, commands, and repository guardrails.
 
-This starter ships one server plugin, `harness.hello-world`, that registers a `hello_world` tool, a `human_plan` agent, and an `/init-harness-engineering` command. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
+This package ships one server plugin, `harness.agents`, that registers `explore` and `plan` agents plus an `/init-harness-engineering` command. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
 
 ## Quick Start
 
@@ -46,12 +46,7 @@ This repository includes `opencode.json` that loads the local TypeScript plugin:
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    [
-      "./src/index.ts",
-      { "greeting": "Hello from the harness engineering plugin" }
-    ]
-  ]
+  "plugin": ["./src/index.ts"]
 }
 ```
 
@@ -66,14 +61,17 @@ For a built npm package, OpenCode resolves the server plugin from the `./server`
 
 After loading the plugin, run `/init-harness-engineering` in a target repository to ask the active agent to create or update a harness-engineering documentation scaffold. The command inspects existing repository context, preserves useful docs, and uses `$ARGUMENTS` as optional focus or constraints.
 
+The plugin configures `explore` as a cheap, high-volume read-only discovery subagent and `plan` as the human-reviewed planning agent that delegates non-trivial discovery to `explore`. Both agent entries are assigned directly so the bundled config overrides OpenCode defaults.
+
 ## Repository Map
 
 - `AGENTS.md`: agent-facing entry point and table of contents.
 - `ARCHITECTURE.md`: package boundaries and runtime shape.
 - `src/index.ts`: OpenCode v1 server plugin module.
-- `src/agents/human-plan.ts`: `human_plan` agent prompt and config.
+- `src/agents/explore.ts`: `explore` subagent prompt and read-only config.
+- `src/agents/plan.ts`: `plan` agent prompt and config.
 - `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and config.
-- `test/hello-world.test.ts`: executable contract tests for the starter tool and agent.
+- `test/plugin.test.ts`: executable contract tests for the plugin and bundled agents.
 - `test/init-harness-engineering-command.test.ts`: executable contract tests for the documentation scaffold command.
 - `docs/index.md`: scaffolded knowledge-base index for product, feature, architecture, engineering, quality, and reference docs.
 - `scripts/check-docs.ts`: mechanical check that required scaffold docs exist and index tables stay valid.

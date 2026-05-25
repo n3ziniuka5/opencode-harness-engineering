@@ -2,12 +2,11 @@
 
 ## Current Posture
 
-The package does not run a service and has no dashboards, metrics backend, tracing pipeline, or alerting configuration. The current observability surface is OpenCode tool metadata.
+The package does not run a service and has no dashboards, metrics backend, tracing pipeline, or alerting configuration. There is no runtime observability surface beyond OpenCode's own plugin and agent traces.
 
-## Tool Metadata
+## Metadata
 
-- `hello_world` calls `context.metadata` with a human-readable title and structured metadata.
-- Tool metadata should include the plugin id and relevant target when useful for agent trace legibility.
+- Future tool metadata should include the plugin id and relevant target when useful for agent trace legibility.
 - Do not put secrets, raw environment values, tokens, or credentials in metadata.
 
 ## Logs, Metrics, And Traces

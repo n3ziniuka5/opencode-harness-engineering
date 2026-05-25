@@ -20,7 +20,7 @@ This is a local summary of the harness-engineering practices relevant to this re
 - `AGENTS.md` maps agents to the relevant docs instead of duplicating every rule.
 - `docs/` is the durable knowledge base.
 - `scripts/check-docs.ts` mechanically verifies the required documentation map.
-- `test/hello-world.test.ts` verifies the plugin contract and starter behavior.
+- `test/plugin.test.ts` verifies the plugin contract and bundled agent behavior.
 - `ARCHITECTURE.md` records the OpenCode package shape so future agents do not guess entrypoints.
 - `docs/exec-plans/` is ready for checked-in plans when tasks grow beyond a small change.
 

@@ -1,15 +1,12 @@
-import type { Plugin, PluginModule, PluginOptions } from "@opencode-ai/plugin";
-import { tool } from "@opencode-ai/plugin";
-import {
-  HUMAN_PLAN_AGENT_CONFIG,
-  HUMAN_PLAN_AGENT_NAME,
-} from "./agents/human-plan.js";
+import type { Plugin, PluginModule } from "@opencode-ai/plugin";
+import { EXPLORE_AGENT_CONFIG, EXPLORE_AGENT_NAME } from "./agents/explore.js";
+import { PLAN_AGENT_CONFIG, PLAN_AGENT_NAME } from "./agents/plan.js";
 import {
   INIT_HARNESS_ENGINEERING_COMMAND_CONFIG,
   INIT_HARNESS_ENGINEERING_COMMAND_NAME,
 } from "./commands/init-harness-engineering.js";
 
-const PLUGIN_ID = "harness.hello-world";
+const PLUGIN_ID = "harness.agents";
 
 type MutableAgentConfig = Record<string, unknown>;
 type MutableAgentMap = Record<string, MutableAgentConfig | undefined>;
@@ -26,21 +23,20 @@ type MutableConfig = {
   command?: MutableCommandMap;
 };
 
-function optionString(
-  options: PluginOptions | undefined,
-  key: string,
-  fallback: string,
-) {
-  const value = options?.[key];
-  if (typeof value !== "string") return fallback;
+function agentMap(config: MutableConfig) {
+  if (!config.agent) {
+    config.agent = {};
+  }
 
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : fallback;
+  return config.agent;
 }
 
-function registerHumanPlanAgent(config: MutableConfig) {
-  config.agent ??= {};
-  config.agent[HUMAN_PLAN_AGENT_NAME] ??= HUMAN_PLAN_AGENT_CONFIG;
+function registerPlanAgent(config: MutableConfig) {
+  agentMap(config)[PLAN_AGENT_NAME] = PLAN_AGENT_CONFIG;
+}
+
+function registerExploreAgent(config: MutableConfig) {
+  agentMap(config)[EXPLORE_AGENT_NAME] = EXPLORE_AGENT_CONFIG;
 }
 
 function registerInitHarnessEngineeringCommand(config: MutableConfig) {
@@ -49,48 +45,13 @@ function registerInitHarnessEngineeringCommand(config: MutableConfig) {
     INIT_HARNESS_ENGINEERING_COMMAND_CONFIG;
 }
 
-const server: Plugin = async (_input, options) => {
-  const greeting = optionString(options, "greeting", "Hello");
-
+const server: Plugin = async () => {
   return {
     async config(input) {
       const mutableConfig = input as MutableConfig;
-      registerHumanPlanAgent(mutableConfig);
+      registerExploreAgent(mutableConfig);
+      registerPlanAgent(mutableConfig);
       registerInitHarnessEngineeringCommand(mutableConfig);
-    },
-    tool: {
-      hello_world: tool({
-        description:
-          "Return a greeting from the harness-engineering starter plugin.",
-        args: {
-          name: tool.schema
-            .string()
-            .trim()
-            .min(1)
-            .optional()
-            .describe("Optional name to greet."),
-        },
-        async execute(args, context) {
-          const target = args.name ?? "world";
-          const output = `${greeting}, ${target}!`;
-
-          context.metadata({
-            title: `hello ${target}`,
-            metadata: {
-              plugin: PLUGIN_ID,
-              target,
-            },
-          });
-
-          return {
-            output,
-            metadata: {
-              plugin: PLUGIN_ID,
-              target,
-            },
-          };
-        },
-      }),
     },
   };
 };
@@ -101,11 +62,17 @@ const plugin: PluginModule & { id: string } = {
 };
 
 export {
-  HUMAN_PLAN_AGENT_CONFIG,
-  HUMAN_PLAN_AGENT_DESCRIPTION,
-  HUMAN_PLAN_AGENT_NAME,
-  HUMAN_PLAN_AGENT_PROMPT,
-} from "./agents/human-plan.js";
+  EXPLORE_AGENT_CONFIG,
+  EXPLORE_AGENT_DESCRIPTION,
+  EXPLORE_AGENT_NAME,
+  EXPLORE_AGENT_PROMPT,
+} from "./agents/explore.js";
+export {
+  PLAN_AGENT_CONFIG,
+  PLAN_AGENT_DESCRIPTION,
+  PLAN_AGENT_NAME,
+  PLAN_AGENT_PROMPT,
+} from "./agents/plan.js";
 export {
   INIT_HARNESS_ENGINEERING_COMMAND_CONFIG,
   INIT_HARNESS_ENGINEERING_COMMAND_DESCRIPTION,
@@ -114,7 +81,8 @@ export {
 } from "./commands/init-harness-engineering.js";
 export {
   PLUGIN_ID,
-  registerHumanPlanAgent,
+  registerExploreAgent,
+  registerPlanAgent,
   registerInitHarnessEngineeringCommand,
   server,
 };

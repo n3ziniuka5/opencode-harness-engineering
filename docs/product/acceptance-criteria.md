@@ -10,11 +10,12 @@
 
 ## Plugin Product Rules
 
-- The package exports an OpenCode server plugin with id `harness.hello-world`.
+- The package exports an OpenCode server plugin with id `harness.agents`.
 - The npm package exposes `.` and `./server` to the built plugin entrypoint.
-- The plugin does not overwrite user-defined `human_plan` agent or `init-harness-engineering` command config entries.
+- The plugin configures `explore` as a read-only discovery subagent and `plan` as the human-reviewed planning agent.
+- The plugin overwrites existing `explore` and `plan` agent entries so bundled agents override OpenCode defaults, while preserving user-defined `init-harness-engineering` command config.
 - Plugin initialization does not perform network, shell, filesystem, or environment reads.
-- Plugin options are normalized before use and treated as untrusted input.
+- Plugin options are treated as untrusted input if future options are added.
 
 ## Documentation Scaffold Rules
 

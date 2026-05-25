@@ -11,8 +11,8 @@ const requiredFiles = [
   "docs/product/acceptance-criteria.md",
   "docs/features/index.md",
   "docs/features/opencode-plugin/index.md",
-  "docs/features/opencode-plugin/hello-world-tool.md",
-  "docs/features/opencode-plugin/human-plan-agent.md",
+  "docs/features/opencode-plugin/explore-agent.md",
+  "docs/features/opencode-plugin/plan-agent.md",
   "docs/features/opencode-plugin/init-harness-engineering-command.md",
   "docs/architecture/index.md",
   "docs/architecture/boundaries.md",
@@ -38,6 +38,7 @@ const requiredFiles = [
   "docs/references/index.md",
   "docs/references/harness-engineering.md",
   "docs/references/opencode-plugin-reference.md",
+  "docs/references/openai-gpt-5.4-prompting.md",
   "docs/references/openai-gpt-5.5-prompting.md",
 ];
 

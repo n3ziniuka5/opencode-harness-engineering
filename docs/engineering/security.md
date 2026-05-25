@@ -10,9 +10,11 @@
 
 ## Current Posture
 
-The plugin registers an in-memory greeting tool, a `human_plan` agent config, and an `init-harness-engineering` command config. Plugin initialization does not access the network, shell, filesystem, or environment.
+The plugin registers `explore` and `plan` agent configs plus an `init-harness-engineering` command config. Plugin initialization does not access the network, shell, filesystem, or environment.
 
-The `human_plan` agent denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `skill`, `todowrite`, narrow user questions, and allows task delegation to the read-oriented `explore` agent. It does not grant bash through an agent-level permission override.
+The `explore` agent denies wildcard access, edits, nested task delegation, and todowrite. It allows local read/search tools, `webfetch`, `websearch`, `context7_*`, ask-gated external directory reads, and bash only for read-only commands that do not modify files or add/change git-tracked files.
+
+The `plan` agent denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and allows task delegation only to `explore`.
 
 ## Dependency Review
 
