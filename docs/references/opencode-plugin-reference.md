@@ -44,6 +44,8 @@ return {
       mode: "subagent",
       model: "openai/gpt-5.4-mini",
       variant: "low",
+      temperature: 0.5,
+      top_p: 0.97,
       permission: { "*": "deny", read: "allow", grep: "allow" },
       prompt: "...",
     };
@@ -51,13 +53,15 @@ return {
       mode: "all",
       model: "openai/gpt-5.5",
       variant: "high",
+      temperature: 0.2,
+      top_p: 0.97,
       prompt: "...",
     };
   },
 };
 ```
 
-Agent config supports fields such as `description`, `mode`, `model`, `variant`, `prompt`, `permission`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `low` or `high` when the selected model exposes that variant. This plugin assigns agent configs directly so the bundled `explore` and `plan` definitions override OpenCode defaults.
+Agent config supports fields such as `description`, `mode`, `model`, `variant`, `temperature`, `top_p`, `prompt`, `permission`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `low` or `high` when the selected model exposes that variant. This plugin assigns agent configs directly so the bundled `explore` and `plan` definitions override OpenCode defaults.
 
 Command config supports a `template` prompt and optional fields such as `description`, `agent`, `model`, and `subtask`. This plugin intentionally leaves `agent`, `model`, and `subtask` unset for `/init-harness-engineering` so the command runs with the user's current/default implementation agent and normal file-edit permissions. Registration uses `??=` so local user commands with the same name are not overwritten.
 

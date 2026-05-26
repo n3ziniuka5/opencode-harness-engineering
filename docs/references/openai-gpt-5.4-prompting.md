@@ -16,5 +16,5 @@ These references are the source material for bundled agent prompts that target G
 
 ## Current Usage
 
-- `src/agents/explore.ts` defines the `explore` subagent using `openai/gpt-5.4-mini` with the `low` variant.
+- `src/agents/explore.ts` defines the `explore` subagent using `openai/gpt-5.4-mini` with the `low` variant, `temperature: 0.5`, and shared `top_p: 0.97`.
 - The `explore` prompt follows the GPT-5.4 guidance by specifying read-only constraints, allowed discovery tools, search budgets, evidence rules, output contracts, and stop rules.

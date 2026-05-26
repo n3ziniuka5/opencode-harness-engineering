@@ -16,6 +16,7 @@
 
 - Keep `src/index.ts` readable as the plugin entrypoint.
 - Put large bundled agent prompts under `src/agents/`.
+- Put shared bundled-agent sampling values under `src/agents/sampling.ts` instead of duplicating numeric literals in each agent config.
 - Put large bundled command prompts under `src/commands/`.
 - Move future larger tools under `src/tools/` when keeping them in the entrypoint would obscure plugin registration.
 - Assign bundled agent configs directly when they intentionally override OpenCode defaults; use `??=` only for config entries that should preserve local user definitions, such as slash commands.

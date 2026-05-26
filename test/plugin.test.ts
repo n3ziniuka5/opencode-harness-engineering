@@ -9,6 +9,7 @@ import plugin, {
   PLAN_AGENT_NAME,
   PLUGIN_ID,
 } from "../src/index.js";
+import { DEFAULT_AGENT_TOP_P } from "../src/agents/sampling.js";
 
 describe("harness agents plugin", () => {
   const previousPlanAgentName = ["human", "plan"].join("_");
@@ -39,6 +40,8 @@ describe("harness agents plugin", () => {
     assert.ok(agent);
     assert.equal(agent.model, "openai/gpt-5.5");
     assert.equal(agent.variant, "high");
+    assert.equal(agent.temperature, 0.2);
+    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
     assert.equal(agent.mode, "all");
     const permission = agent.permission as Record<string, unknown> | undefined;
     assert.ok(permission);
@@ -142,6 +145,22 @@ describe("harness agents plugin", () => {
     assert.doesNotMatch(String(agent.prompt), /# Delegation/);
     assert.match(String(agent.prompt), /# Discovery/);
     assert.match(String(agent.prompt), /substantial discovery/i);
+    assert.match(
+      String(agent.prompt),
+      /first decide the exploration subjects/i,
+    );
+    assert.match(String(agent.prompt), /durable repo instructions/i);
+    assert.match(String(agent.prompt), /app type and user-visible surfaces/i);
+    assert.match(String(agent.prompt), /Decompose those subjects/i);
+    assert.match(String(agent.prompt), /separate `explore` tasks in parallel/i);
+    assert.match(
+      String(agent.prompt),
+      /Do not send one broad repo-discovery prompt/i,
+    );
+    assert.match(
+      String(agent.prompt),
+      /Use a single `explore` task only for trivial or tightly scoped requests/i,
+    );
     assert.match(String(agent.prompt), /repo-local guidance/i);
     assert.match(String(agent.prompt), /coding standards/i);
     assert.match(String(agent.prompt), /official library docs/i);
@@ -166,6 +185,8 @@ describe("harness agents plugin", () => {
     assert.equal(agent.mode, "subagent");
     assert.equal(agent.model, "openai/gpt-5.4-mini");
     assert.equal(agent.variant, "low");
+    assert.equal(agent.temperature, 0.5);
+    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
     assert.equal(agent.description, EXPLORE_AGENT_DESCRIPTION);
     assert.match(String(agent.description), /cheap/i);
     assert.match(String(agent.description), /high-volume/i);
