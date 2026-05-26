@@ -61,15 +61,16 @@ For a built npm package, OpenCode resolves the server plugin from the `./server`
 
 After loading the plugin, run `/init-harness-engineering` in a target repository to ask the active agent to create or update a harness-engineering documentation scaffold. The command inspects existing repository context, preserves useful docs, and uses `$ARGUMENTS` as optional focus or constraints.
 
-The plugin configures `explore` as a cheap, high-volume read-only discovery subagent and `plan` as the human-reviewed planning agent that delegates non-trivial discovery to `explore`. Both agent entries are assigned directly so the bundled config overrides OpenCode defaults.
+The plugin configures `explore` as a cheap, high-volume read-only discovery subagent and `plan` as the human-reviewed planning agent that delegates non-trivial discovery to `explore`. Both agents ship explicit sampling controls (`explore.temperature = 0.5`, `plan.temperature = 0.2`, shared `top_p = 0.97`) and both entries are assigned directly so the bundled config overrides OpenCode defaults.
 
 ## Repository Map
 
 - `AGENTS.md`: agent-facing entry point and table of contents.
 - `ARCHITECTURE.md`: package boundaries and runtime shape.
 - `src/index.ts`: OpenCode v1 server plugin module.
-- `src/agents/explore.ts`: `explore` subagent prompt and read-only config.
-- `src/agents/plan.ts`: `plan` agent prompt and config.
+- `src/agents/explore.ts`: `explore` subagent prompt, sampling, and read-only config.
+- `src/agents/plan.ts`: `plan` agent prompt, sampling, and config.
+- `src/agents/sampling.ts`: shared sampling constants for bundled agents.
 - `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and config.
 - `test/plugin.test.ts`: executable contract tests for the plugin and bundled agents.
 - `test/init-harness-engineering-command.test.ts`: executable contract tests for the documentation scaffold command.

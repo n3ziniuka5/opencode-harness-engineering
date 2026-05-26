@@ -1,3 +1,5 @@
+import { DEFAULT_AGENT_TOP_P } from "./sampling.js";
+
 export const EXPLORE_AGENT_NAME = "explore";
 
 export const EXPLORE_AGENT_DESCRIPTION =
@@ -62,6 +64,8 @@ export const EXPLORE_AGENT_CONFIG = {
   mode: "subagent",
   model: "openai/gpt-5.4-mini",
   variant: "low",
+  temperature: 0.5,
+  top_p: DEFAULT_AGENT_TOP_P,
   prompt: EXPLORE_AGENT_PROMPT,
   permission: {
     "*": "deny",

@@ -17,5 +17,5 @@ These references are the source material for bundled agent prompts that target G
 
 ## Current Usage
 
-- `src/agents/plan.ts` defines the `plan` agent using `openai/gpt-5.5` with the `high` variant.
+- `src/agents/plan.ts` defines the `plan` agent using `openai/gpt-5.5` with the `high` variant, `temperature: 0.2`, and shared `top_p: 0.97`.
 - The `plan` prompt follows the guide's suggested structure: role, personality, goal, success criteria, constraints, output, and stop rules. It also names the active plan path and archive behavior because file persistence is part of the agent contract.

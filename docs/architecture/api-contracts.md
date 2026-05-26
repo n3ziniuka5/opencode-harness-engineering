@@ -16,9 +16,9 @@ The default export is a plugin module with explicit id `harness.agents` and a `s
 
 Source of truth: `src/agents/explore.ts`, `src/agents/plan.ts`, `docs/features/opencode-plugin/explore-agent.md`, and `docs/features/opencode-plugin/plan-agent.md`.
 
-`explore` is assigned to `config.agent.explore`. It is a read-only subagent using `openai/gpt-5.4-mini` with variant `low`; its permissions deny wildcard access, edits, nested tasks, and todowrite, while allowing local read/search tools, read-only bash when needed, and documentation tools. Because OpenCode also has a native `explore` agent, this config replaces the native key when present.
+`explore` is assigned to `config.agent.explore`. It is a read-only subagent using `openai/gpt-5.4-mini` with variant `low`, `temperature: 0.5`, and shared `top_p: 0.97`; its permissions deny wildcard access, edits, nested tasks, and todowrite, while allowing local read/search tools, read-only bash when needed, and documentation tools. Because OpenCode also has a native `explore` agent, this config replaces the native key when present.
 
-`plan` is assigned to `config.agent.plan`. Its prompt requirements include a plan-specific `# Discovery` section for repository context and durable docs, identifying documentation files for implementers to revisit, and conforming generated plans to relevant repository documentation and local instructions discovered during planning. Changes to id, mode, model, variant, prompt requirements, permissions, or active plan path are user-visible behavior changes.
+`plan` is assigned to `config.agent.plan`. It uses `openai/gpt-5.5` with variant `high`, `temperature: 0.2`, and shared `top_p: 0.97`. Its prompt requirements include a plan-specific `# Discovery` section for repository context and durable docs, identifying documentation files for implementers to revisit, and conforming generated plans to relevant repository documentation and local instructions discovered during planning. Changes to id, mode, model, variant, temperature, `top_p`, prompt requirements, permissions, or active plan path are user-visible behavior changes.
 
 ## Command Contract
 

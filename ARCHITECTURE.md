@@ -32,6 +32,7 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 - `src/index.ts`: plugin entrypoint, config-hook registration, and exports.
 - `src/agents/explore.ts`: `explore` subagent prompt, model, read-only permissions, and OpenCode agent config.
 - `src/agents/plan.ts`: `plan` agent prompt and OpenCode agent config.
+- `src/agents/sampling.ts`: shared sampling constants for bundled agents.
 - `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and OpenCode command config.
 - `test/`: executable plugin contract tests.
 - `scripts/`: repository guardrails that agents and CI can run.
@@ -40,10 +41,10 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 ## Bundled Agents
 
 - `explore`: read-only discovery subagent registered as `config.agent.explore`. The same key customizes OpenCode's native `explore` agent when present and creates a normal subagent on runtimes without a native one.
-- `explore` uses `openai/gpt-5.4-mini` with the `low` variant for cheap, high-volume codebase exploration and online search. It denies wildcard access plus edit, nested task, and todowrite, while allowing local read/search tools, read-only bash when needed, `webfetch`, `websearch`, `context7_*`, and ask-gated external directory reads.
+- `explore` uses `openai/gpt-5.4-mini` with the `low` variant, `temperature: 0.5`, and shared `top_p: 0.97` for cheap, high-volume codebase exploration and online search. It denies wildcard access plus edit, nested task, and todowrite, while allowing local read/search tools, read-only bash when needed, `webfetch`, `websearch`, `context7_*`, and ask-gated external directory reads.
 - `plan`: planning agent for human-reviewed implementation plans, registered under OpenCode's native planning key so the bundled config overrides the default.
-- `plan` uses `openai/gpt-5.5` with the `high` variant and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
-- `plan` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to `explore`. Its prompt includes a plan-specific `# Discovery` section for repository context, durable docs, and doc/code conflict handling before writing a plan; generic `explore` handoff guidance lives in the `explore` agent description surfaced by the Task tool.
+- `plan` uses `openai/gpt-5.5` with the `high` variant, `temperature: 0.2`, shared `top_p: 0.97`, and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
+- `plan` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to `explore`. Its prompt includes a plan-specific `# Discovery` section for repository context, exploration-subject selection, parallel decomposition into focused `explore` questions, durable docs, and doc/code conflict handling before writing a plan; generic `explore` handoff guidance lives in the `explore` agent description surfaced by the Task tool.
 
 ## Bundled Commands
 
@@ -57,6 +58,7 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 Future bundled agents should keep a predictable shape:
 
 - Keep bundled agent definitions under `src/agents/` when their prompt or config is too large for the plugin entrypoint.
+- Import `DEFAULT_AGENT_TOP_P` from `src/agents/sampling.ts` for bundled agents that should follow the shared nucleus sampling default.
 - Keep bundled command definitions under `src/commands/` when their prompt or config is too large for the plugin entrypoint.
 - Add tools under `src/tools/` when a tool grows large enough to obscure the plugin entrypoint.
 - Add harness or validation scripts under `scripts/` and wire them into `pnpm run check`.

@@ -8,9 +8,11 @@ Plugin options are untrusted `PluginOptions`. No plugin options currently affect
 
 ## Agent Config
 
-`explore` is an OpenCode agent config with description, mode, model, variant, prompt, and permissions. Its invariant is that it is a read-only discovery subagent: mutation tools, shell, nested task delegation, and todowrite are denied, while local read/search and documentation tools are allowed.
+`explore` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a read-only discovery subagent: mutation tools, shell, nested task delegation, and todowrite are denied, while local read/search and documentation tools are allowed.
 
-`plan` is an OpenCode agent config with description, mode, model, variant, prompt, and permissions. Its invariant is that it can write only active execution plan files, cannot edit implementation files through its agent-level permission policy, and delegates non-trivial discovery to `explore`.
+`plan` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it can write only active execution plan files, cannot edit implementation files through its agent-level permission policy, and delegates non-trivial discovery to `explore`.
+
+Both bundled agents use shared `top_p: 0.97` from `src/agents/sampling.ts`; their temperatures are agent-specific (`0.5` for `explore`, `0.2` for `plan`).
 
 ## Command Config
 
