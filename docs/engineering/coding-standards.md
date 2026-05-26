@@ -18,7 +18,7 @@
 - Put large bundled agent prompts under `src/agents/`.
 - Put large bundled command prompts under `src/commands/`.
 - Move future larger tools under `src/tools/` when keeping them in the entrypoint would obscure plugin registration.
-- Use `??=` when registering bundled config entries so user-defined OpenCode config wins.
+- Assign bundled agent configs directly when they intentionally override OpenCode defaults; use `??=` only for config entries that should preserve local user definitions, such as slash commands.
 
 ## Prompt And Documentation Style
 

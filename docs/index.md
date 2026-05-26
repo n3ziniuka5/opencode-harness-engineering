@@ -15,6 +15,6 @@ This directory is the repository system of record for durable product, feature, 
 | [`generated/index.md`](generated/index.md) | Generated or source-derived documentation map. | You need to know what generated references exist and how to refresh them. |
 | [`exec-plans/index.md`](exec-plans/index.md) | Lifecycle rules for task-specific execution plans. | A task needs a checked-in plan or a completed-plan archive decision. |
 | [`quality/index.md`](quality/index.md) | Quality scorecard, debt tracker, and cleanup process. | You are assessing risk, prioritizing cleanup, or updating quality posture. |
-| [`references/index.md`](references/index.md) | Repo-specific external and vendor references. | You need source links or local notes for OpenCode, GPT-5.5, or harness engineering. |
+| [`references/index.md`](references/index.md) | Repo-specific external and vendor references. | You need source links or local notes for OpenCode, GPT prompting, or harness engineering. |
 
 Run `pnpm run docs:check` after changing this map or any scaffold index.

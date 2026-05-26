@@ -27,4 +27,4 @@ Do not create or update docs for:
 
 ## Current Plugin
 
-Plugin id `harness.hello-world` exports an OpenCode server plugin from `src/index.ts`, registers the `hello_world` tool, registers the `human_plan` agent from `src/agents/human-plan.ts`, and registers `/init-harness-engineering` from `src/commands/init-harness-engineering.ts`.
+Plugin id `harness.agents` exports an OpenCode server plugin from `src/index.ts`, registers the `explore` and `plan` agents from `src/agents/`, and registers `/init-harness-engineering` from `src/commands/init-harness-engineering.ts`.

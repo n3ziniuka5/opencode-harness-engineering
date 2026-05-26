@@ -1,18 +1,16 @@
 # Data Model
 
-This package has no database, persisted application state, or service-owned storage. The relevant data model is the set of OpenCode config objects, tool payloads, and scaffold documentation concepts the plugin produces or registers.
+This package has no database, persisted application state, or service-owned storage. The relevant data model is the set of OpenCode config objects and scaffold documentation concepts the plugin produces or registers.
 
 ## Plugin Options
 
-Plugin options are untrusted `PluginOptions`. The current `greeting` option is accepted only when it is a non-empty string after trimming; otherwise the plugin uses `Hello`.
-
-## Tool Payload
-
-`hello_world` accepts an optional trimmed non-empty `name`. The derived target defaults to `world`. The output contains a human-readable greeting and metadata with the plugin id and target.
+Plugin options are untrusted `PluginOptions`. No plugin options currently affect behavior.
 
 ## Agent Config
 
-`human_plan` is an OpenCode agent config with description, mode, model, variant, prompt, and permissions. Its invariant is that it can write only active execution plan files and cannot edit implementation files through its agent-level permission policy.
+`explore` is an OpenCode agent config with description, mode, model, variant, prompt, and permissions. Its invariant is that it is a read-only discovery subagent: mutation tools, shell, nested task delegation, and todowrite are denied, while local read/search and documentation tools are allowed.
+
+`plan` is an OpenCode agent config with description, mode, model, variant, prompt, and permissions. Its invariant is that it can write only active execution plan files, cannot edit implementation files through its agent-level permission policy, and delegates non-trivial discovery to `explore`.
 
 ## Command Config
 

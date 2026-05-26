@@ -15,23 +15,23 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 ## Runtime Boundary
 
 - The plugin imports only `@opencode-ai/plugin` at runtime.
-- The server function returns OpenCode hooks, bundled agent/command configuration, and custom tools.
-- Tool implementations should return structured metadata when useful so agent runs are easier to inspect.
+- The server function returns OpenCode hooks and bundled agent/command configuration.
 - Agent definitions should keep prompts and static config in `src/agents/` once the prompt is large enough to obscure the plugin entrypoint.
 - Command definitions should keep prompts and static config in `src/commands/` once the prompt is large enough to obscure the plugin entrypoint.
 - Plugin options are treated as untrusted input and normalized before use.
 
 ## Key Flows
 
-- Local OpenCode loading uses `opencode.json`, which points to `./src/index.ts` and passes a `greeting` option.
+- Local OpenCode loading uses `opencode.json`, which points to `./src/index.ts`.
 - Package consumers load the built package through `exports["./server"]`, which resolves to `dist/index.js`.
-- During plugin initialization, OpenCode calls `server(input, options)`, the plugin normalizes the `greeting` option, and the returned hooks expose the tool and config mutation hook.
-- During config resolution, the plugin uses `??=` to register `human_plan` and `init-harness-engineering` without overwriting user-defined config entries.
+- During plugin initialization, OpenCode calls `server(input, options)`, and the returned hooks expose the config mutation hook.
+- During config resolution, the plugin assigns `explore` and `plan` directly so they override OpenCode defaults, while `/init-harness-engineering` still uses `??=` to preserve user-defined command config.
 
 ## Source Layout
 
-- `src/index.ts`: plugin entrypoint, config-hook registration, tool registration, and exports.
-- `src/agents/human-plan.ts`: `human_plan` agent prompt and OpenCode agent config.
+- `src/index.ts`: plugin entrypoint, config-hook registration, and exports.
+- `src/agents/explore.ts`: `explore` subagent prompt, model, read-only permissions, and OpenCode agent config.
+- `src/agents/plan.ts`: `plan` agent prompt and OpenCode agent config.
 - `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and OpenCode command config.
 - `test/`: executable plugin contract tests.
 - `scripts/`: repository guardrails that agents and CI can run.
@@ -39,9 +39,11 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 
 ## Bundled Agents
 
-- `human_plan`: non-native planning agent for human-reviewed implementation plans. It is named to avoid clashing with OpenCode's built-in `plan` agent.
-- `human_plan` uses `openai/gpt-5.5` with the `high` variant and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
-- `human_plan` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to the read-oriented `explore` agent. It does not explicitly grant bash through an agent-level permission override, but bash is still available as a tool and can be used if the agent chooses to use it.
+- `explore`: read-only discovery subagent registered as `config.agent.explore`. The same key customizes OpenCode's native `explore` agent when present and creates a normal subagent on runtimes without a native one.
+- `explore` uses `openai/gpt-5.4-mini` with the `low` variant for cheap, high-volume codebase exploration and online search. It denies wildcard access plus edit, nested task, and todowrite, while allowing local read/search tools, read-only bash when needed, `webfetch`, `websearch`, `context7_*`, and ask-gated external directory reads.
+- `plan`: planning agent for human-reviewed implementation plans, registered under OpenCode's native planning key so the bundled config overrides the default.
+- `plan` uses `openai/gpt-5.5` with the `high` variant and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
+- `plan` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to `explore`. Its prompt includes a plan-specific `# Discovery` section for repository context, durable docs, and doc/code conflict handling before writing a plan; generic `explore` handoff guidance lives in the `explore` agent description surfaced by the Task tool.
 
 ## Bundled Commands
 

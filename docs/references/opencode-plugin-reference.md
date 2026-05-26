@@ -30,40 +30,24 @@ For npm packages, OpenCode resolves server plugins from `package.json` in this o
 
 This package exposes `./server` and `.` to the same built file.
 
-## Hooks And Tools
-
-The server function returns hooks from `@opencode-ai/plugin`. The starter plugin uses the `tool` hook:
-
-```ts
-import { tool } from "@opencode-ai/plugin";
-
-return {
-  tool: {
-    hello_world: tool({
-      description: "Return a greeting.",
-      args: {
-        name: tool.schema.string().optional(),
-      },
-      async execute(args, context) {
-        context.metadata({ title: "hello" });
-        return "Hello world!";
-      },
-    }),
-  },
-};
-```
-
 ## Config Hooks, Agents, And Commands
 
 OpenCode server plugins can also return a `config` hook. The hook receives the resolved OpenCode config object and may mutate it before OpenCode builds its agent registry.
 
-This plugin uses that hook to add `config.agent.human_plan` instead of registering an agent named `plan`, because OpenCode already ships a native `plan` agent. It also adds `config.command["init-harness-engineering"]` so OpenCode surfaces `/init-harness-engineering`.
+This plugin uses that hook to assign `config.agent.explore` and `config.agent.plan`. Both keys intentionally replace OpenCode's native agents when present. It also adds `config.command["init-harness-engineering"]` so OpenCode surfaces `/init-harness-engineering`.
 
 ```ts
 return {
   async config(input) {
-    input.agent ??= {};
-    input.agent.human_plan ??= {
+    if (!input.agent) input.agent = {};
+    input.agent.explore = {
+      mode: "subagent",
+      model: "openai/gpt-5.4-mini",
+      variant: "low",
+      permission: { "*": "deny", read: "allow", grep: "allow" },
+      prompt: "...",
+    };
+    input.agent.plan = {
       mode: "all",
       model: "openai/gpt-5.5",
       variant: "high",
@@ -73,7 +57,7 @@ return {
 };
 ```
 
-Agent config supports fields such as `description`, `mode`, `model`, `variant`, `prompt`, `permission`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `high` when the selected model exposes that variant.
+Agent config supports fields such as `description`, `mode`, `model`, `variant`, `prompt`, `permission`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `low` or `high` when the selected model exposes that variant. This plugin assigns agent configs directly so the bundled `explore` and `plan` definitions override OpenCode defaults.
 
 Command config supports a `template` prompt and optional fields such as `description`, `agent`, `model`, and `subtask`. This plugin intentionally leaves `agent`, `model`, and `subtask` unset for `/init-harness-engineering` so the command runs with the user's current/default implementation agent and normal file-edit permissions. Registration uses `??=` so local user commands with the same name are not overwritten.
 
@@ -84,8 +68,8 @@ Command config supports a `template` prompt and optional fields such as `descrip
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [["./src/index.ts", { "greeting": "Hello" }]]
+  "plugin": ["./src/index.ts"]
 }
 ```
 
-OpenCode supports tuple options as `[spec, options]`; the starter plugin reads a `greeting` option.
+OpenCode also supports tuple options as `[spec, options]` for plugins that need options.

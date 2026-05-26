@@ -6,11 +6,11 @@ The package is an OpenCode server plugin bundle. `package.json` exposes the buil
 
 ## Runtime Boundary
 
-`src/index.ts` is the runtime entrypoint. It imports `@opencode-ai/plugin`, the bundled agent config, and the bundled command config. It returns OpenCode hooks from the `server` function and does not perform filesystem, shell, network, or environment side effects during initialization.
+`src/index.ts` is the runtime entrypoint. It imports the bundled agent config and bundled command config. It returns OpenCode hooks from the `server` function and does not perform filesystem, shell, network, or environment side effects during initialization.
 
 ## Agent Boundary
 
-Bundled agent prompts and static config live under `src/agents/` when they are too large for the entrypoint. `src/agents/human-plan.ts` owns the `human_plan` prompt, model, variant, mode, and permissions.
+Bundled agent prompts and static config live under `src/agents/` when they are too large for the entrypoint. `src/agents/explore.ts` owns the `explore` description, prompt, model, variant, mode, and read-only permissions. `src/agents/plan.ts` owns the `plan` prompt, model, variant, mode, planning permissions, and planning-specific discovery guidance.
 
 ## Command Boundary
 
@@ -18,7 +18,7 @@ Bundled command prompts and static config live under `src/commands/` when they a
 
 ## Tool Boundary
 
-The current `hello_world` tool is small enough to live in `src/index.ts`. Move future larger tools under `src/tools/` when they would obscure the entrypoint.
+No bundled tools currently exist. Move future larger tools under `src/tools/` when they would obscure the entrypoint.
 
 ## Validation Boundary
 

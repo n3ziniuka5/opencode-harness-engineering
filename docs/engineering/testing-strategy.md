@@ -2,11 +2,11 @@
 
 ## Entry Points First
 
-Target application entrypoints, not internals. For this package, the main entrypoints are the package exports, default OpenCode plugin module, `server` hook, registered OpenCode tool, config-registered agent, and config-registered command. Tests that drive these surfaces verify real behavior and survive internal refactors.
+Target application entrypoints, not internals. For this package, the main entrypoints are the package exports, default OpenCode plugin module, `server` hook, config-registered agents, and config-registered command. Tests that drive these surfaces verify real behavior and survive internal refactors.
 
 ## Current Test Scope
 
-- `test/hello-world.test.ts` verifies the plugin id, server export, `hello_world` tool registration, tool output, metadata, and `human_plan` registration sentinels.
+- `test/plugin.test.ts` verifies the plugin id, server export, absence of bundled tools, `explore` registration and permission sentinels, `plan` registration sentinels, and direct overriding of existing agent entries.
 - `test/init-harness-engineering-command.test.ts` verifies slash-command registration, stable prompt sentinels, and preservation of user-defined command config.
 - `scripts/check-docs.ts` validates the repository documentation scaffold and acts as a docs guardrail through `pnpm run docs:check`.
 
