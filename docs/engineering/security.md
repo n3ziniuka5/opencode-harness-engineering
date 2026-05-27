@@ -10,11 +10,13 @@
 
 ## Current Posture
 
-The plugin registers `explore` and `plan` agent configs plus an `init-harness-engineering` command config. Plugin initialization does not access the network, shell, filesystem, or environment.
+The plugin registers `explore`, `ask`, `brainstorm`, and `draft` agent configs, disables native `plan`, and registers an `init-harness-engineering` command config. Plugin initialization does not access the network, shell, filesystem, or environment.
 
 The `explore` agent denies wildcard access, edits, nested task delegation, and todowrite. It allows local read/search tools, `webfetch`, `websearch`, `context7_*`, ask-gated external directory reads, and bash only for read-only commands that do not modify files or add/change git-tracked files.
 
-The `plan` agent denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and allows task delegation only to `explore`.
+The `ask` and `brainstorm` agents deny edits, explicitly allow common discovery and coordination tools, and allow task delegation only to `explore`. They leave unspecified non-edit tools unset so OpenCode can apply its default ask behavior.
+
+The `draft` agent denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and allows task delegation only to `explore`. Native `plan` is disabled so OpenCode's native plan-mode reminder cannot override the bundled write allowance for active plan files.
 
 ## Dependency Review
 

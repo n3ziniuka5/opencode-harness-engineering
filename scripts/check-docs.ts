@@ -11,8 +11,10 @@ const requiredFiles = [
   "docs/product/acceptance-criteria.md",
   "docs/features/index.md",
   "docs/features/opencode-plugin/index.md",
+  "docs/features/opencode-plugin/ask-agent.md",
+  "docs/features/opencode-plugin/brainstorm-agent.md",
   "docs/features/opencode-plugin/explore-agent.md",
-  "docs/features/opencode-plugin/plan-agent.md",
+  "docs/features/opencode-plugin/draft-agent.md",
   "docs/features/opencode-plugin/init-harness-engineering-command.md",
   "docs/architecture/index.md",
   "docs/architecture/boundaries.md",
@@ -66,6 +68,7 @@ const obsoleteFiles = [
   "docs/RELIABILITY.md",
   "docs/SECURITY.md",
   "docs/quality/garbage-collection.md",
+  "docs/features/opencode-plugin/plan-agent.md",
 ];
 
 const indexHeaderPattern = /\|\s*File\s*\|\s*Purpose\s*\|\s*Read when\s*\|/;

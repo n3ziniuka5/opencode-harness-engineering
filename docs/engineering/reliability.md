@@ -3,7 +3,7 @@
 ## Expectations
 
 - Plugin initialization should not perform network, shell, filesystem, or environment side effects unless the behavior is explicit, necessary, and tested.
-- Bundled `explore` and `plan` agent registration should overwrite default config entries.
+- Bundled agent registration should overwrite same-named config entries.
 - Bundled command registration should preserve user-defined config entries.
 - Validation commands should be runnable from a clean checkout after `pnpm install`.
 
@@ -16,6 +16,8 @@
 
 ## Failure Modes
 
-- Existing `explore` and `plan` agent entries are overwritten by bundled config.
+- Existing `explore`, `ask`, `brainstorm`, and `draft` agent entries are overwritten by bundled config.
+- Existing native or user-defined `plan` entries are overwritten with `{ disable: true }` so native plan-mode reminders cannot conflict with the bundled `draft` workflow.
+- Existing `default_agent: "plan"` config is rewritten to `"draft"`; other default-agent values are preserved.
 - Existing user-defined `init-harness-engineering` config entries are preserved by `??=` registration.
 - Long prompt regressions are guarded by sentinel tests instead of brittle full snapshots.

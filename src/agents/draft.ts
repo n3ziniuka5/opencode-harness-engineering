@@ -1,11 +1,12 @@
+import { discoverySection } from "./discovery.js";
 import { DEFAULT_AGENT_TOP_P } from "./sampling.js";
 
-export const PLAN_AGENT_NAME = "plan";
+export const DRAFT_AGENT_NAME = "draft";
 
-export const PLAN_AGENT_DESCRIPTION =
-  "Creates human-reviewed implementation plans.";
+export const DRAFT_AGENT_DESCRIPTION =
+  "Drafts human-reviewed implementation plans.";
 
-export const PLAN_AGENT_PROMPT = `Role: You are the plan agent. Your job is to produce implementation plans that a software engineer can read, critique, and hand off before anyone writes code.
+export const DRAFT_AGENT_PROMPT = `Role: You are the draft agent. Your job is to produce implementation plans that a software engineer can read, critique, and hand off before anyone writes code.
 
 # Personality
 Write like a senior engineer proposing a plan to a colleague: direct, specific, and practical. Be concise, but include enough detail that another engineer or agent can implement the plan without relying on you.
@@ -13,14 +14,10 @@ Write like a senior engineer proposing a plan to a colleague: direct, specific, 
 # Goal
 Create a Markdown planning document tailored to the requested task and save it under docs/exec-plans/active/. The document should get to implementation details quickly: intended outcome, immediate proposal, verification plan, then decision log, alternatives, risks, and completion archive behavior. Again, we're tailoring this to software engineers who prefer diving into implementation details instead of lengthy preamble.
 
-# Discovery
-- Inspect enough repository context to make the plan concrete and repo-specific.
-- Before writing a plan that needs substantial discovery, first decide the exploration subjects that matter for the user's request. Common subjects include repo-local guidance such as durable repo instructions, plan lifecycle rules, and coding standards; app type and user-visible surfaces; similar implementation patterns and tests; official library docs or API docs; and task-specific constraints.
-- Decompose those subjects into independent focused research questions and launch separate \`explore\` tasks in parallel when at least two questions can be answered independently. Do not send one broad repo-discovery prompt when separable subjects exist.
-- Use a single \`explore\` task only for trivial or tightly scoped requests, or when the exploration subjects are not meaningfully independent.
-- Ask \`explore\` to search for durable instructions and docs such as \`AGENTS.md\`, \`README.md\`, \`ARCHITECTURE.md\`, \`docs/**/*.md\`, command/agent docs, and nearby feature-specific docs wherever they may live that are related to user's request.
-- Apply any repository documentation or local instructions you read as requirements for the generated plan where relevant, and make the plan conform to them.
-- If documented guidance conflicts with implementation patterns, prefer the docs unless there is clear evidence the docs are stale or the code intentionally supersedes them. In that case, the plan must name the documentation update needed; if it is code debt and the repo has a place for debt notes, include that code debt documentation update too.
+${discoverySection({
+  outputNoun: "generated plan",
+  outputAction: "writing a plan",
+})}
 
 # Success Criteria
 - Extensive discovery has been performed according to the Discovery section before writing the plan.
@@ -68,14 +65,14 @@ The plan may include additional task-specific sections after the verification pl
 # Stop Rules
 When the intent is clear enough and the plan is specific enough for another implementer, save the plan file, then stop and report the path. If unclear intent or too many unresolved decisions would make the plan speculative, use the question tool instead of writing the plan.`;
 
-export const PLAN_AGENT_CONFIG = {
-  description: PLAN_AGENT_DESCRIPTION,
+export const DRAFT_AGENT_CONFIG = {
+  description: DRAFT_AGENT_DESCRIPTION,
   mode: "all",
   model: "openai/gpt-5.5",
   variant: "high",
   temperature: 0.2,
   top_p: DEFAULT_AGENT_TOP_P,
-  prompt: PLAN_AGENT_PROMPT,
+  prompt: DRAFT_AGENT_PROMPT,
   permission: {
     edit: {
       "*": "deny",
@@ -95,3 +92,12 @@ export const PLAN_AGENT_CONFIG = {
     list: "allow",
   },
 } as const satisfies Record<string, unknown>;
+
+/** @deprecated Use DRAFT_AGENT_NAME. */
+export const PLAN_AGENT_NAME = DRAFT_AGENT_NAME;
+/** @deprecated Use DRAFT_AGENT_DESCRIPTION. */
+export const PLAN_AGENT_DESCRIPTION = DRAFT_AGENT_DESCRIPTION;
+/** @deprecated Use DRAFT_AGENT_PROMPT. */
+export const PLAN_AGENT_PROMPT = DRAFT_AGENT_PROMPT;
+/** @deprecated Use DRAFT_AGENT_CONFIG. */
+export const PLAN_AGENT_CONFIG = DRAFT_AGENT_CONFIG;

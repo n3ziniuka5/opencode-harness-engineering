@@ -25,13 +25,16 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 - Local OpenCode loading uses `opencode.json`, which points to `./src/index.ts`.
 - Package consumers load the built package through `exports["./server"]`, which resolves to `dist/index.js`.
 - During plugin initialization, OpenCode calls `server(input, options)`, and the returned hooks expose the config mutation hook.
-- During config resolution, the plugin assigns `explore` and `plan` directly so they override OpenCode defaults, while `/init-harness-engineering` still uses `??=` to preserve user-defined command config.
+- During config resolution, the plugin assigns `explore`, `ask`, `brainstorm`, and `draft` directly so they override same-named user agent entries, disables OpenCode's native `plan` agent, and rewrites `default_agent: "plan"` to `"draft"`. `/init-harness-engineering` still uses `??=` to preserve user-defined command config.
 
 ## Source Layout
 
 - `src/index.ts`: plugin entrypoint, config-hook registration, and exports.
+- `src/agents/ask.ts`: `ask` primary answer agent prompt, model, permissions, and OpenCode agent config.
+- `src/agents/brainstorm.ts`: `brainstorm` primary ideation agent prompt, model, permissions, and OpenCode agent config.
+- `src/agents/discovery.ts`: shared GPT-5.5 discovery prompt section used by `ask`, `brainstorm`, and `draft`.
 - `src/agents/explore.ts`: `explore` subagent prompt, model, read-only permissions, and OpenCode agent config.
-- `src/agents/plan.ts`: `plan` agent prompt and OpenCode agent config.
+- `src/agents/draft.ts`: `draft` agent prompt and OpenCode agent config.
 - `src/agents/sampling.ts`: shared sampling constants for bundled agents.
 - `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and OpenCode command config.
 - `test/`: executable plugin contract tests.
@@ -42,9 +45,12 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 
 - `explore`: read-only discovery subagent registered as `config.agent.explore`. The same key customizes OpenCode's native `explore` agent when present and creates a normal subagent on runtimes without a native one.
 - `explore` uses `openai/gpt-5.4-mini` with the `low` variant, `temperature: 0.5`, and shared `top_p: 0.97` for cheap, high-volume codebase exploration and online search. It denies wildcard access plus edit, nested task, and todowrite, while allowing local read/search tools, read-only bash when needed, `webfetch`, `websearch`, `context7_*`, and ask-gated external directory reads.
-- `plan`: planning agent for human-reviewed implementation plans, registered under OpenCode's native planning key so the bundled config overrides the default.
-- `plan` uses `openai/gpt-5.5` with the `high` variant, `temperature: 0.2`, shared `top_p: 0.97`, and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
-- `plan` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to `explore`. Its prompt includes a plan-specific `# Discovery` section for repository context, exploration-subject selection, parallel decomposition into focused `explore` questions, durable docs, and doc/code conflict handling before writing a plan; generic `explore` handoff guidance lives in the `explore` agent description surfaced by the Task tool.
+- `ask`: primary answer agent registered as `config.agent.ask` for concise, evidence-backed answers rather than implementation. It uses `openai/gpt-5.5` with the `xhigh` variant, `temperature: 0.1`, shared `top_p: 0.97`, denies edits, explicitly allows common discovery and coordination tools, and allows only `task.explore` delegation while leaving unspecified tools to OpenCode's default ask behavior.
+- `brainstorm`: primary ideation agent registered as `config.agent.brainstorm` for creative option generation, tradeoffs, and convergence before implementation. It uses `openai/gpt-5.5` with the `xhigh` variant, `temperature: 0.8`, shared `top_p: 0.97`, and the same edit-denying discovery permission posture as `ask`.
+- `draft`: planning agent for human-reviewed implementation plans, registered as `config.agent.draft`; the plugin also disables native `config.agent.plan` so OpenCode does not inject native plan-mode reminders.
+- `draft` uses `openai/gpt-5.5` with the `high` variant, `temperature: 0.2`, shared `top_p: 0.97`, and an outcome-first prompt shaped by the OpenAI GPT-5.5 prompting references.
+- `ask`, `brainstorm`, and `draft` share a static `# Discovery` section for repository context, exploration-subject selection, parallel decomposition into focused `explore` questions, durable docs, and doc/code conflict handling. Generic `explore` handoff guidance lives in the `explore` agent description surfaced by the Task tool.
+- `draft` denies edits by default except dated active plan files under `docs/exec-plans/active/`, allows read-oriented discovery tools, `webfetch`, `websearch`, `skill`, `todowrite`, narrow user questions, and only allows task delegation to `explore`.
 
 ## Bundled Commands
 

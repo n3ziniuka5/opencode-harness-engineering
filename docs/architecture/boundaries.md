@@ -10,7 +10,7 @@ The package is an OpenCode server plugin bundle. `package.json` exposes the buil
 
 ## Agent Boundary
 
-Bundled agent prompts and static config live under `src/agents/` when they are too large for the entrypoint. `src/agents/explore.ts` owns the `explore` description, prompt, model, variant, temperature, mode, and read-only permissions. `src/agents/plan.ts` owns the `plan` prompt, model, variant, temperature, mode, planning permissions, and planning-specific discovery guidance. `src/agents/sampling.ts` owns shared bundled-agent sampling constants such as `DEFAULT_AGENT_TOP_P`.
+Bundled agent prompts and static config live under `src/agents/` when they are too large for the entrypoint. `src/agents/explore.ts` owns the `explore` description, prompt, model, variant, temperature, mode, and read-only permissions. `src/agents/ask.ts` owns the `ask` answer prompt and edit-denying primary-agent config. `src/agents/brainstorm.ts` owns the `brainstorm` ideation prompt and edit-denying primary-agent config. `src/agents/draft.ts` owns the `draft` prompt, model, variant, temperature, mode, and planning permissions. `src/index.ts` owns disabling native `plan` and rewriting `default_agent: "plan"` to `"draft"`. `src/agents/discovery.ts` owns the shared GPT-5.5 discovery prompt section, and `src/agents/sampling.ts` owns shared bundled-agent sampling constants such as `DEFAULT_AGENT_TOP_P`.
 
 ## Command Boundary
 

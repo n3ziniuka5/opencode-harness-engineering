@@ -2,6 +2,15 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
 import plugin, {
+  ASK_AGENT_CONFIG,
+  ASK_AGENT_DESCRIPTION,
+  ASK_AGENT_NAME,
+  BRAINSTORM_AGENT_CONFIG,
+  BRAINSTORM_AGENT_DESCRIPTION,
+  BRAINSTORM_AGENT_NAME,
+  DRAFT_AGENT_CONFIG,
+  DRAFT_AGENT_DESCRIPTION,
+  DRAFT_AGENT_NAME,
   EXPLORE_AGENT_CONFIG,
   EXPLORE_AGENT_DESCRIPTION,
   EXPLORE_AGENT_NAME,
@@ -10,6 +19,69 @@ import plugin, {
   PLUGIN_ID,
 } from "../src/index.js";
 import { DEFAULT_AGENT_TOP_P } from "../src/agents/sampling.js";
+
+type AgentConfig = Record<string, unknown>;
+type PluginConfig = {
+  agent?: Record<string, AgentConfig | undefined>;
+  default_agent?: string;
+};
+
+async function configuredAgents() {
+  const hooks = await plugin.server({} as never, {});
+  assert.ok(hooks.config);
+
+  const config: PluginConfig = {};
+  await hooks.config(config as never);
+
+  return config.agent ?? {};
+}
+
+function assertDiscoverySentinels(prompt: string) {
+  assert.match(prompt, /# Discovery/);
+  assert.match(prompt, /substantial discovery/i);
+  assert.match(prompt, /first decide the exploration subjects/i);
+  assert.match(prompt, /durable repo instructions/i);
+  assert.match(prompt, /app type and user-visible surfaces/i);
+  assert.match(prompt, /Decompose those subjects/i);
+  assert.match(prompt, /separate `explore` tasks in parallel/i);
+  assert.match(prompt, /Do not send one broad repo-discovery prompt/i);
+  assert.match(
+    prompt,
+    /Use a single `explore` task only for trivial or tightly scoped requests/i,
+  );
+  assert.match(prompt, /AGENTS\.md/);
+  assert.match(prompt, /README\.md/);
+  assert.match(prompt, /ARCHITECTURE\.md/);
+  assert.match(prompt, /docs\/\*\*\/\*\.md/);
+  assert.match(prompt, /repository documentation or local instructions/i);
+  assert.match(prompt, /documented guidance conflicts/i);
+  assert.match(prompt, /clear evidence the docs are stale/i);
+  assert.match(prompt, /documentation update needed/i);
+  assert.match(prompt, /code debt documentation/i);
+}
+
+function assertPrimaryReadOnlyPermissions(permission: Record<string, unknown>) {
+  assert.equal(permission.edit, "deny");
+  assert.equal(permission.question, "allow");
+  assert.equal(permission.skill, "allow");
+  assert.equal(permission.webfetch, "allow");
+  assert.equal(permission.websearch, "allow");
+  assert.equal(permission.glob, "allow");
+  assert.equal(permission.grep, "allow");
+  assert.equal(permission.read, "allow");
+  assert.equal(permission.list, "allow");
+  assert.deepEqual(permission.task, { explore: "allow" });
+  assert.equal(permission["*"], undefined);
+  assert.equal(permission.bash, undefined);
+  assert.equal(permission.todowrite, undefined);
+  assert.equal(permission.external_directory, undefined);
+  assert.equal(permission["context7_*"], undefined);
+
+  const explicitDenies = Object.entries(permission)
+    .filter(([, value]) => value === "deny")
+    .map(([tool]) => tool);
+  assert.deepEqual(explicitDenies, ["edit"]);
+}
 
 describe("harness agents plugin", () => {
   const previousPlanAgentName = ["human", "plan"].join("_");
@@ -24,30 +96,28 @@ describe("harness agents plugin", () => {
     assert.equal(hooks.tool, undefined);
   });
 
-  it("registers the plan agent", async () => {
-    const hooks = await plugin.server({} as never, {});
-    assert.ok(hooks.config);
+  it("registers the draft agent and disables native plan", async () => {
+    const agents = await configuredAgents();
 
-    const config: {
-      agent?: Record<string, Record<string, unknown> | undefined>;
-    } = {};
-    await hooks.config(config as never);
+    assert.equal(DRAFT_AGENT_NAME, "draft");
+    assert.equal(PLAN_AGENT_NAME, DRAFT_AGENT_NAME);
+    assert.equal(PLAN_AGENT_CONFIG, DRAFT_AGENT_CONFIG);
+    assert.equal(agents[previousPlanAgentName], undefined);
+    assert.deepEqual(agents.plan, { disable: true });
 
-    assert.equal(PLAN_AGENT_NAME, "plan");
-    assert.equal(config.agent?.[previousPlanAgentName], undefined);
-
-    const agent = config.agent?.[PLAN_AGENT_NAME];
+    const agent = agents[DRAFT_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.model, "openai/gpt-5.5");
     assert.equal(agent.variant, "high");
     assert.equal(agent.temperature, 0.2);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
     assert.equal(agent.mode, "all");
+    assert.equal(agent.description, DRAFT_AGENT_DESCRIPTION);
     const permission = agent.permission as Record<string, unknown> | undefined;
     assert.ok(permission);
     assert.equal(permission.websearch, "allow");
     assert.match(String(agent.description), /human-reviewed/);
-    assert.match(String(agent.prompt), /Role: You are the plan agent/);
+    assert.match(String(agent.prompt), /Role: You are the draft agent/);
     assert.doesNotMatch(String(agent.prompt), new RegExp(removedPromptScope));
     assert.doesNotMatch(
       String(agent.prompt),
@@ -143,6 +213,7 @@ describe("harness agents plugin", () => {
       /documentation updates list is for handing off to the implementation agent; you must still apply relevant docs and local instructions while drafting the plan/i,
     );
     assert.doesNotMatch(String(agent.prompt), /# Delegation/);
+    assertDiscoverySentinels(String(agent.prompt));
     assert.match(String(agent.prompt), /# Discovery/);
     assert.match(String(agent.prompt), /substantial discovery/i);
     assert.match(
@@ -172,15 +243,9 @@ describe("harness agents plugin", () => {
   });
 
   it("registers a read-only explore subagent", async () => {
-    const hooks = await plugin.server({} as never, {});
-    assert.ok(hooks.config);
+    const agents = await configuredAgents();
 
-    const config: {
-      agent?: Record<string, Record<string, unknown> | undefined>;
-    } = {};
-    await hooks.config(config as never);
-
-    const agent = config.agent?.[EXPLORE_AGENT_NAME];
+    const agent = agents[EXPLORE_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "subagent");
     assert.equal(agent.model, "openai/gpt-5.4-mini");
@@ -254,7 +319,128 @@ describe("harness agents plugin", () => {
     assert.equal(permission.external_directory, "ask");
   });
 
-  it("overrides existing plan and explore agent entries", async () => {
+  it("registers the ask primary answer agent", async () => {
+    const agents = await configuredAgents();
+
+    assert.equal(ASK_AGENT_NAME, "ask");
+
+    const agent = agents[ASK_AGENT_NAME];
+    assert.ok(agent);
+    assert.equal(agent.mode, "primary");
+    assert.equal(agent.model, "openai/gpt-5.5");
+    assert.equal(agent.variant, "xhigh");
+    assert.equal(agent.temperature, 0.1);
+    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assert.equal(agent.description, ASK_AGENT_DESCRIPTION);
+    assert.match(String(agent.description), /Answers user questions/i);
+    assert.match(String(agent.description), /evidence-backed/i);
+    assert.match(String(agent.description), /answer rather than code changes/i);
+    assert.match(String(agent.description), /parallel explore subagents/i);
+    assert.match(String(agent.description), /cites sources and limitations/i);
+
+    const prompt = String(agent.prompt);
+    assert.match(prompt, /Role: You are the ask agent\./);
+    assert.match(prompt, /# Personality/);
+    assert.match(prompt, /# Goal/);
+    assert.match(prompt, /# Success Criteria/);
+    assert.match(prompt, /# Constraints/);
+    assert.match(prompt, /# Output/);
+    assert.match(prompt, /# Stop Rules/);
+    assert.ok(prompt.indexOf("# Goal") < prompt.indexOf("# Discovery"));
+    assert.ok(
+      prompt.indexOf("# Discovery") < prompt.indexOf("# Success Criteria"),
+    );
+    assertDiscoverySentinels(prompt);
+    assert.match(prompt, /answer the user's question accurately and directly/i);
+    assert.match(prompt, /prefer repository\/source-backed evidence/i);
+    assert.match(prompt, /ask a focused question/i);
+    assert.match(prompt, /ambiguity materially changes the answer/i);
+    assert.match(prompt, /local files\/line ranges or URLs/i);
+    assert.match(prompt, /state limitations/i);
+    assert.match(prompt, /asks for judgment or next steps/i);
+    assert.match(prompt, /label recommendations as recommendations/i);
+    assert.match(prompt, /keep them evidence-based/i);
+    assert.match(prompt, /asks how to implement something/i);
+    assert.match(prompt, /options, tradeoffs, or creative approaches/i);
+    assert.match(prompt, /switching to `brainstorm`/i);
+    assert.match(prompt, /Do not edit, create, move, delete, or format files/i);
+    assert.match(prompt, /do not implement requested changes/i);
+    assert.match(prompt, /official\/public references/i);
+    assert.match(prompt, /delegate substantial discovery to `explore`/i);
+    assert.match(prompt, /Start with the answer/i);
+    assert.match(prompt, /supporting evidence/i);
+    assert.match(prompt, /caveats\/next steps/i);
+    assert.match(prompt, /stop when the question is answered/i);
+    assert.match(prompt, /Do not keep searching/i);
+
+    const permission = agent.permission as Record<string, unknown> | undefined;
+    assert.ok(permission);
+    assertPrimaryReadOnlyPermissions(permission);
+  });
+
+  it("registers the brainstorm primary ideation agent", async () => {
+    const agents = await configuredAgents();
+
+    assert.equal(BRAINSTORM_AGENT_NAME, "brainstorm");
+
+    const agent = agents[BRAINSTORM_AGENT_NAME];
+    assert.ok(agent);
+    assert.equal(agent.mode, "primary");
+    assert.equal(agent.model, "openai/gpt-5.5");
+    assert.equal(agent.variant, "xhigh");
+    assert.equal(agent.temperature, 0.8);
+    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assert.equal(agent.description, BRAINSTORM_AGENT_DESCRIPTION);
+    assert.match(String(agent.description), /creative, practical options/i);
+    assert.match(String(agent.description), /tradeoffs before implementation/i);
+    assert.match(String(agent.description), /multiple plausible directions/i);
+    assert.match(String(agent.description), /parallel explore subagents/i);
+    assert.match(String(agent.description), /recommendations/i);
+
+    const prompt = String(agent.prompt);
+    assert.match(prompt, /Role: You are the brainstorm agent\./);
+    assert.match(prompt, /# Personality/);
+    assert.match(prompt, /# Goal/);
+    assert.match(prompt, /# Success Criteria/);
+    assert.match(prompt, /# Constraints/);
+    assert.match(prompt, /# Output/);
+    assert.match(prompt, /# Stop Rules/);
+    assert.ok(prompt.indexOf("# Goal") < prompt.indexOf("# Discovery"));
+    assert.ok(
+      prompt.indexOf("# Discovery") < prompt.indexOf("# Success Criteria"),
+    );
+    assertDiscoverySentinels(prompt);
+    assert.match(prompt, /generate several useful directions/i);
+    assert.match(prompt, /help the user converge/i);
+    assert.match(prompt, /tradeoffs, risks, and a recommended starting point/i);
+    assert.match(prompt, /explore the solution space broadly enough/i);
+    assert.match(prompt, /repo\/product constraints/i);
+    assert.match(prompt, /ask a focused question/i);
+    assert.match(prompt, /separate divergent ideas from convergence/i);
+    assert.match(prompt, /confirms an idea and asks you to implement it/i);
+    assert.match(prompt, /switch to the `draft` agent/i);
+    assert.match(prompt, /`build` agent for code changes/i);
+    assert.match(prompt, /Do not edit, create, move, delete, or format files/i);
+    assert.match(prompt, /do not implement/i);
+    assert.match(
+      prompt,
+      /Do not present speculative ideas as established repo behavior/i,
+    );
+    assert.match(prompt, /public\/official context/i);
+    assert.match(prompt, /delegate substantial discovery to `explore`/i);
+    assert.match(prompt, /grouped options/i);
+    assert.match(prompt, /tradeoffs\/risks/i);
+    assert.match(prompt, /recommended direction/i);
+    assert.match(prompt, /next questions or experiments/i);
+    assert.match(prompt, /stop after a useful option set/i);
+    assert.match(prompt, /Do not over-research/i);
+
+    const permission = agent.permission as Record<string, unknown> | undefined;
+    assert.ok(permission);
+    assertPrimaryReadOnlyPermissions(permission);
+  });
+
+  it("overrides existing bundled agent entries", async () => {
     const hooks = await plugin.server({} as never, {});
     assert.ok(hooks.config);
 
@@ -262,20 +448,60 @@ describe("harness agents plugin", () => {
       description: "custom explore",
       mode: "subagent",
     };
+    const existingDraft = {
+      description: "custom draft",
+      mode: "all",
+    };
     const existingPlan = {
       description: "custom plan",
-      mode: "all",
+      mode: "primary",
+    };
+    const existingAsk = {
+      description: "custom ask",
+      mode: "primary",
+    };
+    const existingBrainstorm = {
+      description: "custom brainstorm",
+      mode: "primary",
     };
     const config = {
       agent: {
+        [ASK_AGENT_NAME]: existingAsk,
+        [BRAINSTORM_AGENT_NAME]: existingBrainstorm,
         [EXPLORE_AGENT_NAME]: existingExplore,
-        [PLAN_AGENT_NAME]: existingPlan,
+        [DRAFT_AGENT_NAME]: existingDraft,
+        plan: existingPlan,
       },
     };
 
     await hooks.config(config as never);
 
+    assert.equal(config.agent[ASK_AGENT_NAME], ASK_AGENT_CONFIG);
+    assert.equal(config.agent[BRAINSTORM_AGENT_NAME], BRAINSTORM_AGENT_CONFIG);
     assert.equal(config.agent[EXPLORE_AGENT_NAME], EXPLORE_AGENT_CONFIG);
-    assert.equal(config.agent[PLAN_AGENT_NAME], PLAN_AGENT_CONFIG);
+    assert.equal(config.agent[DRAFT_AGENT_NAME], DRAFT_AGENT_CONFIG);
+    assert.deepEqual(config.agent.plan, { disable: true });
+  });
+
+  it("rewrites default_agent plan to draft", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = { default_agent: "plan" };
+
+    await hooks.config(config as never);
+
+    assert.equal(config.default_agent, DRAFT_AGENT_NAME);
+  });
+
+  it("preserves non-plan default_agent", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = { default_agent: ASK_AGENT_NAME };
+
+    await hooks.config(config as never);
+
+    assert.equal(config.default_agent, ASK_AGENT_NAME);
   });
 });

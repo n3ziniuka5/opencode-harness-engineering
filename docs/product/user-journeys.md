@@ -13,11 +13,11 @@
 1. OpenCode reads `opencode.json`.
 2. The config loads `./src/index.ts`.
 3. OpenCode calls the plugin server function.
-4. The plugin registers `explore`, `plan`, and `init-harness-engineering` config through returned hooks.
+4. The plugin registers `explore`, `ask`, `brainstorm`, `draft`, and `init-harness-engineering` config through returned hooks, and disables native `plan`.
 
 ## Create A Human-Reviewed Plan
 
-1. A user delegates planning to the `plan` agent.
+1. A user delegates planning to the `draft` agent.
 2. The agent inspects enough repository context to make a concrete plan.
 3. The agent asks a focused question before writing when the requested outcome is materially ambiguous.
 4. The agent writes one plan file under `docs/exec-plans/active/YYYY-MM-DD-slug.md` and does not edit implementation files.
