@@ -27,4 +27,4 @@ Do not create or update docs for:
 
 ## Current Plugin
 
-Plugin id `harness.agents` exports an OpenCode server plugin from `src/index.ts`, registers the `explore` and `plan` agents from `src/agents/`, and registers `/init-harness-engineering` from `src/commands/init-harness-engineering.ts`.
+Plugin id `harness.agents` exports an OpenCode server plugin from `src/index.ts`, registers the `explore`, `ask`, `brainstorm`, and `draft` agents from `src/agents/`, disables OpenCode's native `plan` agent, and registers `/init-harness-engineering` from `src/commands/init-harness-engineering.ts`.

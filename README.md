@@ -2,7 +2,7 @@
 
 OpenCode plugin bundle for harness-engineering agents, commands, and repository guardrails.
 
-This package ships one server plugin, `harness.agents`, that registers `explore` and `plan` agents plus an `/init-harness-engineering` command. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
+This package ships one server plugin, `harness.agents`, that registers `explore`, `ask`, `brainstorm`, and `draft` agents plus an `/init-harness-engineering` command. It disables OpenCode's native `plan` agent to avoid native plan-mode reminders conflicting with the bundled planning workflow. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
 
 ## Quick Start
 
@@ -59,17 +59,20 @@ For a built npm package, OpenCode resolves the server plugin from the `./server`
 }
 ```
 
-After loading the plugin, run `/init-harness-engineering` in a target repository to ask the active agent to create or update a harness-engineering documentation scaffold. The command inspects existing repository context, preserves useful docs, and uses `$ARGUMENTS` as optional focus or constraints.
+After loading or upgrading the plugin, restart OpenCode so config-time agent and command definitions are reloaded. Then run `/init-harness-engineering` in a target repository to ask the active agent to create or update a harness-engineering documentation scaffold. The command inspects existing repository context, preserves useful docs, and uses `$ARGUMENTS` as optional focus or constraints.
 
-The plugin configures `explore` as a cheap, high-volume read-only discovery subagent and `plan` as the human-reviewed planning agent that delegates non-trivial discovery to `explore`. Both agents ship explicit sampling controls (`explore.temperature = 0.5`, `plan.temperature = 0.2`, shared `top_p = 0.97`) and both entries are assigned directly so the bundled config overrides OpenCode defaults.
+The plugin configures `explore` as a cheap, high-volume read-only discovery subagent, `ask` as a precise answer agent, `brainstorm` as a creative option-generation agent, and `draft` as the human-reviewed planning agent. `ask`, `brainstorm`, and `draft` delegate non-trivial discovery to parallel `explore` subagents. Bundled agents ship explicit sampling controls (`explore.temperature = 0.5`, `ask.temperature = 0.1`, `brainstorm.temperature = 0.8`, `draft.temperature = 0.2`, shared `top_p = 0.97`) and their agent entries are assigned directly so the bundled config overrides same-named user entries while the plugin is loaded. The native `plan` entry is set to `{ disable: true }`, and `default_agent: "plan"` is rewritten to `"draft"`; after upgrading, restart OpenCode and select `draft` for implementation-plan drafting.
 
 ## Repository Map
 
 - `AGENTS.md`: agent-facing entry point and table of contents.
 - `ARCHITECTURE.md`: package boundaries and runtime shape.
 - `src/index.ts`: OpenCode v1 server plugin module.
+- `src/agents/ask.ts`: `ask` primary answer agent prompt, sampling, and config.
+- `src/agents/brainstorm.ts`: `brainstorm` primary ideation agent prompt, sampling, and config.
+- `src/agents/discovery.ts`: shared discovery prompt section used by GPT-5.5 agents.
 - `src/agents/explore.ts`: `explore` subagent prompt, sampling, and read-only config.
-- `src/agents/plan.ts`: `plan` agent prompt, sampling, and config.
+- `src/agents/draft.ts`: `draft` agent prompt, sampling, and config.
 - `src/agents/sampling.ts`: shared sampling constants for bundled agents.
 - `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and config.
 - `test/plugin.test.ts`: executable contract tests for the plugin and bundled agents.

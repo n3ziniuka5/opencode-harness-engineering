@@ -10,9 +10,13 @@ Plugin options are untrusted `PluginOptions`. No plugin options currently affect
 
 `explore` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a read-only discovery subagent: mutation tools, shell, nested task delegation, and todowrite are denied, while local read/search and documentation tools are allowed.
 
-`plan` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it can write only active execution plan files, cannot edit implementation files through its agent-level permission policy, and delegates non-trivial discovery to `explore`.
+`ask` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a selectable primary answer agent that cannot edit files, can ask focused questions, can use common discovery tools, and can delegate only to `explore` for substantial research.
 
-Both bundled agents use shared `top_p: 0.97` from `src/agents/sampling.ts`; their temperatures are agent-specific (`0.5` for `explore`, `0.2` for `plan`).
+`brainstorm` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a selectable primary ideation agent that cannot edit files, can ask focused questions, can use common discovery tools, and can delegate only to `explore` before making repo-specific claims.
+
+`draft` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it can write only active execution plan files, cannot edit implementation files through its agent-level permission policy, and delegates non-trivial discovery to `explore`. Native `plan` is represented only as `{ disable: true }` in the plugin-mutated config.
+
+All bundled agents use shared `top_p: 0.97` from `src/agents/sampling.ts`; their temperatures are agent-specific (`0.5` for `explore`, `0.1` for `ask`, `0.8` for `brainstorm`, and `0.2` for `draft`).
 
 ## Command Config
 

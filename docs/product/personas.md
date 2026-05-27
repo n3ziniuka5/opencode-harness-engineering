@@ -6,11 +6,11 @@ Maintains the package, reviews changes, and keeps the OpenCode plugin contract s
 
 ## OpenCode User
 
-Loads the plugin in OpenCode and expects the bundled `explore` and `plan` agents plus `/init-harness-engineering` command to be discoverable and safe to run in target repositories.
+Loads the plugin in OpenCode and expects the bundled `explore`, `ask`, `brainstorm`, and `draft` agents plus `/init-harness-engineering` command to be discoverable and safe to run in target repositories. Expects native `plan` to be disabled while the plugin is loaded.
 
 ## Plan Reviewer
 
-Reads plans produced by `plan` before implementation starts. Needs concise, implementation-ready plans that name external contracts, files, validation, risks, and open decisions without generic filler.
+Reads plans produced by `draft` before implementation starts. Needs concise, implementation-ready plans that name external contracts, files, validation, risks, and open decisions without generic filler.
 
 ## Future Agent
 
