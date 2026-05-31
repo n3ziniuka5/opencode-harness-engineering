@@ -2,7 +2,7 @@
 
 ## Package Boundary
 
-The package is an OpenCode server plugin bundle. `package.json` exposes the built ESM entrypoint through both `.` and `./server`, with TypeScript declarations in `dist/index.d.ts`.
+The package is an OpenCode server plugin bundle published to npm as `@n3ziniuka5/opencode-harness-engineering`. `package.json` exposes the built ESM entrypoint through both `.` and `./server`, with TypeScript declarations in `dist/index.d.ts`.
 
 ## Runtime Boundary
 

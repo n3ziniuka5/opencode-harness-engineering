@@ -11,7 +11,7 @@ import {
   INIT_HARNESS_ENGINEERING_COMMAND_NAME,
 } from "./commands/init-harness-engineering.js";
 
-const PLUGIN_ID = "n3ziniuka5.agents";
+const PLUGIN_ID = "n3ziniuka5.opencode-harness-engineering";
 const NATIVE_PLAN_AGENT_NAME = "plan";
 
 type MutableAgentConfig = Record<string, unknown>;

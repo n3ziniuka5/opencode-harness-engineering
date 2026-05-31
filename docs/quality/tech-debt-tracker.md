@@ -2,11 +2,10 @@
 
 ## Current Debt
 
-| Debt                                                                      | Priority | Cleanup plan                                                                                              |
-| ------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------- |
-| No CI workflow exists yet.                                                | High     | Add CI that runs `pnpm run check` and `pnpm run build` once the repository is connected to a remote host. |
-| No OpenCode integration smoke test boots the plugin through the real CLI. | Medium   | Choose a stable CLI invocation, then verify the package exposes the expected tool, agent, and command.    |
-| Release responsibility and npm publishing process are undefined.          | Medium   | Define release responsibility, publish credentials, changelog expectations, and rollback process.         |
+| Debt | Priority | Cleanup plan |
+| --- | --- | --- |
+| No OpenCode integration smoke test boots the plugin through the real CLI. | Medium | Choose a stable CLI invocation, then verify the package exposes the expected tool, agent, and command. |
+| First npm Trusted Publishing run is not yet proven in production. | Medium | Validate the first Release Please release and npm publish workflow after repository secrets are set. |
 
 ## Cleanup Rule
 

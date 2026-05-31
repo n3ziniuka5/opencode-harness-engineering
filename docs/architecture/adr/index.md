@@ -6,7 +6,8 @@ ADR files preserve durable decisions, context, tradeoffs, and consequences. Do n
 
 | File | Purpose | Read when |
 | ---- | ------- | --------- |
-| [`2026-05-09-opencode-server-plugin-bundle.md`](2026-05-09-opencode-server-plugin-bundle.md) | Decision to package this repository as an OpenCode server plugin bundle with config-registered agents and commands. | You are changing package shape, plugin registration, or bundled OpenCode capabilities. |
+| [`2026-05-09-opencode-server-plugin-bundle.md`](2026-05-09-opencode-server-plugin-bundle.md) | Superseded decision to package this repository as an OpenCode server plugin bundle with config-registered agents and commands. | You need historical context for the original package shape and plugin id. |
+| [`2026-05-31-npm-release-automation-and-package-identity.md`](2026-05-31-npm-release-automation-and-package-identity.md) | Current decision for npm package identity, plugin id, Release Please, and npm Trusted Publishing. | You are changing package identity, release automation, or publishing setup. |
 
 ## Naming
 
