@@ -89,7 +89,7 @@ describe("harness agents plugin", () => {
 
   it("exports an OpenCode v1 server plugin", async () => {
     assert.equal(plugin.id, PLUGIN_ID);
-    assert.equal(PLUGIN_ID, "harness.agents");
+    assert.equal(PLUGIN_ID, "n3ziniuka5.opencode-harness-engineering");
     assert.equal(typeof plugin.server, "function");
 
     const hooks = await plugin.server({} as never, {});

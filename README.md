@@ -26,18 +26,18 @@ The plugin nudges repositories toward the practices described in OpenAI's [Harne
 - Agent instructions that scan existing repository documentation before making repo-specific claims or plans, giving agents the best chance to conform to project rules and source-of-truth docs.
 - Verifiable feedback loops through tests, scripts, docs checks, and other fast validation commands.
 
-## Install From GitHub
+## Install From npm
 
 Add the plugin to `~/.config/opencode/opencode.json`:
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["git+https://github.com/n3ziniuka5/opencode-harness-engineering.git"]
+  "plugin": ["@n3ziniuka5/opencode-harness-engineering"]
 }
 ```
 
-Use OpenCode's singular `plugin` key. If you already have an OpenCode config, append `git+https://github.com/n3ziniuka5/opencode-harness-engineering.git` to the existing `plugin` array and preserve the rest of your configuration.
+Use OpenCode's singular `plugin` key. If you already have an OpenCode config, append `@n3ziniuka5/opencode-harness-engineering` to the existing `plugin` array and preserve the rest of your configuration.
 
 Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads plugin configuration at startup, so a running session keeps using the previously loaded plugin set.
 
@@ -68,10 +68,18 @@ Requirements:
 Core contributor commands:
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
 pnpm run check
 pnpm run build
 ```
 
 Targeted checks while iterating: `pnpm run typecheck`, `pnpm run test`,
 `pnpm run docs:check`, and `pnpm run format:check`.
+
+## Releases
+
+The npm package is `@n3ziniuka5/opencode-harness-engineering`, and the exported OpenCode plugin id is `n3ziniuka5.opencode-harness-engineering`.
+
+Release Please owns version and changelog PRs from Conventional Commits. After a release PR is merged, the published GitHub release triggers npm publishing through GitHub Actions OIDC and npm Trusted Publishing. The publish workflow does not use `NPM_TOKEN`.
+
+See `docs/engineering/release-process.md` for release setup and operating details.

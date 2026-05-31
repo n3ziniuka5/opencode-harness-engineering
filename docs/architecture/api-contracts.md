@@ -4,13 +4,13 @@
 
 Source of truth: `package.json`.
 
-The package name is `opencode-harness-agents`. It is ESM (`type: module`) and exposes TypeScript declarations plus JavaScript output from `dist/`. The public exports are `.` and `./server`, both resolving to `dist/index.js` with declarations at `dist/index.d.ts`.
+The package name is `@n3ziniuka5/opencode-harness-engineering`. It is ESM (`type: module`) and exposes TypeScript declarations plus JavaScript output from `dist/`. The public exports are `.` and `./server`, both resolving to `dist/index.js` with declarations at `dist/index.d.ts`. The package publishes publicly to npm with `publishConfig.access: "public"`.
 
 ## OpenCode Plugin Contract
 
 Source of truth: `src/index.ts`.
 
-The default export is a plugin module with explicit id `harness.agents` and a `server` function. The server returns a config hook.
+The default export is a plugin module with explicit id `n3ziniuka5.opencode-harness-engineering` and a `server` function. The server returns a config hook.
 
 ## Agent Contract
 

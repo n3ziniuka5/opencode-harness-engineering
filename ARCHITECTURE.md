@@ -1,12 +1,13 @@
 # Architecture
 
-This package is a TypeScript OpenCode server plugin. It uses pnpm for reproducible local development and emits ESM JavaScript into `dist/`.
+This package is a TypeScript OpenCode server plugin published as `@n3ziniuka5/opencode-harness-engineering`. It uses pnpm for reproducible local development and emits ESM JavaScript into `dist/`.
 
 See `docs/architecture/index.md` for detailed boundaries, dependency rules, API contracts, data-model notes, and ADRs.
 
 ## Package Shape
 
 - `src/index.ts` default-exports an OpenCode v1 plugin module: `{ id, server }`.
+- The plugin id is `n3ziniuka5.opencode-harness-engineering`.
 - `package.json` exposes both `.` and `./server` to `dist/index.js`.
 - OpenCode npm plugin loading prefers `exports["./server"]` for server plugins.
 - `main` remains pointed at `dist/index.js` as a fallback for loaders that inspect package main.

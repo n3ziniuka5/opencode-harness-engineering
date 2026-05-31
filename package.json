@@ -1,11 +1,19 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "opencode-harness-agents",
+  "name": "@n3ziniuka5/opencode-harness-engineering",
   "version": "0.1.0",
   "description": "OpenCode plugin bundle for harness-engineering agents and guardrails.",
   "type": "module",
   "license": "MIT",
   "packageManager": "pnpm@10.33.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n3ziniuka5/opencode-harness-engineering.git"
+  },
+  "bugs": {
+    "url": "https://github.com/n3ziniuka5/opencode-harness-engineering/issues"
+  },
+  "homepage": "https://github.com/n3ziniuka5/opencode-harness-engineering#readme",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -22,6 +30,9 @@
     "dist",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "pnpm run clean && tsc -p tsconfig.json",
     "check": "pnpm run typecheck && pnpm run test && pnpm run docs:check",

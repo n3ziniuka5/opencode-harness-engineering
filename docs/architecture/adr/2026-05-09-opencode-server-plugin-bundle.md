@@ -1,6 +1,6 @@
 # ADR: OpenCode Server Plugin Bundle
 
-Status: Accepted
+Status: Superseded by [ADR: npm Release Automation and Package Identity](2026-05-31-npm-release-automation-and-package-identity.md)
 
 ## Context
 
