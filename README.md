@@ -1,104 +1,77 @@
-# OpenCode Harness Agents
+# OpenCode Agents for Harness Engineering
 
-OpenCode plugin bundle for harness-engineering agents, commands, and repository guardrails.
+This is an OpenCode server plugin for users who want a harness-engineering workflow in their OpenCode setup.
 
-This package ships one server plugin, `harness.agents`, that registers `explore`, `ask`, `brainstorm`, and `draft` agents plus an `/init-harness-engineering` command. It disables OpenCode's native `plan` agent to avoid native plan-mode reminders conflicting with the bundled planning workflow. The repository is structured so future agents, skills, and checks are easy for OpenCode agents to discover and maintain.
+When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces the native `plan` agent) and registers `/init-harness-engineering`. The bundle is designed around the harness-engineering ideas in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article.
 
-## Quick Start
+## What It Adds
+
+All bundled agents use `top_p: 0.97`. The table lists each agent's fixed model, OpenCode `variant`/effort value, and temperature.
+
+| Entry | What it adds | Fixed model and settings |
+| --- | --- | --- |
+| `explore` | Read-only, cheap/high-volume subagent for codebase, documentation, and web discovery with precise citations. | `openai/gpt-5.4-mini`; variant `low`; temperature `0.5`. |
+| `ask` | Primary answer agent for concise, evidence-backed answers. Delegates non-trivial discovery to `explore`. | `openai/gpt-5.5`; variant `xhigh`; temperature `0.1`. |
+| `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Delegates non-trivial discovery to `explore`. | `openai/gpt-5.5`; variant `xhigh`; temperature `0.8`. |
+| `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle. | `openai/gpt-5.5`; variant `high`; temperature `0.2`. |
+| `/init-harness-engineering` | Slash command that asks the active implementation agent to create or update an agent-legible documentation scaffold in the current repository when run. | Runs through the active agent when invoked; it does not configure a standalone model. |
+
+## Harness-Engineering Posture
+
+The plugin nudges repositories toward the practices described in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article:
+
+- Short `AGENTS.md` maps that route agents to the right durable context.
+- Durable documentation as the system of record for product, architecture, engineering rules, and operational knowledge.
+- Agent-legible architecture and engineering boundaries that are explicit enough for future agents to follow.
+- Agent instructions that scan existing repository documentation before making repo-specific claims or plans, giving agents the best chance to conform to project rules and source-of-truth docs.
+- Verifiable feedback loops through tests, scripts, docs checks, and other fast validation commands.
+
+## Install From GitHub
+
+Add the plugin to `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["git+https://github.com/n3ziniuka5/opencode-harness-engineering.git"]
+}
+```
+
+Use OpenCode's singular `plugin` key. If you already have an OpenCode config, append `git+https://github.com/n3ziniuka5/opencode-harness-engineering.git` to the existing `plugin` array and preserve the rest of your configuration.
+
+Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads plugin configuration at startup, so a running session keeps using the previously loaded plugin set.
+
+## Using The Plugin
+
+After restarting OpenCode, use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended as a subagent for delegated discovery, especially from `ask`, `brainstorm`, and `draft`.
+
+Run `/init-harness-engineering` in a target repository when you want to create or update a harness-engineering documentation scaffold. All the docs will be under `/docs` and that's a requirement, but other than that you can modify the resulting scaffold as you wish, the added agents don't have a bias toward any particular documentation style or structure as long as they are under `/docs` and contain the necessary context for agents to navigate the docs, e.g. with index.md files.
+
+## Fixed Model And Prompt Choices
+
+All bundled agents are hardcoded to the OpenAI provider: `explore` uses `openai/gpt-5.4-mini`, while `ask`, `brainstorm`, and `draft` use `openai/gpt-5.5`.
+
+The plugin exposes no options to change provider, model, variant, sampling, or bundled prompts. Users who need different behavior should fork and change the plugin or choose not to load it.
+
+The prompts are written from OpenAI's public prompting guidance for GPT-5.5 and GPT-5.4-mini. Changing the model may cause performance degradation.
+
+Because the provider is fixed, you need OpenCode's normal OpenAI provider and authentication setup before the bundled agents can run.
+
+## Developing This Repository
 
 Requirements:
 
 - Node.js `>=22`
-- pnpm `10.33.2` as declared by `packageManager`
-- OpenCode `>=1.14.0` when loading the plugin in OpenCode
+- pnpm `10.33.2`
+- OpenCode `>=1.14.0`
 
-Install dependencies:
+Core contributor commands:
 
 ```sh
 pnpm install
-```
-
-Run all local checks:
-
-```sh
 pnpm run check
-```
-
-Build the package:
-
-```sh
 pnpm run build
 ```
 
-Run individual checks while iterating:
-
-```sh
-pnpm run typecheck
-pnpm run test
-pnpm run docs:check
-pnpm run format:check
-```
-
-## OpenCode Usage
-
-This repository includes `opencode.json` that loads the local TypeScript plugin:
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": ["./src/index.ts"]
-}
-```
-
-For a built npm package, OpenCode resolves the server plugin from the `./server` export:
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-harness-agents"]
-}
-```
-
-After loading or upgrading the plugin, restart OpenCode so config-time agent and command definitions are reloaded. Then run `/init-harness-engineering` in a target repository to ask the active agent to create or update a harness-engineering documentation scaffold. The command inspects existing repository context, preserves useful docs, and uses `$ARGUMENTS` as optional focus or constraints.
-
-The plugin configures `explore` as a cheap, high-volume read-only discovery subagent, `ask` as a precise answer agent, `brainstorm` as a creative option-generation agent, and `draft` as the human-reviewed planning agent. `ask`, `brainstorm`, and `draft` delegate non-trivial discovery to parallel `explore` subagents. Bundled agents ship explicit sampling controls (`explore.temperature = 0.5`, `ask.temperature = 0.1`, `brainstorm.temperature = 0.8`, `draft.temperature = 0.2`, shared `top_p = 0.97`) and their agent entries are assigned directly so the bundled config overrides same-named user entries while the plugin is loaded. The native `plan` entry is set to `{ disable: true }`, and `default_agent: "plan"` is rewritten to `"draft"`; after upgrading, restart OpenCode and select `draft` for implementation-plan drafting.
-
-## Repository Map
-
-- `AGENTS.md`: agent-facing entry point and table of contents.
-- `ARCHITECTURE.md`: package boundaries and runtime shape.
-- `src/index.ts`: OpenCode v1 server plugin module.
-- `src/agents/ask.ts`: `ask` primary answer agent prompt, sampling, and config.
-- `src/agents/brainstorm.ts`: `brainstorm` primary ideation agent prompt, sampling, and config.
-- `src/agents/discovery.ts`: shared discovery prompt section used by GPT-5.5 agents.
-- `src/agents/explore.ts`: `explore` subagent prompt, sampling, and read-only config.
-- `src/agents/draft.ts`: `draft` agent prompt, sampling, and config.
-- `src/agents/sampling.ts`: shared sampling constants for bundled agents.
-- `src/commands/init-harness-engineering.ts`: `/init-harness-engineering` command prompt and config.
-- `test/plugin.test.ts`: executable contract tests for the plugin and bundled agents.
-- `test/init-harness-engineering-command.test.ts`: executable contract tests for the documentation scaffold command.
-- `docs/index.md`: scaffolded knowledge-base index for product, feature, architecture, engineering, quality, and reference docs.
-- `scripts/check-docs.ts`: mechanical check that required scaffold docs exist and index tables stay valid.
-
-## Package Scripts
-
-| Script                  | Purpose                                                            |
-| ----------------------- | ------------------------------------------------------------------ |
-| `pnpm run build`        | Remove `dist/` and compile TypeScript declarations and ESM output. |
-| `pnpm run check`        | Run typecheck, test, and docs validation.                          |
-| `pnpm run clean`        | Remove build output.                                               |
-| `pnpm run docs:check`   | Verify required scaffold docs and index tables.                    |
-| `pnpm run format`       | Format the repository with Prettier.                               |
-| `pnpm run format:check` | Check Prettier formatting without writing changes.                 |
-| `pnpm run prepack`      | Build before packaging.                                            |
-| `pnpm run test`         | Run Node test files through `tsx`.                                 |
-| `pnpm run typecheck`    | Typecheck source, tests, and scripts with no emit.                 |
-
-## Harness-Engineering Posture
-
-This repo follows the harness-engineering principles summarized in `docs/references/harness-engineering.md`:
-
-- Keep `AGENTS.md` short and use it as a map, not a manual.
-- Store durable project knowledge in versioned docs.
-- Prefer agent-legible code, predictable boundaries, and explicit package entrypoints.
-- Encode important rules as tests or scripts so future agents receive fast feedback.
+Targeted checks while iterating: `pnpm run typecheck`, `pnpm run test`,
+`pnpm run docs:check`, and `pnpm run format:check`.
