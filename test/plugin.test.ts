@@ -18,6 +18,7 @@ import plugin, {
   PLAN_AGENT_NAME,
   PLUGIN_ID,
 } from "../src/index.js";
+import * as pluginExports from "../src/index.js";
 import { DEFAULT_AGENT_TOP_P } from "../src/agents/sampling.js";
 
 type AgentConfig = Record<string, unknown>;
@@ -49,6 +50,10 @@ function assertDiscoverySentinels(prompt: string) {
     prompt,
     /Use a single `explore` task only for trivial or tightly scoped requests/i,
   );
+  assert.match(prompt, /trust returned `explore` results/i);
+  assert.match(prompt, /do not re-run or duplicate the same .* searches/i);
+  assert.match(prompt, /follow-up .* `explore` tasks/i);
+  assert.match(prompt, /until .* enough context/i);
   assert.match(prompt, /AGENTS\.md/);
   assert.match(prompt, /README\.md/);
   assert.match(prompt, /ARCHITECTURE\.md/);
@@ -102,6 +107,7 @@ describe("harness agents plugin", () => {
     assert.equal(DRAFT_AGENT_NAME, "draft");
     assert.equal(PLAN_AGENT_NAME, DRAFT_AGENT_NAME);
     assert.equal(PLAN_AGENT_CONFIG, DRAFT_AGENT_CONFIG);
+    assert.equal("PLAN_AGENT_PROMPT" in pluginExports, false);
     assert.equal(agents[previousPlanAgentName], undefined);
     assert.deepEqual(agents.plan, { disable: true });
 

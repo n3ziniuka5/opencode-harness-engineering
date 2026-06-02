@@ -23,6 +23,7 @@
 - The description includes short examples such as finding where behavior is handled, similar commands, affected files, relevant docs, official API docs, and the source of an error.
 - The description tells parent agents to pass concrete search leads such as file names, symbols, keywords, error text, packages, APIs, URLs, or library/framework names.
 - The description tells parent agents to ask for precise sources, line ranges, URLs, and limitations, and to launch multiple `explore` tasks in parallel for independent questions.
+- Parent-agent rules for trusting completed `explore` results and requesting focused follow-up tasks live in the shared discovery section used by `ask`, `brainstorm`, and `draft`; they do not change this subagent's read-only search and output contract.
 - The agent searches local files with `glob`, `grep`, `read`, and `list`.
 - The agent can use `bash` only when the task requires it after preferred tools are insufficient. Bash commands must be read-only and must not modify files or add/change git-tracked files.
 - The agent uses `webfetch`, `websearch`, and `context7_*` for official external/library documentation when appropriate and reports limitations when docs or tools are unavailable.
