@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.1.0...v1.2.0) (2026-06-03)
+
+
+### Features
+
+* draft agent discovers governing documentation for more accurate doc updates ([#13](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/13)) ([6bb3700](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/6bb3700660f39e22101b310050c219e9c4373525))
+
 ## [1.1.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.0.0...v1.1.0) (2026-06-03)
 
 
