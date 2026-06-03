@@ -249,8 +249,19 @@ describe("harness agents plugin", () => {
     );
     assert.match(
       String(agent.prompt),
-      /documentation updates list is for handing off to the implementation agent; you must still apply relevant docs and local instructions while drafting the plan/i,
+      /Documentation governance to read first/,
     );
+    assert.match(String(agent.prompt), /Candidate documentation touchpoints/);
+    assert.match(
+      String(agent.prompt),
+      /candidate documentation touchpoints.*not direct edit instructions/is,
+    );
+    assert.match(String(agent.prompt), /governing documentation/i);
+    assert.match(
+      String(agent.prompt),
+      /parent\/sibling indexes|parent or sibling indexes/i,
+    );
+    assert.match(String(agent.prompt), /leave .*candidate.*unchanged/i);
     assert.doesNotMatch(String(agent.prompt), /# Delegation/);
     assertDiscoverySentinels(String(agent.prompt));
   });

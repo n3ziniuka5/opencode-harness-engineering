@@ -53,6 +53,19 @@ describe("init-harness-engineering command", () => {
       command.template,
       /Use `docs\/exec-plans\/completed\/` only when the remaining execution history has durable debugging, audit, rollout, or handoff value/,
     );
+    assert.match(
+      command.template,
+      /Before changing documentation, read `docs\/index\.md`/,
+    );
+    assert.match(
+      command.template,
+      /For each target doc, read the whole file when it is short/,
+    );
+    assert.match(command.template, /headings\/table of contents/);
+    assert.match(command.template, /enough surrounding context/);
+    assert.match(command.template, /parent\/sibling `index\.md`/);
+    assert.match(command.template, /generated-doc/);
+    assert.match(command.template, /local instruction guidance/);
     assert.match(command.template, /Delete rather than archive when/);
     assert.doesNotMatch(command.template, /product requirement/i);
     assert.doesNotMatch(command.template, /\bprd\b/i);
