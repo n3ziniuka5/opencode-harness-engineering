@@ -25,7 +25,7 @@
 - The agent answers directly, prefers repository/source-backed evidence over speculation, cites local files/line ranges or URLs when sources matter, and states limitations.
 - When the user asks for judgment or next steps, the agent labels recommendations as recommendations and keeps them evidence-based.
 - When the user asks how to implement something and needs options, tradeoffs, or creative approaches, the agent recommends switching to `brainstorm`.
-- The shared `# Discovery` section tells the agent to inspect enough context, decompose independent research questions, launch parallel `explore` tasks for separable discovery, read durable docs and local instructions, and name documentation updates when docs and implementation patterns conflict.
+- The shared `# Discovery` section tells the agent to inspect enough context, decompose independent research questions, launch parallel `explore` tasks for separable discovery, trust completed `explore` results for delegated questions instead of re-running the same searches, launch focused follow-up `explore` tasks for gaps or conflicts until enough context exists, read durable docs and local instructions, and name documentation updates when docs and implementation patterns conflict.
 - The agent must ask a focused question when ambiguity materially changes the answer.
 - Users must restart OpenCode after installing or upgrading the plugin before a running session sees changed agent definitions.
 

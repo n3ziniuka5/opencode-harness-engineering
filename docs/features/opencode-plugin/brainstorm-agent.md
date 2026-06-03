@@ -23,7 +23,7 @@
 - Registration assigns `config.agent.brainstorm` directly so this bundled config replaces a preexisting same-named agent entry while the plugin is loaded.
 - The prompt starts with `Role: You are the brainstorm agent.` and uses outcome-first GPT-5.5 sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
 - The agent expands the option space, groups useful directions, names tradeoffs and risks, and recommends a starting point when enough context exists.
-- The shared `# Discovery` section tells the agent to inspect enough context, decompose independent research questions, launch parallel `explore` tasks for separable discovery, read durable docs and local instructions, and name documentation updates when docs and implementation patterns conflict.
+- The shared `# Discovery` section tells the agent to inspect enough context, decompose independent research questions, launch parallel `explore` tasks for separable discovery, trust completed `explore` results for delegated questions instead of re-running the same searches, launch focused follow-up `explore` tasks for gaps or conflicts until enough context exists, read durable docs and local instructions, and name documentation updates when docs and implementation patterns conflict.
 - The agent must ask a focused question when the objective or constraints would materially change the option set.
 - If the user confirms an idea and asks for implementation, the agent asks them to switch to `draft` for an implementation plan or `build` for code changes instead of implementing directly.
 - Users must restart OpenCode after installing or upgrading the plugin before a running session sees changed agent definitions.

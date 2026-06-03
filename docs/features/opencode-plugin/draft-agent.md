@@ -25,13 +25,13 @@
 - If incoming config has `default_agent: "plan"`, the plugin rewrites it to `default_agent: "draft"`; other default agents are preserved.
 - The prompt is outcome-first and tailored for implementation plans that a human can critique before code is written.
 - The prompt includes the shared `# Discovery` section tailored to a generated plan: inspect enough repository context, decide the exploration subjects that matter for the request, decompose independent subjects into focused `explore` questions, search durable docs and local instructions, gather similar implementation patterns, apply relevant guidance to the plan, and name documentation updates when docs and implementation patterns conflict.
-- Generic guidance for when and how parent agents should invoke `explore` lives in the `explore` agent description, because OpenCode surfaces allowed subagent descriptions through the Task tool definition.
-- The agent should launch parallel `explore` subagents when at least two independent discovery questions can be answered separately, and should avoid one broad repo-discovery prompt when separable subjects exist.
+- The shared discovery rules tell the agent to launch parallel `explore` subagents when at least two independent discovery questions can be answered separately, trust completed `explore` results for delegated questions instead of re-running the same searches, and launch focused follow-up `explore` tasks for gaps, conflicts, or follow-up questions until enough context exists or the remaining blocker can be named.
 - The agent must ask a focused question before writing when materially different valid outcomes remain.
 - The agent may include `mermaid` diagrams only when they materially clarify larger plans, such as module dependencies or complex flows; routine or small plans should not include diagrams.
 - The agent writes active plan files under `docs/exec-plans/active/YYYY-MM-DD-slug.md`.
 - The agent must not implement the plan or edit files outside the active plan path.
 - Completion instructions tell implementers that finishing implementation includes resolving the active plan's lifecycle. They must follow repo-specific execution-plan lifecycle rules when available, otherwise update long-term docs from the final implementation before deleting or briefly archiving only valuable remaining execution history.
+- Users must restart OpenCode after installing or upgrading the plugin before a running session sees changed agent definitions.
 
 ## Permission Contract
 
@@ -48,3 +48,4 @@
 - Keep external contract changes first in the implementation plan when they are added, removed, or behaviorally changed.
 - The `Documentation updates` list is for implementation follow-up and does not replace conforming to scanned documentation and local instructions while drafting.
 - Avoid generic omnibus sections for compatibility, auth, error handling, retries, observability, privacy, or migration unless those details materially affect implementation.
+- Keep parent-agent `explore` trust and follow-up delegation behavior centralized in `src/agents/discovery.ts` instead of duplicating agent-specific copies.

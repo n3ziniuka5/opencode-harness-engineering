@@ -16,7 +16,7 @@ Unit tests are fine for small, self-contained functions where they add value, su
 
 ## Mocking
 
-Minimize mocking. Mocking whole classes, traits, or modules couples tests to implementation and hides real bugs. For infrastructure dependencies such as Kafka, Postgres, Restate, or Redis, use testcontainers or the repo-standard equivalent and run the real service against throwaway state. For third-party HTTP APIs, mock at the protocol boundary with tools such as wiremock so serialization, headers, retries, and error handling are still exercised.
+Minimize mocking. Mocking whole classes, traits, or modules couples tests to implementation and hides real bugs. For infrastructure dependencies such as Kafka, Postgres, Redis, etc. use testcontainers or the repo-standard equivalent and run the real service against throwaway state. For third-party HTTP APIs, mock at the protocol boundary with tools such as wiremock so serialization, headers, retries, and error handling are still exercised.
 
 ## Assertions
 
@@ -28,4 +28,4 @@ Keep tests deterministic. Avoid real sleeps, wall-clock `now()`, and unseeded ra
 
 ## Isolation
 
-Maintain test isolation. Each test owns setup and teardown and must not depend on ordering or shared state. When sharing testcontainers for speed, each test still needs fresh data, such as a fresh DB schema or transaction, unique topic, unique Restate key, or equivalent isolated state.
+Maintain test isolation. Each test owns setup and teardown and must not depend on ordering or shared state. When sharing testcontainers for speed, each test still needs fresh data, such as a fresh DB schema or transaction, unique topic, or equivalent isolated state.
