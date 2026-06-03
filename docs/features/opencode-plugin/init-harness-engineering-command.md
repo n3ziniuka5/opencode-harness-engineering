@@ -24,6 +24,7 @@
 ## Scaffold Contract
 
 - Required top-level docs are `AGENTS.md`, `ARCHITECTURE.md`, `README.md`, and `docs/index.md`.
+- Top-level `AGENTS.md` should include a minimal documentation preflight rule: before changing documentation, read `docs/index.md`. For each target doc, read the whole file when it is short; otherwise inspect its purpose, headings/table of contents, the section being changed, and enough surrounding context to edit safely. Also follow any relevant parent/sibling `index.md`, lifecycle, generated-doc, or local instruction guidance.
 - `README.md` should include a concise `## Harness-Engineering Posture` section when a repository adopts this scaffold.
 - The scaffold includes product, feature, architecture, engineering, runbook, generated, execution-plan, quality, and reference documentation areas when appropriate for the target repository.
 - Every scaffold `index.md` except `docs/exec-plans/index.md` must include a short purpose and a `## Files` table with columns `File`, `Purpose`, and `Read when`.

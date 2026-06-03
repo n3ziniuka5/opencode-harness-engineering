@@ -31,7 +31,7 @@ ${discoverySection({
 - For an average task, list every file to add or modify and include key function signatures, types, dependencies, call sites, and implementation notes. Stub implementations may be comments, but they must be detailed enough for a different implementer.
 - For a very large or broad task, focus first on external contracts and module boundaries, then list files or modules with their responsibilities and dependencies instead of pretending to know every small implementation detail.
 - Include \`mermaid\` diagrams only when they materially improve the plan, typically for larger tasks where a module dependency graph or complex flow diagram would reduce ambiguity. Do not include diagrams for routine or small changes, and keep any diagram adjacent to the implementation section it clarifies.
-- Determine every documentation (typically .md file) that should be updated as part of the implementation, but do not write the doc updates themselves. These typically include AGENTS.md, ARCHITECTURE.md, README.md and anything within docs/ folder, but only if relevant to the change. Do not include doc updates that are not relevant to the change. The Documentation updates list is for handing off to the implementation agent; you must still apply relevant docs and local instructions while drafting the plan.
+- Determine documentation governance the implementer should read first and candidate documentation touchpoints that may need updates. Candidate touchpoints are files to evaluate, not direct edit instructions. Include governing documentation such as parent/sibling indexes, local instructions, lifecycle notes, generated-document guidance, or other nearby docs that control whether a candidate should be edited, replaced, created alongside, regenerated, archived, deleted, or left unchanged. Do not include irrelevant docs. The Documentation updates handoff is for implementation follow-up; you must still apply relevant docs and local instructions while drafting the plan.
 - Save the plan to docs/exec-plans/active/YYYY-MM-DD-slug.md, using the current UTC date and a short kebab-case slug derived from the user-visible intent.
 - Include validation commands or checks, expected failure behavior, privacy/security considerations, and rollout or migration notes when relevant.
 - Occasionally, you may be asked to plan non-code changes such as product, UX, design work, etc. In those cases, adapt the implementation-critical details according to the context. Instead of code structure or file-by-file changes, you may need to focus on specs, handoff artifacts, dependencies, timelines, etc.
@@ -56,9 +56,19 @@ Immediately after the verification plan section, include a very clear markdown s
 - Documentation updates:
 First, literally:
 \`\`\`markdown
-Review the following documentation files and update them as needed to reflect the changes made in the implementation:
+Review documentation governance before changing candidate documentation touchpoints. Treat candidate documentation touchpoints as files to evaluate, not direct edit instructions. Before editing a candidate file, read its governing documentation and local instructions and follow them even if the correct action is to create a different file, replace or supersede content elsewhere, regenerate an artifact, archive/delete a temporary file, or leave the candidate unchanged.
 \`\`\`
-Then, a list of documentation files that you determined will need updating as part of the implementation. Don't even mention what to update in them, it's just needed so the agent that implements the plan looks at those files and decides what to update.
+Then include:
+\`\`\`markdown
+Documentation governance to read first:
+\`\`\`
+List governing documentation files or local instruction files discovered during planning. Include parent/sibling indexes, lifecycle docs, generated-document rules, or other nearby guidance that controls how the candidate docs may be changed. If no separate governing files were found, say so in one concise bullet and still require reading each candidate file before editing it.
+
+Then include:
+\`\`\`markdown
+Candidate documentation touchpoints:
+\`\`\`
+List documentation files that may need to reflect the implementation. Do not describe the edits to make; the implementing agent must decide the correct documentation action after reading the governance files and the candidate files.
 - Decision log and alternatives considered: record important decisions already made, the rationale, rejected alternatives, and tradeoffs. Do not include assumptions here; if something unclear would materially affect implementation, ask the user before writing the plan.
 - Completion archive instructions: add instructions for what the implementing agent must do with docs/exec-plans/active/YYYY-MM-DD-slug.md after the implementation is complete and before reporting the task done. Make it explicit that completing the implementation includes resolving the active plan's lifecycle. Use repository-specific execution-plan lifecycle or completion/archive instructions when available, especially docs/exec-plans/index.md, AGENTS.md, or local agent instructions. If the repository has no such instructions, include literal instruction- "After implementation is complete, update the appropriate long-term repository documentation to reflect what was actually built, changed, verified, and decided. Use the completed implementation and final code/tests as the source of truth; do not mechanically copy or move stale plan text. Then delete the active plan unless the remaining execution history itself still has durable debugging, audit, rollout, or handoff value. If there is still long-term value in the remaining plan content, move it to docs/exec-plans/completed/YYYY-MM-DD-slug.md after heavily rewriting it to preserve only what remains crucial to remember long-term, and keep it brief. Delete rather than archive when the plan was only a temporary checklist, the work was small, the PR description already captures enough history, no future reader needs the execution sequence, or all durable decisions are captured elsewhere."
 
