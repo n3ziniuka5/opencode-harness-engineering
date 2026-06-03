@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.0.0...v1.1.0) (2026-06-03)
+
+
+### Features
+
+* spawn subsequent explore agents when follow-up from an initial pass is needed ([#10](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/10)) ([99eec38](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/99eec387391127c11bf50d7177f285ff4daa687e))
+
+
+### Bug Fixes
+
+* improve discovery section to explicitly mention module boundaries, testing strategy, and verification ([#11](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/11)) ([4e0f938](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/4e0f9385b62559a9780c5eb1d057f8b639e3e470))
+
 ## 1.0.0 (2026-05-31)
 
 
