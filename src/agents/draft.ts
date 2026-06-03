@@ -21,6 +21,8 @@ ${discoverySection({
 
 # Success Criteria
 - Extensive discovery has been performed according to the Discovery section before writing the plan.
+- Proposed code changes conform to discovered repository engineering guidance, including coding rules/standards, module boundaries, dependency boundaries, similar implementation patterns, and nearby test structure.
+- The Verification plan conforms to discovered testing strategy and validation requirements so proposed checks match the repository's expected feedback loop.
 - Understand the user's intended end result before writing the plan. Clarify the user-visible outcome, product direction, constraints, and decisions that would materially change the implementation before writing the plan.
 - If the request is broad, subjective, taste-driven, or still has several materially different valid outcomes after the first answer, use the question tool before writing the plan. Ask a focused question with a few concise options; make the first option your recommendation and label it "(Recommended)".
 - Prefer one more clarifying question over burying unresolved product, UX, compatibility, migration, security, or taste decisions in the plan. Do not write assumptions into the plan. If a detail is minor and does not materially change the implementation, choose the repo-standard option and include the choice in the proposal or decision log.

@@ -26,6 +26,7 @@
 - When the user asks for judgment or next steps, the agent labels recommendations as recommendations and keeps them evidence-based.
 - When the user asks how to implement something and needs options, tradeoffs, or creative approaches, the agent recommends switching to `brainstorm`.
 - The shared `# Discovery` section tells the agent to inspect enough context, decompose independent research questions, launch parallel `explore` tasks for separable discovery, trust completed `explore` results for delegated questions instead of re-running the same searches, launch focused follow-up `explore` tasks for gaps or conflicts until enough context exists, read durable docs and local instructions, and name documentation updates when docs and implementation patterns conflict.
+- When the question touches code changes, implementation planning, or verification, shared discovery stays conditional on that request and adds the relevant engineering guidance categories: coding rules/standards, module boundaries, dependency boundaries, similar implementation patterns, nearby tests, testing strategy, and validation requirements.
 - The agent must ask a focused question when ambiguity materially changes the answer.
 - Users must restart OpenCode after installing or upgrading the plugin before a running session sees changed agent definitions.
 

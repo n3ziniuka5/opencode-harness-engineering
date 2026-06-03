@@ -42,7 +42,24 @@ function assertDiscoverySentinels(prompt: string) {
   assert.match(prompt, /substantial discovery/i);
   assert.match(prompt, /first decide the exploration subjects/i);
   assert.match(prompt, /durable repo instructions/i);
+  assert.match(prompt, /coding rules\/standards/i);
+  assert.match(prompt, /module boundaries/i);
+  assert.match(prompt, /dependency boundaries/i);
+  assert.match(prompt, /testing strategy/i);
+  assert.match(prompt, /validation requirements/i);
   assert.match(prompt, /app type and user-visible surfaces/i);
+  assert.match(
+    prompt,
+    /request touches code changes, implementation planning, or verification/i,
+  );
+  assert.match(
+    prompt,
+    /any code-change proposal .* coding rules\/standards.*module boundaries.*dependency boundaries.*similar implementation patterns.*nearby tests/i,
+  );
+  assert.match(
+    prompt,
+    /any verification plan or advice .* testing strategy .* validation requirements/i,
+  );
   assert.match(prompt, /Decompose those subjects/i);
   assert.match(prompt, /separate `explore` tasks in parallel/i);
   assert.match(prompt, /Do not send one broad repo-discovery prompt/i);
@@ -153,6 +170,22 @@ describe("harness agents plugin", () => {
       String(agent.prompt),
       /Extensive discovery has been performed according to the Discovery section/,
     );
+    assert.match(
+      String(agent.prompt),
+      /Proposed code changes conform to discovered repository engineering guidance/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /coding rules\/standards, module boundaries, dependency boundaries, similar implementation patterns, and nearby test structure/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /The Verification plan conforms to discovered testing strategy and validation requirements/,
+    );
+    assert.match(
+      String(agent.prompt),
+      /proposed checks match the repository's expected feedback loop/,
+    );
     assert.ok(
       String(agent.prompt).indexOf("# Discovery") <
         String(agent.prompt).indexOf("# Success Criteria"),
@@ -220,32 +253,6 @@ describe("harness agents plugin", () => {
     );
     assert.doesNotMatch(String(agent.prompt), /# Delegation/);
     assertDiscoverySentinels(String(agent.prompt));
-    assert.match(String(agent.prompt), /# Discovery/);
-    assert.match(String(agent.prompt), /substantial discovery/i);
-    assert.match(
-      String(agent.prompt),
-      /first decide the exploration subjects/i,
-    );
-    assert.match(String(agent.prompt), /durable repo instructions/i);
-    assert.match(String(agent.prompt), /app type and user-visible surfaces/i);
-    assert.match(String(agent.prompt), /Decompose those subjects/i);
-    assert.match(String(agent.prompt), /separate `explore` tasks in parallel/i);
-    assert.match(
-      String(agent.prompt),
-      /Do not send one broad repo-discovery prompt/i,
-    );
-    assert.match(
-      String(agent.prompt),
-      /Use a single `explore` task only for trivial or tightly scoped requests/i,
-    );
-    assert.match(String(agent.prompt), /repo-local guidance/i);
-    assert.match(String(agent.prompt), /coding standards/i);
-    assert.match(String(agent.prompt), /official library docs/i);
-    assert.match(String(agent.prompt), /similar implementation patterns/i);
-    assert.match(String(agent.prompt), /documented guidance conflicts/i);
-    assert.match(String(agent.prompt), /clear evidence the docs are stale/i);
-    assert.match(String(agent.prompt), /documentation update needed/i);
-    assert.match(String(agent.prompt), /code debt documentation/i);
   });
 
   it("registers a read-only explore subagent", async () => {
