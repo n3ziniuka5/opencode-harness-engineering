@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.2.0...v1.2.1) (2026-06-04)
+
+
+### Bug Fixes
+
+* clarify how to handle CLAUDE.md files while initializing the docs ([#15](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/15)) ([1d3152d](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/1d3152da3609414f0166e0a8a17c0743d9e41280))
+* set Draft agent as the default and set agent colors explicitly so they don't depend on agent definition order ([#17](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/17)) ([0f6e191](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/0f6e1916fa84a305b50ef4cbffe300e60e897a7c))
+
 ## [1.2.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.1.0...v1.2.0) (2026-06-03)
 
 
