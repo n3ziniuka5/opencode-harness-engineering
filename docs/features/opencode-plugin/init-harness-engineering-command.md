@@ -29,6 +29,8 @@
 - The scaffold includes product, feature, architecture, engineering, runbook, generated, execution-plan, quality, and reference documentation areas when appropriate for the target repository.
 - Every scaffold `index.md` except `docs/exec-plans/index.md` must include a short purpose and a `## Files` table with columns `File`, `Purpose`, and `Read when`.
 - `docs/exec-plans/index.md` explains lifecycle rules, separates archival rules from source-of-truth rules, and must not list child plan files.
+- `CLAUDE.md` is optional and only acts as Claude compatibility for directories that already had it. The prompt does not introduce `CLAUDE.md` into new directories, preserves existing Claude compatibility, migrates durable content into same-directory `AGENTS.md` and/or durable docs, and forbids parent or ancestor `AGENTS.md` links. `CLAUDE.md` cannot exist without `AGENTS.md` in the same directory; if no same-directory `AGENTS.md` exists or will be created, the existing `CLAUDE.md` is removed after preserving unique durable content.
+- Optional sibling repository maps belong in `docs/references/sibling-repositories.md` only when sibling repository context is relevant or explicitly requested. Contracts, runtime/package boundaries, and feature behavior discovered from sibling relationships still belong in the corresponding architecture or feature docs.
 - Optional generated and reference docs are created only when relevant and supported by a clear source of truth.
 
 ## Non-Obvious Constraints
@@ -36,3 +38,4 @@
 - The command may decisively migrate or delete stale docs after preserving useful content.
 - Agents must ask before adding non-Markdown placeholders, deleting useful content that cannot be migrated confidently, or making unsupported product or security claims.
 - Durable knowledge from tool-specific instruction files should move into the docs knowledge base instead of being duplicated across instruction files.
+- Unique durable content from an existing `CLAUDE.md` must be preserved in same-directory `AGENTS.md` or the appropriate `docs/` file before replacing it with a compatibility pointer.

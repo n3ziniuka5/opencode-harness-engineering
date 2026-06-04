@@ -76,6 +76,8 @@ Create or update this Markdown-focused structure when appropriate for the reposi
 
 Only create repo-specific reference files when they are relevant to the repository or explicitly requested by the user.
 
+- \`docs/references/sibling-repositories.md\`: optional reference map for adjacent repositories that are developed, released, deployed, or debugged together with this repository. Create it only when sibling repositories are relevant or explicitly requested. Include verified repository names, paths or URLs, relationship, when to consult each sibling, and source-of-truth ownership notes. If a sibling relationship defines an API/package/CLI/event/config contract, record the contract in \`docs/architecture/api-contracts.md\`; if it defines a runtime or package boundary, record that in \`docs/architecture/boundaries.md\`; if it affects one feature, capture durable behavior in that feature doc. Do not invent sibling relationships or record secrets, credentials, or personal-only local paths.
+
 # Repository Discovery
 
 Start by scanning high-signal repository context before writing files:
@@ -93,7 +95,7 @@ If the repository is non-empty, populate each Markdown file from verified status
 - Transform existing documentation decisively when moving the repository to this scaffold. It is okay to rewrite, move, or delete old docs when useful durable content has been migrated or the old content is stale.
 - Do not keep legacy pointers, redirect stubs, or duplicate index links to old file locations after moving content. Update references to the new paths and remove obsolete files instead.
 - Ask the user before adding non-Markdown placeholders such as \`.gitkeep\`, deleting useful content that cannot be migrated confidently, or making product/security claims the repo cannot support.
-- When non-\`AGENTS.md\` agent instruction analogs exist, merge verified durable operating instructions into \`AGENTS.md\` and prefer replacing duplicate files with relative symlinks to \`AGENTS.md\` where the platform supports it. Ask before replacing existing regular files only if the source file contains tool-specific behavior that should stay separate.
+- \`CLAUDE.md\` is only a compatibility file for Claude-style tooling, not an independent instruction source. Do not introduce \`CLAUDE.md\` into directories that did not already have one. When a directory already has \`CLAUDE.md\`, preserve Claude compatibility: migrate verified durable content into the same-directory \`AGENTS.md\` and/or the appropriate \`docs/\` files, create or update the same-directory \`AGENTS.md\` first if \`CLAUDE.md\` will remain, then make \`CLAUDE.md\` a relative symlink or concise pointer to that same-directory \`AGENTS.md\`. \`CLAUDE.md\` cannot exist without \`AGENTS.md\` in the same directory. If no same-directory \`AGENTS.md\` exists or will be created, remove \`CLAUDE.md\` after preserving any unique durable content. Do not create or keep \`CLAUDE.md\` files that link to a parent or ancestor \`AGENTS.md\`.
 - Durable knowledge from tool-specific rule files should generally move into the \`docs/\` knowledge base instead of becoming more duplicated instruction files.
 - Keep \`AGENTS.md\` short as a table of contents and operational rule map. Push durable details into \`docs/\`.
 

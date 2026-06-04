@@ -66,6 +66,30 @@ describe("init-harness-engineering command", () => {
     assert.match(command.template, /parent\/sibling `index\.md`/);
     assert.match(command.template, /generated-doc/);
     assert.match(command.template, /local instruction guidance/);
+    assert.match(
+      command.template,
+      /CLAUDE\.md[\s\S]*same[- ]directory[\s\S]*AGENTS\.md/,
+    );
+    assert.match(
+      command.template,
+      /Do not introduce `CLAUDE\.md` into directories that did not already have one/,
+    );
+    assert.match(command.template, /When a directory already has `CLAUDE\.md`/);
+    assert.match(
+      command.template,
+      /create or update the same-directory `AGENTS\.md` first if `CLAUDE\.md` will remain/,
+    );
+    assert.match(
+      command.template,
+      /`CLAUDE\.md` cannot exist without `AGENTS\.md` in the same directory/,
+    );
+    assert.match(command.template, /remove `CLAUDE\.md` after preserving/);
+    assert.match(command.template, /parent or ancestor `AGENTS\.md`/);
+    assert.match(
+      command.template,
+      /docs\/references\/sibling-repositories\.md/,
+    );
+    assert.match(command.template, /sibling repositories/i);
     assert.match(command.template, /Delete rather than archive when/);
     assert.doesNotMatch(command.template, /product requirement/i);
     assert.doesNotMatch(command.template, /\bprd\b/i);

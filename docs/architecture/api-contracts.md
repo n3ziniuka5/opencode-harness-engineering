@@ -30,7 +30,7 @@ The plugin assigns all bundled agent configs directly, so a preexisting `agent.e
 
 Source of truth: `src/commands/init-harness-engineering.ts` and `docs/features/opencode-plugin/init-harness-engineering-command.md`.
 
-`init-harness-engineering` is registered through `config.command["init-harness-engineering"] ??=` and is surfaced as `/init-harness-engineering`. The command template includes `$ARGUMENTS`, tells scaffolded top-level `AGENTS.md` files to include a minimal documentation preflight rule, and intentionally leaves `agent`, `model`, and `subtask` unset.
+`init-harness-engineering` is registered through `config.command["init-harness-engineering"] ??=` and is surfaced as `/init-harness-engineering`. The command template includes `$ARGUMENTS`, tells scaffolded top-level `AGENTS.md` files to include a minimal documentation preflight rule, treats an existing `CLAUDE.md` only as optional Claude-tooling compatibility, and intentionally leaves `agent`, `model`, and `subtask` unset.
 
 ## Local Development Config Contract
 
@@ -42,4 +42,4 @@ Local OpenCode usage loads `./src/index.ts` without plugin options.
 
 Source of truth: `src/commands/init-harness-engineering.ts`, this `docs/` scaffold, and `scripts/check-docs.ts` for this repository.
 
-The scaffold requires concise index tables for documentation directories, a top-level `AGENTS.md` documentation preflight rule, execution-plan lifecycle rules without child plan indexes, and generated documentation headers when generated references are created.
+The scaffold requires concise index tables for documentation directories, a top-level `AGENTS.md` documentation preflight rule, execution-plan lifecycle rules without child plan indexes, and generated documentation headers when generated references are created. The prompt contract does not introduce `CLAUDE.md` into directories that did not already have one, preserves existing Claude compatibility after durable content is migrated, requires same-directory `AGENTS.md` for any remaining `CLAUDE.md`, and forbids `CLAUDE.md` files that point to parent or ancestor `AGENTS.md` files. Relevant sibling repository maps belong in optional `docs/references/sibling-repositories.md`; sibling relationships that define contracts, runtime/package boundaries, or feature behavior are still documented in the matching architecture or feature docs.
