@@ -13,6 +13,7 @@ import {
 
 const PLUGIN_ID = "n3ziniuka5.opencode-harness-engineering";
 const NATIVE_PLAN_AGENT_NAME = "plan";
+const NATIVE_BUILD_AGENT_NAME = "build";
 
 type MutableAgentConfig = Record<string, unknown>;
 type MutableAgentMap = Record<string, MutableAgentConfig | undefined>;
@@ -40,9 +41,16 @@ function agentMap(config: MutableConfig) {
 
 function disableNativePlanAgent(config: MutableConfig) {
   agentMap(config)[NATIVE_PLAN_AGENT_NAME] = { disable: true };
-  if (config.default_agent === NATIVE_PLAN_AGENT_NAME) {
-    config.default_agent = DRAFT_AGENT_NAME;
-  }
+}
+
+function registerBuildAgentColor(config: MutableConfig) {
+  const agents = agentMap(config);
+  const buildAgent = (agents[NATIVE_BUILD_AGENT_NAME] ??= {});
+  buildAgent.color = "secondary";
+}
+
+function setDraftDefaultAgent(config: MutableConfig) {
+  config.default_agent = DRAFT_AGENT_NAME;
 }
 
 function registerDraftAgent(config: MutableConfig) {
@@ -75,7 +83,9 @@ const server: Plugin = async () => {
       registerAskAgent(mutableConfig);
       registerBrainstormAgent(mutableConfig);
       registerDraftAgent(mutableConfig);
+      registerBuildAgentColor(mutableConfig);
       disableNativePlanAgent(mutableConfig);
+      setDraftDefaultAgent(mutableConfig);
       registerInitHarnessEngineeringCommand(mutableConfig);
     },
   };

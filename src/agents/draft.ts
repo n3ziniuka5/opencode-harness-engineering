@@ -82,6 +82,7 @@ export const DRAFT_AGENT_CONFIG = {
   mode: "all",
   model: "openai/gpt-5.5",
   variant: "high",
+  color: "primary",
   temperature: 0.2,
   top_p: DEFAULT_AGENT_TOP_P,
   prompt: DRAFT_AGENT_PROMPT,

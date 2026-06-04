@@ -19,10 +19,11 @@
 - Agent id is `draft`.
 - Model is `openai/gpt-5.5` with variant `high`.
 - Sampling is explicit: `temperature` is `0.2` and `top_p` is the shared bundled-agent value `0.97`.
+- Color is `primary`.
 - Mode is `all`.
 - Registration assigns `config.agent.draft` directly so the bundled config overrides same-named user entries while the plugin is loaded.
 - Registration also assigns `config.agent.plan = { disable: true }` so OpenCode's native `plan` agent is hidden and cannot inject native plan-mode reminders.
-- If incoming config has `default_agent: "plan"`, the plugin rewrites it to `default_agent: "draft"`; other default agents are preserved.
+- Registration always sets `config.default_agent = "draft"`, including when incoming config leaves the default unset or points to `ask`, `brainstorm`, `build`, `plan`, or another agent.
 - The prompt is outcome-first and tailored for implementation plans that a human can critique before code is written.
 - The prompt includes the shared `# Discovery` section tailored to a generated plan: inspect enough repository context, decide the exploration subjects that matter for the request, decompose independent subjects into focused `explore` questions, search durable docs and local instructions, gather similar implementation patterns, apply relevant guidance to the plan, and name documentation updates when docs and implementation patterns conflict.
 - For implementation-plan work, the shared discovery rules explicitly include both implementation constraints and verification constraints before writing: coding rules/standards, module boundaries, dependency boundaries, similar implementation patterns, nearby tests, testing strategy, and validation requirements.
@@ -46,6 +47,7 @@
 
 - Keep this workflow registered as `draft`, not `plan`, so OpenCode does not inject native read-only plan reminders.
 - Keep native `config.agent.plan` disabled while this plugin is loaded; otherwise users can accidentally select native `plan` and re-enter the reminder conflict.
+- Keep `draft` as the config-hook default agent while this plugin is loaded; this is an intentional override of user-provided `default_agent` values.
 - Keep `top_p` sourced from `DEFAULT_AGENT_TOP_P` rather than duplicating the numeric literal in the agent config.
 - Keep external contract changes first in the implementation plan when they are added, removed, or behaviorally changed.
 - The `Documentation updates` handoff is for implementation follow-up and does not replace conforming to scanned documentation and local instructions while drafting.

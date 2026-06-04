@@ -45,6 +45,7 @@ export const BRAINSTORM_AGENT_CONFIG = {
   mode: "primary",
   model: "openai/gpt-5.5",
   variant: "xhigh",
+  color: "success",
   temperature: 0.8,
   top_p: DEFAULT_AGENT_TOP_P,
   prompt: BRAINSTORM_AGENT_PROMPT,

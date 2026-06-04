@@ -13,7 +13,7 @@
 - The package exports an OpenCode server plugin with id `n3ziniuka5.opencode-harness-engineering`.
 - The npm package exposes `.` and `./server` to the built plugin entrypoint.
 - The plugin configures `explore` as a read-only discovery subagent, `ask` as an evidence-backed answer agent, `brainstorm` as an option-generation agent, and `draft` as the human-reviewed planning agent, including explicit model, variant, temperature, and `top_p` values.
-- The plugin disables native `plan` and rewrites `default_agent: "plan"` to `"draft"` so OpenCode's native plan-mode reminders do not conflict with the bundled planning workflow.
+- The plugin disables native `plan` and always sets `default_agent: "draft"` so OpenCode's native plan-mode reminders do not conflict with the bundled planning workflow.
 - The plugin overwrites existing same-named bundled agent entries so bundled agents override OpenCode defaults or user entries while loaded, while preserving user-defined `init-harness-engineering` command config.
 - Plugin initialization does not perform network, shell, filesystem, or environment reads.
 - Plugin options are treated as untrusted input if future options are added.

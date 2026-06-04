@@ -44,6 +44,7 @@ export const ASK_AGENT_CONFIG = {
   mode: "primary",
   model: "openai/gpt-5.5",
   variant: "xhigh",
+  color: "accent",
   temperature: 0.1,
   top_p: DEFAULT_AGENT_TOP_P,
   prompt: ASK_AGENT_PROMPT,

@@ -19,6 +19,7 @@
 - Agent id is `ask`.
 - Model is `openai/gpt-5.5` with variant `xhigh`.
 - Sampling is explicit: `temperature` is `0.1` and `top_p` is the shared bundled-agent value `0.97`.
+- Color is `accent`.
 - Mode is `primary` so users can select it directly without surfacing it as a subagent.
 - Registration assigns `config.agent.ask` directly so this bundled config replaces a preexisting same-named agent entry while the plugin is loaded.
 - The prompt starts with `Role: You are the ask agent.` and uses outcome-first GPT-5.5 sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
