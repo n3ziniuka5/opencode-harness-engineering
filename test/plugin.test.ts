@@ -135,6 +135,7 @@ describe("harness agents plugin", () => {
     assert.equal(agent.temperature, 0.2);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
     assert.equal(agent.mode, "all");
+    assert.equal(agent.color, "primary");
     assert.equal(agent.description, DRAFT_AGENT_DESCRIPTION);
     const permission = agent.permission as Record<string, unknown> | undefined;
     assert.ok(permission);
@@ -355,6 +356,7 @@ describe("harness agents plugin", () => {
     assert.equal(agent.variant, "xhigh");
     assert.equal(agent.temperature, 0.1);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assert.equal(agent.color, "accent");
     assert.equal(agent.description, ASK_AGENT_DESCRIPTION);
     assert.match(String(agent.description), /Answers user questions/i);
     assert.match(String(agent.description), /evidence-backed/i);
@@ -414,6 +416,7 @@ describe("harness agents plugin", () => {
     assert.equal(agent.variant, "xhigh");
     assert.equal(agent.temperature, 0.8);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assert.equal(agent.color, "success");
     assert.equal(agent.description, BRAINSTORM_AGENT_DESCRIPTION);
     assert.match(String(agent.description), /creative, practical options/i);
     assert.match(String(agent.description), /tradeoffs before implementation/i);
@@ -507,7 +510,7 @@ describe("harness agents plugin", () => {
     assert.deepEqual(config.agent.plan, { disable: true });
   });
 
-  it("rewrites default_agent plan to draft", async () => {
+  it("sets draft as default_agent for incoming plan", async () => {
     const hooks = await plugin.server({} as never, {});
     assert.ok(hooks.config);
 
@@ -518,7 +521,18 @@ describe("harness agents plugin", () => {
     assert.equal(config.default_agent, DRAFT_AGENT_NAME);
   });
 
-  it("preserves non-plan default_agent", async () => {
+  it("sets draft as default_agent when unset", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = {};
+
+    await hooks.config(config as never);
+
+    assert.equal(config.default_agent, DRAFT_AGENT_NAME);
+  });
+
+  it("overwrites non-plan default_agent with draft", async () => {
     const hooks = await plugin.server({} as never, {});
     assert.ok(hooks.config);
 
@@ -526,6 +540,42 @@ describe("harness agents plugin", () => {
 
     await hooks.config(config as never);
 
-    assert.equal(config.default_agent, ASK_AGENT_NAME);
+    assert.equal(config.default_agent, DRAFT_AGENT_NAME);
+  });
+
+  it("registers secondary color for native build without existing config", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = {};
+
+    await hooks.config(config as never);
+
+    assert.deepEqual(config.agent?.build, { color: "secondary" });
+  });
+
+  it("preserves native build config while forcing secondary color", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const existingBuild = {
+      mode: "primary",
+      description: "custom build",
+      permission: { edit: "allow" },
+      disable: false,
+      color: "warning",
+    };
+    const config: PluginConfig = { agent: { build: existingBuild } };
+
+    await hooks.config(config as never);
+
+    assert.equal(config.agent?.build, existingBuild);
+    assert.deepEqual(config.agent?.build, {
+      mode: "primary",
+      description: "custom build",
+      permission: { edit: "allow" },
+      disable: false,
+      color: "secondary",
+    });
   });
 });

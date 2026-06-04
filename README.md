@@ -2,7 +2,7 @@
 
 This is an OpenCode server plugin for users who want a harness-engineering workflow in their OpenCode setup.
 
-When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces the native `plan` agent) and registers `/init-harness-engineering`. The bundle is designed around the harness-engineering ideas in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article.
+When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces the native `plan` agent), makes `draft` the default agent, and registers `/init-harness-engineering`. The bundle is designed around the harness-engineering ideas in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article.
 
 ## What It Adds
 
@@ -13,7 +13,7 @@ All bundled agents use `top_p: 0.97`. The table lists each agent's fixed model, 
 | `explore` | Read-only, cheap/high-volume subagent for codebase, documentation, and web discovery with precise citations. | `openai/gpt-5.4-mini`; variant `low`; temperature `0.5`. |
 | `ask` | Primary answer agent for concise, evidence-backed answers. Delegates non-trivial discovery to `explore`. | `openai/gpt-5.5`; variant `xhigh`; temperature `0.1`. |
 | `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Delegates non-trivial discovery to `explore`. | `openai/gpt-5.5`; variant `xhigh`; temperature `0.8`. |
-| `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle. | `openai/gpt-5.5`; variant `high`; temperature `0.2`. |
+| `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle and is forced as the default agent while the plugin is loaded. | `openai/gpt-5.5`; variant `high`; temperature `0.2`. |
 | `/init-harness-engineering` | Slash command that asks the active implementation agent to create or update an agent-legible documentation scaffold in the current repository when run. | Runs through the active agent when invoked; it does not configure a standalone model. |
 
 ## Harness-Engineering Posture
@@ -43,7 +43,7 @@ Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads p
 
 ## Using The Plugin
 
-After restarting OpenCode, use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended as a subagent for delegated discovery, especially from `ask`, `brainstorm`, and `draft`.
+After restarting OpenCode, new sessions start with `draft` because the plugin sets `default_agent: "draft"` during config resolution. Use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended as a subagent for delegated discovery, especially from `ask`, `brainstorm`, and `draft`.
 
 Run `/init-harness-engineering` in a target repository when you want to create or update a harness-engineering documentation scaffold. All the docs will be under `/docs` and that's a requirement, but other than that you can modify the resulting scaffold as you wish, the added agents don't have a bias toward any particular documentation style or structure as long as they are under `/docs` and contain the necessary context for agents to navigate the docs, e.g. with index.md files.
 

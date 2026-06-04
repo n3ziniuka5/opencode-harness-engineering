@@ -4,7 +4,7 @@ This repository is an OpenCode plugin bundle for harness-engineering agents. Kee
 
 ## Start Here
 
-- `README.md`: human setup, local development, usage, and package scripts.
+- `README.md`: brief user-facing overview, setup, usage, and essential development info; avoid implementation/internal details irrelevant to users.
 - `ARCHITECTURE.md`: high-level package shape, runtime boundaries, and key flows.
 - `docs/index.md`: full knowledge-base map for product, features, architecture, engineering, quality, and references.
 

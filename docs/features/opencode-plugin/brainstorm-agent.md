@@ -19,6 +19,7 @@
 - Agent id is `brainstorm`.
 - Model is `openai/gpt-5.5` with variant `xhigh`.
 - Sampling is explicit: `temperature` is `0.8` and `top_p` is the shared bundled-agent value `0.97`.
+- Color is `success`.
 - Mode is `primary` so users can select it directly without surfacing it as a subagent.
 - Registration assigns `config.agent.brainstorm` directly so this bundled config replaces a preexisting same-named agent entry while the plugin is loaded.
 - The prompt starts with `Role: You are the brainstorm agent.` and uses outcome-first GPT-5.5 sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
