@@ -11,18 +11,18 @@
 - Shared sampling constant: `src/agents/sampling.ts`
 - Registration: `src/index.ts`
 - Tests: `test/plugin.test.ts`
-- Prompt references: `docs/references/openai-gpt-5.5-prompting.md`
+- Prompt references: `docs/references/openai-gpt-5.6-prompting.md`
 - Discovery dependency: `docs/features/opencode-plugin/explore-agent.md`
 
 ## Behavior
 
 - Agent id is `brainstorm`.
-- Model is `openai/gpt-5.5` with variant `xhigh`.
+- Model is `openai/gpt-5.6-sol` with variant `high`.
 - Sampling is explicit: `temperature` is `0.8` and `top_p` is the shared bundled-agent value `0.97`.
 - Color is `success`.
 - Mode is `primary` so users can select it directly without surfacing it as a subagent.
 - Registration assigns `config.agent.brainstorm` directly so this bundled config replaces a preexisting same-named agent entry while the plugin is loaded.
-- The prompt starts with `Role: You are the brainstorm agent.` and uses outcome-first GPT-5.5 sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
+- The prompt starts with `Role: You are the brainstorm agent.` and uses outcome-first GPT-5.6-reviewed sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
 - The agent expands the option space, groups useful directions, names tradeoffs and risks, and recommends a starting point when enough context exists.
 - The shared `# Discovery` section tells the agent to inspect enough context, decompose independent research questions, launch parallel `explore` tasks for separable discovery, trust completed `explore` results for delegated questions instead of re-running the same searches, launch focused follow-up `explore` tasks for gaps or conflicts until enough context exists, read durable docs and local instructions, and name documentation updates when docs and implementation patterns conflict.
 - When brainstorming options that touch code changes, implementation planning, or verification, shared discovery stays conditional on that request and adds the relevant engineering guidance categories: coding rules/standards, module boundaries, dependency boundaries, similar implementation patterns, nearby tests, testing strategy, and validation requirements.

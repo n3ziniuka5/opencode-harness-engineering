@@ -62,7 +62,7 @@ Constraints/open questions:
 export const EXPLORE_AGENT_CONFIG = {
   description: EXPLORE_AGENT_DESCRIPTION,
   mode: "subagent",
-  model: "openai/gpt-5.4-mini",
+  model: "openai/gpt-5.6-luna",
   variant: "low",
   temperature: 0.5,
   top_p: DEFAULT_AGENT_TOP_P,

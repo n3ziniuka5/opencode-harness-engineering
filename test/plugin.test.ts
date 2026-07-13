@@ -130,7 +130,7 @@ describe("harness agents plugin", () => {
 
     const agent = agents[DRAFT_AGENT_NAME];
     assert.ok(agent);
-    assert.equal(agent.model, "openai/gpt-5.5");
+    assert.equal(agent.model, "openai/gpt-5.6-sol");
     assert.equal(agent.variant, "high");
     assert.equal(agent.temperature, 0.2);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
@@ -273,7 +273,7 @@ describe("harness agents plugin", () => {
     const agent = agents[EXPLORE_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "subagent");
-    assert.equal(agent.model, "openai/gpt-5.4-mini");
+    assert.equal(agent.model, "openai/gpt-5.6-luna");
     assert.equal(agent.variant, "low");
     assert.equal(agent.temperature, 0.5);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
@@ -352,8 +352,8 @@ describe("harness agents plugin", () => {
     const agent = agents[ASK_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "primary");
-    assert.equal(agent.model, "openai/gpt-5.5");
-    assert.equal(agent.variant, "xhigh");
+    assert.equal(agent.model, "openai/gpt-5.6-sol");
+    assert.equal(agent.variant, "high");
     assert.equal(agent.temperature, 0.1);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
     assert.equal(agent.color, "accent");
@@ -412,8 +412,8 @@ describe("harness agents plugin", () => {
     const agent = agents[BRAINSTORM_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "primary");
-    assert.equal(agent.model, "openai/gpt-5.5");
-    assert.equal(agent.variant, "xhigh");
+    assert.equal(agent.model, "openai/gpt-5.6-sol");
+    assert.equal(agent.variant, "high");
     assert.equal(agent.temperature, 0.8);
     assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
     assert.equal(agent.color, "success");

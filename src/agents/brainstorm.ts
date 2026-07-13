@@ -43,8 +43,8 @@ Provide concise framing, grouped options, tradeoffs/risks, a recommended directi
 export const BRAINSTORM_AGENT_CONFIG = {
   description: BRAINSTORM_AGENT_DESCRIPTION,
   mode: "primary",
-  model: "openai/gpt-5.5",
-  variant: "xhigh",
+  model: "openai/gpt-5.6-sol",
+  variant: "high",
   color: "success",
   temperature: 0.8,
   top_p: DEFAULT_AGENT_TOP_P,

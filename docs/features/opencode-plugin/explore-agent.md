@@ -10,12 +10,12 @@
 - Shared sampling constant: `src/agents/sampling.ts`
 - Registration: `src/index.ts`
 - Tests: `test/plugin.test.ts`
-- Prompt references: `docs/references/openai-gpt-5.4-prompting.md`
+- Prompt references: `docs/references/openai-gpt-5.6-prompting.md`
 
 ## Behavior
 
 - Agent id is `explore`.
-- Model is `openai/gpt-5.4-mini` with variant `low`.
+- Model is `openai/gpt-5.6-luna` with variant `low`.
 - Sampling is explicit: `temperature` is `0.5` and `top_p` is the shared bundled-agent value `0.97`.
 - Mode is `subagent`.
 - Registration assigns `config.agent.explore` directly so this bundled config overrides OpenCode's default `explore` agent.
@@ -45,6 +45,6 @@ For implementation-agent context gathering, the response starts with `Sources to
 ## Non-Obvious Constraints
 
 - Do not add mutation permissions to this bundled config without a product decision; the agent's purpose is discovery, not implementation.
-- Keep the prompt compact and explicit because it targets `gpt-5.4-mini`.
+- Keep the prompt compact and explicit because it targets the efficient, low-reasoning `gpt-5.6-luna` tier.
 - Keep `top_p` sourced from `DEFAULT_AGENT_TOP_P` rather than duplicating the numeric literal in the agent config.
 - If the user changes agent config files or plugin code, they must restart OpenCode for the loaded agent config to change.
