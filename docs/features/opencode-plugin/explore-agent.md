@@ -2,7 +2,7 @@
 
 ## Intent
 
-`explore` is a cheap, high-volume, read-only subagent for codebase exploration and online search. Its description is intentionally detailed because OpenCode surfaces subagent descriptions in the Task tool definition that parent agents see before choosing a subagent.
+`explore` is a cheap, high-volume, read-only subagent for finding, locating, and retrieving repository or public-source evidence. Its description is intentionally detailed because OpenCode surfaces subagent descriptions in the Task tool definition that parent agents see before choosing a subagent.
 
 ## Source Of Truth
 
@@ -23,17 +23,17 @@
 - The description includes short examples such as finding where behavior is handled, similar commands, affected files, relevant docs, official API docs, and the source of an error.
 - The description tells parent agents to pass concrete search leads such as file names, symbols, keywords, error text, packages, APIs, URLs, or library/framework names.
 - The description tells parent agents to ask for precise sources, line ranges, URLs, and limitations, and to launch multiple `explore` tasks in parallel for independent questions.
-- Parent-agent rules for trusting completed `explore` results and requesting focused follow-up tasks live in the shared discovery section used by `ask`, `brainstorm`, and `draft`; they do not change this subagent's read-only search and output contract.
+- The description explicitly says `explore` is not a general-purpose reviewer or reasoning delegate. It may extract facts, excerpts, and short factual relevance notes, but it must not assess correctness or sufficiency, perform exhaustive reviews, evaluate options, infer root cause or intent, rank severity, recommend implementations, design changes, or return final verdicts.
+- Parent-agent rules for avoiding duplicate searches, reading cited sources for analysis, and requesting focused retrieval follow-ups live in the shared discovery section used by `ask`, `brainstorm`, and `draft`.
 - The agent searches local files with `glob`, `grep`, `read`, and `list`.
 - The agent can use `bash` only when the task requires it after preferred tools are insufficient. Bash commands must be read-only and must not modify files or add/change git-tracked files.
 - The agent uses `webfetch`, `websearch`, and `context7_*` for official external/library documentation when appropriate and reports limitations when docs or tools are unavailable.
 - The agent should cite precise paths, line ranges, and URLs instead of summarizing a whole repository by default.
+- When a request mixes retrieval with analysis, the agent retrieves the most directly requested sources within its search budget, identifies the analytical portion that belongs to the caller, and stops.
 
 ## Output Contracts
 
-For direct answers, the response starts with `Answer:`, followed by `Evidence:` and optional `Confidence/limitations:`.
-
-For implementation-agent context gathering, the response starts with `Sources to read:`, followed by precise sources and `Constraints/open questions:` for only important blockers.
+Responses use one compact source-retrieval shape: `Source matches:` with paths or URLs, line ranges, excerpts, and factual relevance notes; `Missing evidence/search limitations:` when relevant; and `Scope handoff:` when an analytical request belongs to the caller.
 
 ## Permission Contract
 
@@ -45,6 +45,6 @@ For implementation-agent context gathering, the response starts with `Sources to
 ## Non-Obvious Constraints
 
 - Do not add mutation permissions to this bundled config without a product decision; the agent's purpose is discovery, not implementation.
-- Keep the prompt compact and explicit because it targets the efficient, low-reasoning `gpt-5.6-luna` tier.
+- Keep the prompt compact and explicit because it targets an efficient, low-reasoning model tier.
 - Keep `top_p` sourced from `DEFAULT_AGENT_TOP_P` rather than duplicating the numeric literal in the agent config.
 - If the user changes agent config files or plugin code, they must restart OpenCode for the loaded agent config to change.

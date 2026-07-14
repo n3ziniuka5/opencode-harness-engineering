@@ -11,7 +11,7 @@ These references inform the bundled GPT-5.6-family agent configurations:
 - `gpt-5.6` is an alias for the Sol model. This bundle uses the explicit `gpt-5.6-sol` ID for main agents so its tier is unambiguous.
 - The official guide does not list a `gpt-5.6-lina` model.
 - This bundle uses `gpt-5.6-sol` for the main `ask`, `brainstorm`, and `draft` agents, each with the `high` reasoning variant.
-- This bundle uses the efficient `gpt-5.6-luna` tier with the `low` reasoning variant for the high-volume `explore` discovery subagent.
+- This bundle uses the efficient `gpt-5.6-luna` tier with the `low` reasoning variant for the high-volume `explore` retrieval subagent.
 
 ## Prompt Review
 
