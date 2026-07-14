@@ -12,7 +12,7 @@
 
 The plugin registers `explore`, `ask`, `brainstorm`, and `draft` agent configs, disables native `plan`, and registers an `init-harness-engineering` command config. Plugin initialization does not access the network, shell, filesystem, or environment.
 
-The `explore` agent denies wildcard access, edits, nested task delegation, and todowrite. It allows local read/search tools, `webfetch`, `websearch`, `context7_*`, ask-gated external directory reads, and bash only for read-only commands that do not modify files or add/change git-tracked files.
+The `explore` agent denies wildcard access, edits, nested task delegation, and todowrite. It allows local read/search tools, `webfetch`, `websearch`, `context7_*`, ask-gated external directory reads, and bash only for read-only commands that do not modify files or add/change git-tracked files. Its prompt separately limits recursive search roots to the active workspace or an exact external repository or dependency cache.
 
 The `ask` and `brainstorm` agents deny edits, explicitly allow common discovery and coordination tools, and allow task delegation only to `explore`. They leave unspecified non-edit tools unset so OpenCode can apply its default ask behavior.
 

@@ -319,6 +319,14 @@ describe("harness agents plugin", () => {
     assert.match(String(agent.description), /URLs/i);
     assert.match(String(agent.description), /limitations/i);
     assert.match(String(agent.description), /parallel/i);
+    assert.match(
+      String(agent.description),
+      /name the intended repository or directory when known/i,
+    );
+    assert.match(
+      String(agent.description),
+      /outside the active workspace.*exact target/i,
+    );
     assert.match(String(agent.description), /not a general-purpose reviewer/i);
     assert.match(String(agent.description), /reasoning delegate/i);
 
@@ -359,6 +367,38 @@ describe("harness agents plugin", () => {
     assert.match(prompt, /context7/);
     assert.match(prompt, /Do not edit/);
     assert.match(prompt, /Do not use edit, task, or todowrite/);
+    assert.match(
+      prompt,
+      /active workspace or current working directory.*default recursive search boundary/i,
+    );
+    assert.match(
+      prompt,
+      /Do not use grep, glob, rg, grep -R, find, or equivalent recursive searches/i,
+    );
+    assert.match(
+      prompt,
+      /parent marker \.\. itself.*ancestor.*home directory.*common parent/is,
+    );
+    assert.match(prompt, /shallow, non-recursive parent listing.*exact child/i);
+    assert.match(
+      prompt,
+      /\.\.\/other-repo.*normalize.*exact absolute repository root.*normalized child is allowed/is,
+    );
+    assert.match(prompt, /recursive search.*exact sibling repository/i);
+    assert.match(
+      prompt,
+      /package.*cache.*pnpm.*npm.*Yarn.*Bun.*Cargo.*Go.*similar/is,
+    );
+    assert.match(
+      prompt,
+      /cache root.*exact target.*not.*cache's parent.*home directory/is,
+    );
+    assert.match(prompt, /caller-supplied exact file outside the workspace/i);
+    assert.doesNotMatch(prompt, /external-directory approval/i);
+    assert.match(
+      prompt,
+      /unresolved target.*Missing evidence\/search limitations/i,
+    );
     assert.match(prompt, /Do not summarize the whole repository by default/);
     assert.doesNotMatch(prompt, /AGENTS\.md/);
     assert.doesNotMatch(prompt, /ARCHITECTURE\.md/);
