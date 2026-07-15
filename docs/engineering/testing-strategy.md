@@ -6,7 +6,7 @@ Target application entrypoints, not internals. For this package, the main entryp
 
 ## Current Test Scope
 
-- `test/plugin.test.ts` verifies the plugin id, server export, absence of bundled tools, `explore` registration and retrieval-only boundary, `ask`, `brainstorm`, and `draft` caller-owned reasoning sentinels, sampling, colors, permissions, native `plan` disablement, unconditional `default_agent: "draft"` behavior, partial native `build` color override behavior, and direct overriding of existing bundled agent entries.
+- `test/plugin.test.ts` verifies the plugin id, server export, absence of bundled tools, `explore` registration, retrieval-only boundary, recursive search-root sentinels across preferred tools and Bash fallbacks, exact external/cache target exceptions, `ask`, `brainstorm`, and `draft` caller-owned reasoning sentinels, sampling, colors, permissions, native `plan` disablement, unconditional `default_agent: "draft"` behavior, partial native `build` color override behavior, and direct overriding of existing bundled agent entries.
 - `test/init-harness-engineering-command.test.ts` verifies slash-command registration, stable prompt sentinels, and preservation of user-defined command config.
 - `scripts/check-docs.ts` validates the repository documentation scaffold and acts as a docs guardrail through `pnpm run docs:check`.
 

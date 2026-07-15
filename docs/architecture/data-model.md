@@ -8,7 +8,7 @@ Plugin options are untrusted `PluginOptions`. No plugin options currently affect
 
 ## Agent Config
 
-`explore` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a read-only discovery subagent: mutation tools, shell, nested task delegation, and todowrite are denied, while local read/search and documentation tools are allowed.
+`explore` is an OpenCode agent config with description, mode, model, variant, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a read-only discovery subagent: mutation tools, nested task delegation, and todowrite are denied, while read/search tools, documentation tools, and constrained read-only shell commands are allowed. Recursive local search stays within the active workspace by default; external repository and dependency-cache searches require an exact target and retain ask-gated external-directory access.
 
 `ask` is an OpenCode agent config with description, mode, model, variant, color, temperature, `top_p`, prompt, and permissions. Its invariant is that it is a selectable primary answer agent that cannot edit files, can ask focused questions, can use common discovery tools, and can delegate only to `explore` for substantial research.
 
