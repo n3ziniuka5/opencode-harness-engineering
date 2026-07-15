@@ -42,7 +42,7 @@ return {
     if (!input.agent) input.agent = {};
     input.agent.explore = {
       mode: "subagent",
-      model: "openai/gpt-5.4-mini",
+      model: "openai/gpt-5.6-luna",
       variant: "low",
       temperature: 0.5,
       top_p: 0.97,
@@ -51,8 +51,8 @@ return {
     };
     input.agent.ask = {
       mode: "primary",
-      model: "openai/gpt-5.5",
-      variant: "xhigh",
+      model: "openai/gpt-5.6-sol",
+      variant: "high",
       color: "accent",
       temperature: 0.1,
       top_p: 0.97,
@@ -61,8 +61,8 @@ return {
     };
     input.agent.brainstorm = {
       mode: "primary",
-      model: "openai/gpt-5.5",
-      variant: "xhigh",
+      model: "openai/gpt-5.6-sol",
+      variant: "high",
       color: "success",
       temperature: 0.8,
       top_p: 0.97,
@@ -71,7 +71,7 @@ return {
     };
     input.agent.draft = {
       mode: "all",
-      model: "openai/gpt-5.5",
+      model: "openai/gpt-5.6-sol",
       variant: "high",
       color: "primary",
       temperature: 0.2,
@@ -86,7 +86,7 @@ return {
 };
 ```
 
-Agent config supports fields such as `description`, `mode`, `model`, `variant`, `color`, `temperature`, `top_p`, `prompt`, `permission`, `disable`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `low`, `high`, or `xhigh` when the selected model exposes that variant. This plugin assigns agent configs directly so the bundled `explore`, `ask`, `brainstorm`, and `draft` definitions override same-named user entries. The native `plan` key is intentionally disabled to avoid native plan-mode reminders, the native `build` config is preserved except for forced `color: "secondary"`, and every config-hook run sets `default_agent: "draft"`. OpenCode loads plugin config at startup, so users must restart OpenCode after installing or upgrading the plugin.
+Agent config supports fields such as `description`, `mode`, `model`, `variant`, `color`, `temperature`, `top_p`, `prompt`, `permission`, `disable`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `low` or `high` when the selected model exposes that variant. This plugin assigns agent configs directly so the bundled `explore`, `ask`, `brainstorm`, and `draft` definitions override same-named user entries. The native `plan` key is intentionally disabled to avoid native plan-mode reminders, the native `build` config is preserved except for forced `color: "secondary"`, and every config-hook run sets `default_agent: "draft"`. OpenCode loads plugin config at startup, so users must restart OpenCode after installing or upgrading the plugin.
 
 Command config supports a `template` prompt and optional fields such as `description`, `agent`, `model`, and `subtask`. This plugin intentionally leaves `agent`, `model`, and `subtask` unset for `/init-harness-engineering` so the command runs with the user's current/default implementation agent and normal file-edit permissions. Registration uses `??=` so local user commands with the same name are not overwritten.
 

@@ -11,18 +11,18 @@
 - Shared sampling constant: `src/agents/sampling.ts`
 - Registration: `src/index.ts`
 - Tests: `test/plugin.test.ts`
-- Prompt references: `docs/references/openai-gpt-5.5-prompting.md`
+- Prompt references: `docs/references/openai-gpt-5.6-prompting.md`
 - Discovery dependency: `docs/features/opencode-plugin/explore-agent.md`
 
 ## Behavior
 
 - Agent id is `ask`.
-- Model is `openai/gpt-5.5` with variant `xhigh`.
+- Model is `openai/gpt-5.6-sol` with variant `high`.
 - Sampling is explicit: `temperature` is `0.1` and `top_p` is the shared bundled-agent value `0.97`.
 - Color is `accent`.
 - Mode is `primary` so users can select it directly without surfacing it as a subagent.
 - Registration assigns `config.agent.ask` directly so this bundled config replaces a preexisting same-named agent entry while the plugin is loaded.
-- The prompt starts with `Role: You are the ask agent.` and uses outcome-first GPT-5.5 sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
+- The prompt starts with `Role: You are the ask agent.` and uses outcome-first GPT-5.6-reviewed sections for personality, goal, discovery, success criteria, constraints, output, and stop rules.
 - The agent answers directly, prefers repository/source-backed evidence over speculation, cites local files/line ranges or URLs when sources matter, and states limitations.
 - When the user asks for judgment or next steps, the agent labels recommendations as recommendations and keeps them evidence-based.
 - When the user asks how to implement something and needs options, tradeoffs, or creative approaches, the agent recommends switching to `brainstorm`.

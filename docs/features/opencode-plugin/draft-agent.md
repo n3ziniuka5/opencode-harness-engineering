@@ -11,13 +11,13 @@
 - Shared sampling constant: `src/agents/sampling.ts`
 - Registration: `src/index.ts`
 - Tests: `test/plugin.test.ts`
-- Prompt references: `docs/references/openai-gpt-5.5-prompting.md`
+- Prompt references: `docs/references/openai-gpt-5.6-prompting.md`
 - Discovery dependency: `docs/features/opencode-plugin/explore-agent.md`
 
 ## Behavior
 
 - Agent id is `draft`.
-- Model is `openai/gpt-5.5` with variant `high`.
+- Model is `openai/gpt-5.6-sol` with variant `high`.
 - Sampling is explicit: `temperature` is `0.2` and `top_p` is the shared bundled-agent value `0.97`.
 - Color is `primary`.
 - Mode is `all`.

@@ -42,8 +42,8 @@ Start with the answer, then include concise supporting evidence. Include caveats
 export const ASK_AGENT_CONFIG = {
   description: ASK_AGENT_DESCRIPTION,
   mode: "primary",
-  model: "openai/gpt-5.5",
-  variant: "xhigh",
+  model: "openai/gpt-5.6-sol",
+  variant: "high",
   color: "accent",
   temperature: 0.1,
   top_p: DEFAULT_AGENT_TOP_P,
