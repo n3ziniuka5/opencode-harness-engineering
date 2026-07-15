@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.2.1...v1.3.0) (2026-07-15)
+
+
+### Features
+
+* switch to GPT-5.6 family models ([#18](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/18)) ([99a435e](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/99a435e03862580faf9ef4b21f15e0b9ddba58ba))
+
+
+### Bug Fixes
+
+* guardrail the explore agent against expensive grep/glob operations in parent directories ([#20](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/20)) ([4cdb21d](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/4cdb21d6f6f55e9acf92a88c1cc8a7c75b9a1a3d))
+* guardrail the explore agent so that it's only used for discovery, and not for complex reasoning ([#19](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/19)) ([d132293](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/d1322932cfd079871cd2b676d836de6af53dd12e))
+
 ## [1.2.1](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.2.0...v1.2.1) (2026-06-04)
 
 
