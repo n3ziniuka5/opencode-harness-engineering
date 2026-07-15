@@ -10,9 +10,9 @@ All bundled agents use `top_p: 0.97`. The table lists each agent's fixed model, 
 
 | Entry | What it adds | Fixed model and settings |
 | --- | --- | --- |
-| `explore` | Read-only, cheap/high-volume subagent for codebase, documentation, and web discovery with precise citations. | `openai/gpt-5.6-luna`; variant `low`; temperature `0.5`. |
-| `ask` | Primary answer agent for concise, evidence-backed answers. Delegates non-trivial discovery to `explore`. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.1`. |
-| `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Delegates non-trivial discovery to `explore`. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.8`. |
+| `explore` | Read-only, cheap/high-volume subagent for locating and retrieving codebase, documentation, and web sources with precise citations. It does not perform reviews or recommendations. | `openai/gpt-5.6-luna`; variant `low`; temperature `0.5`. |
+| `ask` | Primary answer agent for concise, evidence-backed answers. Uses `explore` for source retrieval while retaining analysis, reviews, and verdicts. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.1`. |
+| `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Uses `explore` for source retrieval while retaining option generation and recommendations. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.8`. |
 | `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle and is forced as the default agent while the plugin is loaded. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.2`. |
 | `/init-harness-engineering` | Slash command that asks the active implementation agent to create or update an agent-legible documentation scaffold in the current repository when run. | Runs through the active agent when invoked; it does not configure a standalone model. |
 
@@ -43,7 +43,7 @@ Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads p
 
 ## Using The Plugin
 
-After restarting OpenCode, new sessions start with `draft` because the plugin sets `default_agent: "draft"` during config resolution. Use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended as a subagent for delegated discovery, especially from `ask`, `brainstorm`, and `draft`.
+After restarting OpenCode, new sessions start with `draft` because the plugin sets `default_agent: "draft"` during config resolution. Use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended for delegated search and retrieval; the primary agent remains responsible for synthesis, correctness judgments, recommendations, and final output.
 
 Run `/init-harness-engineering` in a target repository when you want to create or update a harness-engineering documentation scaffold. All the docs will be under `/docs` and that's a requirement, but other than that you can modify the resulting scaffold as you wish, the added agents don't have a bias toward any particular documentation style or structure as long as they are under `/docs` and contain the necessary context for agents to navigate the docs, e.g. with index.md files.
 
@@ -55,7 +55,7 @@ The plugin exposes no options to change provider, model, variant, sampling, or b
 
 The prompts are reviewed against OpenAI's public GPT-5.6 prompting guidance. The initial model migration leaves them unchanged; future prompt changes should follow evaluations or observed failures.
 
-Because the provider is fixed, you need OpenCode's normal OpenAI provider and authentication setup with access to `gpt-5.6-sol` and `gpt-5.6-luna` before the bundled agents can run.
+Because the provider is fixed, you need OpenCode's normal OpenAI provider and authentication setup with access to `gpt-5.6-luna` and `gpt-5.6-sol` before the bundled agents can run.
 
 ## Developing This Repository
 

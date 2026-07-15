@@ -40,7 +40,7 @@ async function configuredAgents() {
 function assertDiscoverySentinels(prompt: string) {
   assert.match(prompt, /# Discovery/);
   assert.match(prompt, /substantial discovery/i);
-  assert.match(prompt, /first decide the exploration subjects/i);
+  assert.match(prompt, /first decide .* evidence .* needed/i);
   assert.match(prompt, /durable repo instructions/i);
   assert.match(prompt, /coding rules\/standards/i);
   assert.match(prompt, /module boundaries/i);
@@ -60,15 +60,32 @@ function assertDiscoverySentinels(prompt: string) {
     prompt,
     /any verification plan or advice .* testing strategy .* validation requirements/i,
   );
-  assert.match(prompt, /Decompose those subjects/i);
+  assert.match(prompt, /concrete search and retrieval requests/i);
+  assert.match(prompt, /target and expected evidence shape/i);
+  assert.match(prompt, /relevant paths and symbols/i);
+  assert.match(prompt, /governing documentation .* line ranges/i);
+  assert.match(prompt, /nearby tests/i);
+  assert.match(prompt, /official .* API documentation/i);
+  assert.match(prompt, /Decompose .* evidence needs/i);
   assert.match(prompt, /separate `explore` tasks in parallel/i);
-  assert.match(prompt, /Do not send one broad repo-discovery prompt/i);
+  assert.match(prompt, /parallelism applies to retrieval/i);
+  assert.match(prompt, /not .* copies .* reasoning/i);
+  assert.match(prompt, /Do not send one broad .* prompt/i);
   assert.match(
     prompt,
     /Use a single `explore` task only for trivial or tightly scoped requests/i,
   );
-  assert.match(prompt, /trust returned `explore` results/i);
-  assert.match(prompt, /do not re-run or duplicate the same .* searches/i);
+  assert.match(prompt, /primary agent owns synthesis/i);
+  assert.match(prompt, /resolve conflicts/i);
+  assert.match(prompt, /correctness and sufficiency/i);
+  assert.match(prompt, /recommendations/i);
+  assert.match(prompt, /final (answer|option set|generated plan)/i);
+  assert.match(prompt, /Do not ask `explore` to review/i);
+  assert.match(prompt, /exhaustive review/i);
+  assert.match(prompt, /rank .* severity/i);
+  assert.match(prompt, /return a verdict/i);
+  assert.match(prompt, /do not repeat .* search .* rediscover/i);
+  assert.match(prompt, /read the cited sources .* analysis/i);
   assert.match(prompt, /follow-up .* `explore` tasks/i);
   assert.match(prompt, /until .* enough context/i);
   assert.match(prompt, /AGENTS\.md/);
@@ -281,6 +298,7 @@ describe("harness agents plugin", () => {
     assert.match(String(agent.description), /cheap/i);
     assert.match(String(agent.description), /high-volume/i);
     assert.match(String(agent.description), /read-only/i);
+    assert.match(String(agent.description), /find, locate, and retrieve/i);
     assert.match(String(agent.description), /codebase exploration/i);
     assert.match(String(agent.description), /online search/i);
     assert.match(String(agent.description), /where is auth handled/);
@@ -301,16 +319,32 @@ describe("harness agents plugin", () => {
     assert.match(String(agent.description), /URLs/i);
     assert.match(String(agent.description), /limitations/i);
     assert.match(String(agent.description), /parallel/i);
+    assert.match(String(agent.description), /not a general-purpose reviewer/i);
+    assert.match(String(agent.description), /reasoning delegate/i);
 
     const prompt = String(agent.prompt);
     assert.match(prompt, /Role: You are the explore subagent/);
     assert.doesNotMatch(prompt, new RegExp(removedPromptScope));
-    assert.match(prompt, /direct question/i);
-    assert.match(prompt, /gathering context/i);
-    assert.match(prompt, /concise answer/i);
-    assert.match(prompt, /Evidence/);
-    assert.match(prompt, /Confidence\/limitations/);
-    assert.match(prompt, /files\/URLs/i);
+    assert.match(prompt, /locate concrete .* evidence/i);
+    assert.match(prompt, /where .* which source/i);
+    assert.match(prompt, /not open-ended analytical questions/i);
+    assert.match(prompt, /# Task Boundary/);
+    assert.match(prompt, /plan or code correctness/i);
+    assert.match(prompt, /sufficiency judgments/i);
+    assert.match(prompt, /option evaluation/i);
+    assert.match(prompt, /root-cause conclusions/i);
+    assert.match(prompt, /recommendations/i);
+    assert.match(prompt, /severity ranking/i);
+    assert.match(prompt, /implementation design/i);
+    assert.match(prompt, /final verdicts/i);
+    assert.match(prompt, /factual extraction/i);
+    assert.match(prompt, /short .* what a source contains/i);
+    assert.match(prompt, /Source matches/);
+    assert.match(prompt, /factual relevance/i);
+    assert.match(prompt, /Missing evidence\/search limitations/);
+    assert.match(prompt, /Scope handoff/);
+    assert.match(prompt, /analytical .* belongs to the caller/i);
+    assert.match(prompt, /most directly requested sources/i);
     assert.match(prompt, /line ranges/i);
     assert.match(prompt, /Use glob for file patterns/);
     assert.match(prompt, /grep for content search/);
@@ -361,7 +395,7 @@ describe("harness agents plugin", () => {
     assert.match(String(agent.description), /Answers user questions/i);
     assert.match(String(agent.description), /evidence-backed/i);
     assert.match(String(agent.description), /answer rather than code changes/i);
-    assert.match(String(agent.description), /parallel explore subagents/i);
+    assert.match(String(agent.description), /parallel source retrieval/i);
     assert.match(String(agent.description), /cites sources and limitations/i);
 
     const prompt = String(agent.prompt);
@@ -386,13 +420,17 @@ describe("harness agents plugin", () => {
     assert.match(prompt, /asks for judgment or next steps/i);
     assert.match(prompt, /label recommendations as recommendations/i);
     assert.match(prompt, /keep them evidence-based/i);
+    assert.match(
+      prompt,
+      /assess a plan, code, or proposal.*gathers evidence.*performs the assessment itself/i,
+    );
     assert.match(prompt, /asks how to implement something/i);
     assert.match(prompt, /options, tradeoffs, or creative approaches/i);
     assert.match(prompt, /switching to `brainstorm`/i);
     assert.match(prompt, /Do not edit, create, move, delete, or format files/i);
     assert.match(prompt, /do not implement requested changes/i);
     assert.match(prompt, /official\/public references/i);
-    assert.match(prompt, /delegate substantial discovery to `explore`/i);
+    assert.match(prompt, /delegate substantial source retrieval to `explore`/i);
     assert.match(prompt, /Start with the answer/i);
     assert.match(prompt, /supporting evidence/i);
     assert.match(prompt, /caveats\/next steps/i);
@@ -421,7 +459,7 @@ describe("harness agents plugin", () => {
     assert.match(String(agent.description), /creative, practical options/i);
     assert.match(String(agent.description), /tradeoffs before implementation/i);
     assert.match(String(agent.description), /multiple plausible directions/i);
-    assert.match(String(agent.description), /parallel explore subagents/i);
+    assert.match(String(agent.description), /parallel source retrieval/i);
     assert.match(String(agent.description), /recommendations/i);
 
     const prompt = String(agent.prompt);
@@ -454,7 +492,9 @@ describe("harness agents plugin", () => {
       /Do not present speculative ideas as established repo behavior/i,
     );
     assert.match(prompt, /public\/official context/i);
-    assert.match(prompt, /delegate substantial discovery to `explore`/i);
+    assert.match(prompt, /retrieve facts and examples/i);
+    assert.match(prompt, /option generation, tradeoff analysis, convergence/i);
+    assert.match(prompt, /remain .* responsibility/i);
     assert.match(prompt, /grouped options/i);
     assert.match(prompt, /tradeoffs\/risks/i);
     assert.match(prompt, /recommended direction/i);
