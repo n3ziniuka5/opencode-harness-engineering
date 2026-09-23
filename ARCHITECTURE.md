@@ -11,7 +11,7 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 - `package.json` exposes both `.` and `./server` to `dist/index.js`.
 - OpenCode npm plugin loading prefers `exports["./server"]` for server plugins.
 - `main` remains pointed at `dist/index.js` as a fallback for loaders that inspect package main.
-- The server plugin registers bundled OpenCode agents and commands through the `config` hook by mutating `config.agent` and `config.command` before OpenCode resolves them.
+- The server plugin registers bundled OpenCode agents and commands through the `config` hook by mutating `config.agent` and `config.command` before OpenCode resolves them; the same hook sets global config defaults.
 
 ## Runtime Boundary
 
@@ -26,7 +26,7 @@ See `docs/architecture/index.md` for detailed boundaries, dependency rules, API 
 - Local OpenCode loading uses `opencode.json`, which points to `./src/index.ts`.
 - Package consumers load the built package through `exports["./server"]`, which resolves to `dist/index.js`.
 - During plugin initialization, OpenCode calls `server(input, options)`, and the returned hooks expose the config mutation hook.
-- During config resolution, the plugin assigns `explore`, `ask`, `brainstorm`, and `draft` directly so they override same-named user agent entries, preserves the built-in `build` agent config while forcing `color: "secondary"`, disables OpenCode's native `plan` agent, and always sets `default_agent: "draft"`. `/init-harness-engineering` still uses `??=` to preserve user-defined command config.
+- During config resolution, the plugin assigns `explore`, `ask`, `brainstorm`, and `draft` directly so they override same-named user agent entries, preserves the built-in `build` agent config while forcing `color: "secondary"`, disables OpenCode's native `plan` agent, always sets `default_agent: "draft"`, and defaults global `subagent_depth` to `3` only when unset. `/init-harness-engineering` still uses `??=` to preserve user-defined command config.
 
 ## Source Layout
 

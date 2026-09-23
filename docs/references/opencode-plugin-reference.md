@@ -34,7 +34,7 @@ This package exposes `./server` and `.` to the same built file.
 
 OpenCode server plugins can also return a `config` hook. The hook receives the resolved OpenCode config object and may mutate it before OpenCode builds its agent registry.
 
-This plugin uses that hook to assign `config.agent.explore`, `config.agent.ask`, `config.agent.brainstorm`, and `config.agent.draft`. It also assigns `config.agent.plan = { disable: true }` so OpenCode's native `plan` agent is unavailable while the plugin is loaded, sets `config.default_agent = "draft"`, partially overrides `config.agent.build.color`, and adds `config.command["init-harness-engineering"]` so OpenCode surfaces `/init-harness-engineering`.
+This plugin uses that hook to assign `config.agent.explore`, `config.agent.ask`, `config.agent.brainstorm`, and `config.agent.draft`. It also assigns `config.agent.plan = { disable: true }` so OpenCode's native `plan` agent is unavailable while the plugin is loaded, sets `config.default_agent = "draft"`, defaults `config.subagent_depth` to `3` when unset, partially overrides `config.agent.build.color`, and adds `config.command["init-harness-engineering"]` so OpenCode surfaces `/init-harness-engineering`.
 
 ```ts
 return {
@@ -74,11 +74,14 @@ return {
     input.agent.build.color = "secondary";
     input.agent.plan = { disable: true };
     input.default_agent = "draft";
+    input.subagent_depth ??= 3;
   },
 };
 ```
 
 Agent config supports fields such as `description`, `mode`, `model`, `variant`, `color`, `temperature`, `top_p`, `prompt`, `permission`, `disable`, and `options`. The `variant` field maps to provider-specific model variants such as OpenAI reasoning effort `low` or `high` when the selected model exposes that variant. This plugin omits `temperature` and `top_p` from its GPT-6 configs because all bundled agents use `high` effort and GPT-6 rejects those parameters at non-`none` effort. The plugin assigns agent configs directly so the bundled `explore`, `ask`, `brainstorm`, and `draft` definitions override same-named user entries. The native `plan` key is intentionally disabled to avoid native plan-mode reminders, the native `build` config is preserved except for forced `color: "secondary"`, and every config-hook run sets `default_agent: "draft"`. OpenCode loads plugin config at startup, so users must restart OpenCode after installing or upgrading the plugin.
+
+[`subagent_depth`](https://opencode.ai/docs/config/#subagent-depth) is an optional global, nonnegative integer in the current [OpenCode schema](https://opencode.ai/config.json). OpenCode introduced it in [v1.18.2](https://github.com/anomalyco/opencode/blob/v1.18.2/packages/core/src/v1/config/config.ts#L84-L87). This plugin changes the already parsed config in its hook, so on older versions the added field is expected to be inert rather than a config-file validation failure; explicitly adding the unsupported field to a user's config file on those versions may fail validation. The installed `@opencode-ai/plugin` declaration does not yet type this field, so the entrypoint's local mutable config shape carries it. Agent-level task permissions still restrict delegation independently of the global depth.
 
 Command config supports a `template` prompt and optional fields such as `description`, `agent`, `model`, and `subtask`. This plugin intentionally leaves `agent`, `model`, and `subtask` unset for `/init-harness-engineering` so the command runs with the user's current/default implementation agent and normal file-edit permissions. Registration uses `??=` so local user commands with the same name are not overwritten.
 

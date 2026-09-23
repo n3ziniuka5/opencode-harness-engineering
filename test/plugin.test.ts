@@ -24,6 +24,7 @@ type AgentConfig = Record<string, unknown>;
 type PluginConfig = {
   agent?: Record<string, AgentConfig | undefined>;
   default_agent?: string;
+  subagent_depth?: number;
 };
 
 async function configuredAgents() {
@@ -651,6 +652,40 @@ describe("harness agents plugin", () => {
     await hooks.config(config as never);
 
     assert.equal(config.default_agent, DRAFT_AGENT_NAME);
+  });
+
+  it("defaults subagent_depth to three when unset", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = {};
+
+    await hooks.config(config as never);
+
+    assert.equal(config.subagent_depth, 3);
+  });
+
+  it("preserves an explicit zero subagent_depth", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = { subagent_depth: 0 };
+
+    await hooks.config(config as never);
+
+    assert.equal(config.subagent_depth, 0);
+  });
+
+  it("preserves a nondefault positive subagent_depth across hook calls", async () => {
+    const hooks = await plugin.server({} as never, {});
+    assert.ok(hooks.config);
+
+    const config: PluginConfig = { subagent_depth: 5 };
+
+    await hooks.config(config as never);
+    await hooks.config(config as never);
+
+    assert.equal(config.subagent_depth, 5);
   });
 
   it("registers secondary color for native build without existing config", async () => {
