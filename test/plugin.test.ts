@@ -19,7 +19,6 @@ import plugin, {
   PLUGIN_ID,
 } from "../src/index.js";
 import * as pluginExports from "../src/index.js";
-import { DEFAULT_AGENT_TOP_P } from "../src/agents/sampling.js";
 
 type AgentConfig = Record<string, unknown>;
 type PluginConfig = {
@@ -97,6 +96,19 @@ function assertDiscoverySentinels(prompt: string) {
   assert.match(prompt, /clear evidence the docs are stale/i);
   assert.match(prompt, /documentation update needed/i);
   assert.match(prompt, /code debt documentation/i);
+  assert.match(
+    prompt,
+    /explicit user instructions take precedence .* skill guidance/i,
+  );
+  assert.match(
+    prompt,
+    /skill guidance .* pause or diverge .* identify the skill and .* relevant instruction/i,
+  );
+}
+
+function assertUnsupportedSamplingAbsent(agent: AgentConfig) {
+  assert.equal("temperature" in agent, false);
+  assert.equal("top_p" in agent, false);
 }
 
 function assertPrimaryReadOnlyPermissions(permission: Record<string, unknown>) {
@@ -147,10 +159,9 @@ describe("harness agents plugin", () => {
 
     const agent = agents[DRAFT_AGENT_NAME];
     assert.ok(agent);
-    assert.equal(agent.model, "openai/gpt-5.6-sol");
+    assert.equal(agent.model, "openai/gpt-6-sol");
     assert.equal(agent.variant, "high");
-    assert.equal(agent.temperature, 0.2);
-    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.mode, "all");
     assert.equal(agent.color, "primary");
     assert.equal(agent.description, DRAFT_AGENT_DESCRIPTION);
@@ -290,10 +301,9 @@ describe("harness agents plugin", () => {
     const agent = agents[EXPLORE_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "subagent");
-    assert.equal(agent.model, "openai/gpt-5.6-luna");
-    assert.equal(agent.variant, "low");
-    assert.equal(agent.temperature, 0.5);
-    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assert.equal(agent.model, "openai/gpt-6-luna");
+    assert.equal(agent.variant, "high");
+    assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.description, EXPLORE_AGENT_DESCRIPTION);
     assert.match(String(agent.description), /cheap/i);
     assert.match(String(agent.description), /high-volume/i);
@@ -426,10 +436,9 @@ describe("harness agents plugin", () => {
     const agent = agents[ASK_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "primary");
-    assert.equal(agent.model, "openai/gpt-5.6-sol");
+    assert.equal(agent.model, "openai/gpt-6-sol");
     assert.equal(agent.variant, "high");
-    assert.equal(agent.temperature, 0.1);
-    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.color, "accent");
     assert.equal(agent.description, ASK_AGENT_DESCRIPTION);
     assert.match(String(agent.description), /Answers user questions/i);
@@ -490,10 +499,9 @@ describe("harness agents plugin", () => {
     const agent = agents[BRAINSTORM_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "primary");
-    assert.equal(agent.model, "openai/gpt-5.6-sol");
+    assert.equal(agent.model, "openai/gpt-6-sol");
     assert.equal(agent.variant, "high");
-    assert.equal(agent.temperature, 0.8);
-    assert.equal(agent.top_p, DEFAULT_AGENT_TOP_P);
+    assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.color, "success");
     assert.equal(agent.description, BRAINSTORM_AGENT_DESCRIPTION);
     assert.match(String(agent.description), /creative, practical options/i);

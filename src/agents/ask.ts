@@ -1,5 +1,4 @@
 import { discoverySection } from "./discovery.js";
-import { DEFAULT_AGENT_TOP_P } from "./sampling.js";
 
 export const ASK_AGENT_NAME = "ask";
 
@@ -43,11 +42,9 @@ Start with the answer, then include concise supporting evidence. Include caveats
 export const ASK_AGENT_CONFIG = {
   description: ASK_AGENT_DESCRIPTION,
   mode: "primary",
-  model: "openai/gpt-5.6-sol",
+  model: "openai/gpt-6-sol",
   variant: "high",
   color: "accent",
-  temperature: 0.1,
-  top_p: DEFAULT_AGENT_TOP_P,
   prompt: ASK_AGENT_PROMPT,
   permission: {
     edit: "deny",

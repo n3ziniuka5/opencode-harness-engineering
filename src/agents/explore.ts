@@ -1,5 +1,3 @@
-import { DEFAULT_AGENT_TOP_P } from "./sampling.js";
-
 export const EXPLORE_AGENT_NAME = "explore";
 
 export const EXPLORE_AGENT_DESCRIPTION =
@@ -67,10 +65,8 @@ Scope handoff:
 export const EXPLORE_AGENT_CONFIG = {
   description: EXPLORE_AGENT_DESCRIPTION,
   mode: "subagent",
-  model: "openai/gpt-5.6-luna",
-  variant: "low",
-  temperature: 0.5,
-  top_p: DEFAULT_AGENT_TOP_P,
+  model: "openai/gpt-6-luna",
+  variant: "high",
   prompt: EXPLORE_AGENT_PROMPT,
   permission: {
     "*": "deny",
