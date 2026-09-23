@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.3.0...v1.4.0) (2026-09-23)
+
+
+### Features
+
+* GPT-6 models ([#22](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/22)) ([1077742](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/1077742bac298f686ae3ea23338112861280985e))
+* set `subagent_depth` config value to `3` by default ([#24](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/24)) ([a9bd7a0](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/a9bd7a09a1d0f75b1cf409b4c761aafed9a9cd02))
+
+
+### Bug Fixes
+
+* explore agent shouldn't look for repo-local guidance outside of current repository ([#23](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/23)) ([eb3935d](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/eb3935d4ab198879c8ce9d6af02a79f159eb0fe8))
+
 ## [1.3.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.2.1...v1.3.0) (2026-07-15)
 
 
