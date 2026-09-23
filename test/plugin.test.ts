@@ -383,6 +383,23 @@ describe("harness agents plugin", () => {
     );
     assert.match(
       prompt,
+      /default project guidance.*AGENTS\.md.*instructions.*docs.*design patterns.*current Git worktree/is,
+    );
+    assert.match(prompt, /read-only git rev-parse --show-toplevel.*Bash/is);
+    assert.match(
+      prompt,
+      /nested.*specific candidate.*upward.*same worktree.*stop.*worktree root/is,
+    );
+    assert.match(
+      prompt,
+      /outside.*Git worktree.*guidance.*current working directory.*subtree.*do not ascend/is,
+    );
+    assert.match(
+      prompt,
+      /patterns.*docs.*default.*current repository.*not.*parent.*home/is,
+    );
+    assert.match(
+      prompt,
       /Do not use grep, glob, rg, grep -R, find, or equivalent recursive searches/i,
     );
     assert.match(
@@ -395,6 +412,11 @@ describe("harness agents plugin", () => {
       /\.\.\/other-repo.*normalize.*exact absolute repository root.*normalized child is allowed/is,
     );
     assert.match(prompt, /recursive search.*exact sibling repository/i);
+    assert.match(
+      prompt,
+      /independently identify.*relevant sibling repository.*without.*caller.*resolve.*exact.*root.*search.*directly/is,
+    );
+    assert.match(prompt, /not.*sibling.*guidance.*current project/is);
     assert.match(
       prompt,
       /package.*cache.*pnpm.*npm.*Yarn.*Bun.*Cargo.*Go.*similar/is,
@@ -410,7 +432,7 @@ describe("harness agents plugin", () => {
       /unresolved target.*Missing evidence\/search limitations/i,
     );
     assert.match(prompt, /Do not summarize the whole repository by default/);
-    assert.doesNotMatch(prompt, /AGENTS\.md/);
+    assert.match(prompt, /AGENTS\.md.*specific candidate/is);
     assert.doesNotMatch(prompt, /ARCHITECTURE\.md/);
     assert.doesNotMatch(prompt, /docs\/\*\*\/\*\.md/);
 
