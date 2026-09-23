@@ -20,5 +20,6 @@
 - Existing native or user-defined `plan` entries are overwritten with `{ disable: true }` so native plan-mode reminders cannot conflict with the bundled `draft` workflow.
 - Existing `agent.build` entries are preserved except `color`, which is forced to `secondary`.
 - Existing `default_agent` config is always set to `"draft"`, including when it was unset or named another agent.
+- Existing global `subagent_depth` values, including `0`, are preserved; an unset depth defaults to `3` on runtimes that support it.
 - Existing user-defined `init-harness-engineering` config entries are preserved by `??=` registration.
 - Long prompt regressions are guarded by sentinel tests instead of brittle full snapshots.

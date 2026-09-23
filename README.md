@@ -2,7 +2,7 @@
 
 This is an OpenCode server plugin for users who want a harness-engineering workflow in their OpenCode setup.
 
-When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces the native `plan` agent), makes `draft` the default agent, and registers `/init-harness-engineering`. The bundle is designed around the harness-engineering ideas in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article.
+When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces the native `plan` agent), makes `draft` the default agent, defaults OpenCode's subagent nesting depth to `3`, and registers `/init-harness-engineering`. The bundle is designed around the harness-engineering ideas in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article.
 
 ## What It Adds
 
@@ -44,6 +44,8 @@ Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads p
 ## Using The Plugin
 
 After restarting OpenCode, new sessions start with `draft` because the plugin sets `default_agent: "draft"` during config resolution. Use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended for delegated search and retrieval; the primary agent remains responsible for synthesis, correctness judgments, recommendations, and final output.
+
+On OpenCode `>=1.18.2`, the plugin sets the global `subagent_depth` to `3` only when it is unset. To choose a different depth, set `subagent_depth` in your OpenCode config; `0` disables subagent launches. Agent permissions still apply, including `explore`'s denial of nested tasks. Earlier OpenCode versions can load the plugin but do not support the depth setting; adding `subagent_depth` to their config files may fail validation.
 
 Run `/init-harness-engineering` in a target repository when you want to create or update a harness-engineering documentation scaffold. All the docs will be under `/docs` and that's a requirement, but other than that you can modify the resulting scaffold as you wish, the added agents don't have a bias toward any particular documentation style or structure as long as they are under `/docs` and contain the necessary context for agents to navigate the docs, e.g. with index.md files.
 

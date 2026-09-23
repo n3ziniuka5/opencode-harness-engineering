@@ -29,6 +29,7 @@ type MutableConfig = {
   agent?: MutableAgentMap;
   command?: MutableCommandMap;
   default_agent?: string;
+  subagent_depth?: number;
 };
 
 function agentMap(config: MutableConfig) {
@@ -51,6 +52,10 @@ function registerBuildAgentColor(config: MutableConfig) {
 
 function setDraftDefaultAgent(config: MutableConfig) {
   config.default_agent = DRAFT_AGENT_NAME;
+}
+
+function setDefaultSubagentDepth(config: MutableConfig) {
+  config.subagent_depth ??= 3;
 }
 
 function registerDraftAgent(config: MutableConfig) {
@@ -86,6 +91,7 @@ const server: Plugin = async () => {
       registerBuildAgentColor(mutableConfig);
       disableNativePlanAgent(mutableConfig);
       setDraftDefaultAgent(mutableConfig);
+      setDefaultSubagentDepth(mutableConfig);
       registerInitHarnessEngineeringCommand(mutableConfig);
     },
   };
