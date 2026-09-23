@@ -1,5 +1,4 @@
 import { discoverySection } from "./discovery.js";
-import { DEFAULT_AGENT_TOP_P } from "./sampling.js";
 
 export const DRAFT_AGENT_NAME = "draft";
 
@@ -80,11 +79,9 @@ When the intent is clear enough and the plan is specific enough for another impl
 export const DRAFT_AGENT_CONFIG = {
   description: DRAFT_AGENT_DESCRIPTION,
   mode: "all",
-  model: "openai/gpt-5.6-sol",
+  model: "openai/gpt-6-sol",
   variant: "high",
   color: "primary",
-  temperature: 0.2,
-  top_p: DEFAULT_AGENT_TOP_P,
   prompt: DRAFT_AGENT_PROMPT,
   permission: {
     edit: {

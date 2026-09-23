@@ -40,7 +40,7 @@ const requiredFiles = [
   "docs/references/index.md",
   "docs/references/harness-engineering.md",
   "docs/references/opencode-plugin-reference.md",
-  "docs/references/openai-gpt-5.6-prompting.md",
+  "docs/references/openai-gpt-6-prompting.md",
 ];
 
 const requiredIndexFiles = [
@@ -70,6 +70,7 @@ const obsoleteFiles = [
   "docs/features/opencode-plugin/plan-agent.md",
   "docs/references/openai-gpt-5.4-prompting.md",
   "docs/references/openai-gpt-5.5-prompting.md",
+  "docs/references/openai-gpt-5.6-prompting.md",
 ];
 
 const indexHeaderPattern = /\|\s*File\s*\|\s*Purpose\s*\|\s*Read when\s*\|/;

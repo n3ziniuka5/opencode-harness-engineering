@@ -6,14 +6,14 @@ When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces 
 
 ## What It Adds
 
-All bundled agents use `top_p: 0.97`. The table lists each agent's fixed model, OpenCode `variant`/effort value, and temperature.
+All bundled agents use OpenCode's `high` `variant`/reasoning effort. Their configs omit sampling parameters that GPT-6 does not support at non-`none` effort.
 
 | Entry | What it adds | Fixed model and settings |
 | --- | --- | --- |
-| `explore` | Read-only, cheap/high-volume subagent for locating and retrieving codebase, documentation, and web sources with precise citations. It does not perform reviews or recommendations. | `openai/gpt-5.6-luna`; variant `low`; temperature `0.5`. |
-| `ask` | Primary answer agent for concise, evidence-backed answers. Uses `explore` for source retrieval while retaining analysis, reviews, and verdicts. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.1`. |
-| `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Uses `explore` for source retrieval while retaining option generation and recommendations. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.8`. |
-| `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle and is forced as the default agent while the plugin is loaded. | `openai/gpt-5.6-sol`; variant `high`; temperature `0.2`. |
+| `explore` | Read-only, cheap/high-volume subagent for locating and retrieving codebase, documentation, and web sources with precise citations. It does not perform reviews or recommendations. | `openai/gpt-6-luna`; variant `high`. |
+| `ask` | Primary answer agent for concise, evidence-backed answers. Uses `explore` for source retrieval while retaining analysis, reviews, and verdicts. | `openai/gpt-6-sol`; variant `high`. |
+| `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Uses `explore` for source retrieval while retaining option generation and recommendations. | `openai/gpt-6-sol`; variant `high`. |
+| `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle and is forced as the default agent while the plugin is loaded. | `openai/gpt-6-sol`; variant `high`. |
 | `/init-harness-engineering` | Slash command that asks the active implementation agent to create or update an agent-legible documentation scaffold in the current repository when run. | Runs through the active agent when invoked; it does not configure a standalone model. |
 
 ## Harness-Engineering Posture
@@ -49,13 +49,13 @@ Run `/init-harness-engineering` in a target repository when you want to create o
 
 ## Fixed Model And Prompt Choices
 
-All bundled agents are hardcoded to the OpenAI provider: `explore` uses `openai/gpt-5.6-luna`, while `ask`, `brainstorm`, and `draft` use `openai/gpt-5.6-sol`.
+All bundled agents are hardcoded to the OpenAI provider: `explore` uses `openai/gpt-6-luna`, while `ask`, `brainstorm`, and `draft` use `openai/gpt-6-sol`.
 
 The plugin exposes no options to change provider, model, variant, sampling, or bundled prompts. Users who need different behavior should fork and change the plugin or choose not to load it.
 
-The prompts are reviewed against OpenAI's public GPT-5.6 prompting guidance. The initial model migration leaves them unchanged; future prompt changes should follow evaluations or observed failures.
+The prompts are reviewed against OpenAI's public GPT-6 prompting guidance. Primary agents explicitly prioritize user instructions over skill guidance and identify skill instructions that make them pause or diverge; broader prompt changes should follow evaluations or observed failures.
 
-Because the provider is fixed, you need OpenCode's normal OpenAI provider and authentication setup with access to `gpt-5.6-luna` and `gpt-5.6-sol` before the bundled agents can run.
+Because the provider is fixed, you need OpenCode's normal OpenAI provider and authentication setup with access to `gpt-6-luna` and `gpt-6-sol` before the bundled agents can run. The plugin does not fall back to an older model when either model is unavailable.
 
 ## Developing This Repository
 
