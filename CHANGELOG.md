@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.4.0...v1.5.0) (2026-09-30)
+
+
+### Features
+
+* gpt-6.1-sol ([#27](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/27)) ([803968d](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/803968d9a84b20143f2bf11894aa5c319d93c8ab))
+
 ## [1.4.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.3.0...v1.4.0) (2026-09-23)
 
 
