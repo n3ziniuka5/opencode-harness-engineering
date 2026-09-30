@@ -49,7 +49,7 @@ return {
     };
     input.agent.ask = {
       mode: "primary",
-      model: "openai/gpt-6-sol",
+      model: "openai/gpt-6.1-sol",
       variant: "high",
       color: "accent",
       permission: { edit: "deny", task: { explore: "allow" } },
@@ -57,7 +57,7 @@ return {
     };
     input.agent.brainstorm = {
       mode: "primary",
-      model: "openai/gpt-6-sol",
+      model: "openai/gpt-6.1-sol",
       variant: "high",
       color: "success",
       permission: { edit: "deny", task: { explore: "allow" } },
@@ -65,7 +65,7 @@ return {
     };
     input.agent.draft = {
       mode: "all",
-      model: "openai/gpt-6-sol",
+      model: "openai/gpt-6.1-sol",
       variant: "high",
       color: "primary",
       prompt: "...",

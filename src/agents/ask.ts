@@ -42,7 +42,7 @@ Start with the answer, then include concise supporting evidence. Include caveats
 export const ASK_AGENT_CONFIG = {
   description: ASK_AGENT_DESCRIPTION,
   mode: "primary",
-  model: "openai/gpt-6-sol",
+  model: "openai/gpt-6.1-sol",
   variant: "high",
   color: "accent",
   prompt: ASK_AGENT_PROMPT,
