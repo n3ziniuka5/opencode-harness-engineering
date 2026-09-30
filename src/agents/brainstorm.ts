@@ -42,7 +42,7 @@ Provide concise framing, grouped options, tradeoffs/risks, a recommended directi
 export const BRAINSTORM_AGENT_CONFIG = {
   description: BRAINSTORM_AGENT_DESCRIPTION,
   mode: "primary",
-  model: "openai/gpt-6-sol",
+  model: "openai/gpt-6.1-sol",
   variant: "high",
   color: "success",
   prompt: BRAINSTORM_AGENT_PROMPT,

@@ -16,7 +16,7 @@ Plugin options are untrusted `PluginOptions`. No plugin options currently affect
 
 `draft` is an OpenCode agent config with description, mode, model, variant, color, prompt, and permissions. Its invariant is that it can write only active execution plan files, cannot edit implementation files through its agent-level permission policy, delegates non-trivial source retrieval to `explore` while retaining planning and judgment, and is forced as `default_agent` while the plugin is loaded. Native `plan` is represented only as `{ disable: true }` in the plugin-mutated config. Native `build` remains a partial incoming config object with only `color` forced to `secondary` by this plugin.
 
-All bundled agents use `high` reasoning effort. `explore` uses `openai/gpt-6-luna`; `ask`, `brainstorm`, and `draft` use `openai/gpt-6-sol`. Their configs omit unsupported sampling parameters rather than storing undefined compatibility values. Their configured theme colors are `accent` for `ask`, `success` for `brainstorm`, and `primary` for `draft`; `explore` intentionally has no plugin-pinned color.
+All bundled agents use `high` reasoning effort. `explore` uses `openai/gpt-6-luna`; `ask`, `brainstorm`, and `draft` use `openai/gpt-6.1-sol`. Their configs omit unsupported sampling parameters rather than storing undefined compatibility values. Their configured theme colors are `accent` for `ask`, `success` for `brainstorm`, and `primary` for `draft`; `explore` intentionally has no plugin-pinned color.
 
 ## Command Config
 

@@ -79,7 +79,7 @@ When the intent is clear enough and the plan is specific enough for another impl
 export const DRAFT_AGENT_CONFIG = {
   description: DRAFT_AGENT_DESCRIPTION,
   mode: "all",
-  model: "openai/gpt-6-sol",
+  model: "openai/gpt-6.1-sol",
   variant: "high",
   color: "primary",
   prompt: DRAFT_AGENT_PROMPT,

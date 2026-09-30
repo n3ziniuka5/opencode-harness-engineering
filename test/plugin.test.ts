@@ -160,7 +160,7 @@ describe("harness agents plugin", () => {
 
     const agent = agents[DRAFT_AGENT_NAME];
     assert.ok(agent);
-    assert.equal(agent.model, "openai/gpt-6-sol");
+    assert.equal(agent.model, "openai/gpt-6.1-sol");
     assert.equal(agent.variant, "high");
     assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.mode, "all");
@@ -459,7 +459,7 @@ describe("harness agents plugin", () => {
     const agent = agents[ASK_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "primary");
-    assert.equal(agent.model, "openai/gpt-6-sol");
+    assert.equal(agent.model, "openai/gpt-6.1-sol");
     assert.equal(agent.variant, "high");
     assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.color, "accent");
@@ -522,7 +522,7 @@ describe("harness agents plugin", () => {
     const agent = agents[BRAINSTORM_AGENT_NAME];
     assert.ok(agent);
     assert.equal(agent.mode, "primary");
-    assert.equal(agent.model, "openai/gpt-6-sol");
+    assert.equal(agent.model, "openai/gpt-6.1-sol");
     assert.equal(agent.variant, "high");
     assertUnsupportedSamplingAbsent(agent);
     assert.equal(agent.color, "success");

@@ -16,7 +16,7 @@
 ## Behavior
 
 - Agent id is `brainstorm`.
-- Model is `openai/gpt-6-sol` with variant `high`.
+- Model is `openai/gpt-6.1-sol` with variant `high`.
 - Unsupported sampling parameters are absent because GPT-6 does not accept them at non-`none` reasoning effort.
 - Color is `success`.
 - Mode is `primary` so users can select it directly without surfacing it as a subagent.
