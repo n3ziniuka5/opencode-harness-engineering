@@ -28,6 +28,8 @@
 - The shared section makes explicit user instructions take precedence over skill guidance without relaxing system, developer, or permission constraints. If skill guidance causes a pause or redirect, the agent identifies the skill and relevant instruction.
 - For implementation-plan work, the shared discovery rules explicitly include both implementation constraints and verification constraints before writing: coding rules/standards, module boundaries, dependency boundaries, similar implementation patterns, nearby tests, testing strategy, and validation requirements.
 - Draft-specific success criteria require proposed code changes to conform to discovered engineering guidance, require the Verification plan to conform to discovered testing strategy and validation requirements, and require the documentation handoff to distinguish governance the implementer should read first from candidate documentation touchpoints that may need updates.
+- Verification plans name relevant existing test files/cases and the behavior each check protects, reuse sufficient coverage, and justify cohesive extensions or focused cases by behavioral need. They reject duplicate, tautological, and edit-mirroring assertions, including prose-edit confirmation inside existing tests, while allowing absence assertions that protect a required public contract.
+- Bug-fix verification prefers meaningful automated fail-before/pass-after reproduction. When the harness cannot supply it, plans must name concrete alternative checks, expected evidence, reasons, limitations, and absent automated regression protection; unmet mandatory repository gates must be surfaced. Instruction-only changes use review and relevant existing checks. Detailed repository policy lives in `docs/engineering/testing-strategy.md`.
 - The shared discovery rules tell the agent to turn evidence needs into concrete retrieval requests with expected source shapes, launch parallel `explore` subagents when at least two retrieval requests can be answered separately, avoid repeating completed searches merely to rediscover results, read cited sources when interpreting evidence, and launch focused retrieval follow-ups for gaps or conflicts.
 - `draft` remains responsible for synthesizing evidence, resolving conflicts, judging correctness and sufficiency, and writing the generated plan. It must not delegate plan review, recommendations, or verdicts to `explore`.
 - The agent must ask a focused question before writing when materially different valid outcomes remain.
@@ -36,6 +38,7 @@
 - The agent must not implement the plan or edit files outside the active plan path.
 - Completion instructions tell implementers that finishing implementation includes resolving the active plan's lifecycle. They must follow repo-specific execution-plan lifecycle rules when available, otherwise update long-term docs from the final implementation before deleting or briefly archiving only valuable remaining execution history.
 - Users must restart OpenCode after installing or upgrading the plugin before a running session sees changed agent definitions.
+- Upgrading the plugin does not rewrite previously generated plans; the updated verification guidance applies to newly drafted plans.
 
 ## Permission Contract
 

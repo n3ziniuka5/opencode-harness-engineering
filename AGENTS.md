@@ -13,7 +13,7 @@ This repository is an OpenCode plugin bundle for harness-engineering agents. Kee
 - Prefer the smallest correct change that preserves explicit plugin behavior.
 - Keep relevant Markdown docs updated when behavior, architecture, product decisions, package entrypoints, agent behavior, or operating rules change.
 - Before changing documentation, read `docs/index.md`. For each target doc, read the whole file when it is short; otherwise inspect its purpose, headings/table of contents, the section being changed, and enough surrounding context to edit safely. Also follow any relevant parent/sibling `index.md`, lifecycle, generated-doc, or local instruction guidance.
-- Add or update tests when plugin behavior changes.
+- Reuse sufficient behavioral coverage; when coverage must change, extend a suitable test if the scenario remains cohesive, otherwise add a focused test. Avoid duplicate coverage and edit-mirroring assertions. Follow `docs/engineering/testing-strategy.md`.
 - Run `pnpm run check` before handing off when dependencies are installed.
 
 ## Anti-Bloat Rule
