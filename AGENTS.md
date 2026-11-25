@@ -13,6 +13,8 @@ This repository is an OpenCode plugin bundle for harness-engineering agents. Kee
 - Prefer the smallest correct change that preserves explicit plugin behavior.
 - Keep relevant Markdown docs updated when behavior, architecture, product decisions, package entrypoints, agent behavior, or operating rules change.
 - Before changing documentation, read `docs/index.md`. For each target doc, read the whole file when it is short; otherwise inspect its purpose, headings/table of contents, the section being changed, and enough surrounding context to edit safely. Also follow any relevant parent/sibling `index.md`, lifecycle, generated-doc, or local instruction guidance.
+- Keep repository-owned skills as thin prompts at `.agents/skills/<name>/SKILL.md`: keep the trigger and agent-specific instructions in the skill, and link directly to canonical guides or runbooks for shared procedures.
+- Write guides, runbooks, and other durable docs so people can use them without a coding agent. Put agent-specific instructions in skills.
 - Reuse sufficient behavioral coverage; when coverage must change, extend a suitable test if the scenario remains cohesive, otherwise add a focused test. Avoid duplicate coverage and edit-mirroring assertions. Follow `docs/engineering/testing-strategy.md`.
 - Run `pnpm run check` before handing off when dependencies are installed.
 

@@ -1,20 +1,17 @@
 # OpenCode Agents for Harness Engineering
 
-This is an OpenCode server plugin for users who want a harness-engineering workflow in their OpenCode setup.
-
-When loaded, it registers `explore`, `ask`, `brainstorm`, and `draft` (replaces the native `plan` agent), makes `draft` the default agent, defaults OpenCode's subagent nesting depth to `3`, and registers `/init-harness-engineering`. The bundle is designed around the harness-engineering ideas in OpenAI's [Harness engineering](https://openai.com/index/harness-engineering/) article.
+This OpenCode server plugin adds agents for exploring, answering questions, brainstorming, and drafting implementation plans. It also provides `/init-harness-engineering` to set up repository documentation for agents.
 
 ## What It Adds
 
-All bundled agents use OpenCode's `high` `variant`/reasoning effort. Their configs omit sampling parameters that GPT-6 does not support at non-`none` effort.
+| Agent | Use it for | Fixed model |
+| ----- | ---------- | ----------- |
+| `explore` | Read-only search across code, docs, and the web, with precise citations. | `openai/gpt-6-luna` |
+| `ask` | Concise, evidence-backed answers and reviews. | `openai/gpt-6.2-sol` |
+| `brainstorm` | Weighing practical options and tradeoffs before implementation. | `openai/gpt-6.2-sol` |
+| `draft` | Writing implementation plans for human review in `docs/exec-plans/active/`. | `openai/gpt-6.2-sol` |
 
-| Entry | What it adds | Fixed model and settings |
-| --- | --- | --- |
-| `explore` | Read-only, cheap/high-volume subagent for locating and retrieving codebase, documentation, and web sources with precise citations. It does not perform reviews or recommendations. | `openai/gpt-6-luna`; variant `high`. |
-| `ask` | Primary answer agent for concise, evidence-backed answers. Uses `explore` for source retrieval while retaining analysis, reviews, and verdicts. | `openai/gpt-6.2-sol`; variant `high`. |
-| `brainstorm` | Primary ideation agent for practical options, tradeoffs, and convergence before implementation. Uses `explore` for source retrieval while retaining option generation and recommendations. | `openai/gpt-6.2-sol`; variant `high`. |
-| `draft` | Planning agent that writes human-reviewed implementation plans under `docs/exec-plans/active/`. Replaces the native `plan` workflow in this bundle and is forced as the default agent while the plugin is loaded. | `openai/gpt-6.2-sol`; variant `high`. |
-| `/init-harness-engineering` | Slash command that asks the active implementation agent to create or update an agent-legible documentation scaffold in the current repository when run. | Runs through the active agent when invoked; it does not configure a standalone model. |
+All four agents use the `high` reasoning variant.
 
 ## Harness-Engineering Posture
 
@@ -41,17 +38,31 @@ Use the singular `plugin` key. If the array already exists, append the entry and
 
 Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads plugin configuration at startup, so a running session keeps using the previously loaded plugin set.
 
-## Using The Plugin
+## Using the Plugin
 
-After restarting OpenCode, new sessions start with `draft` because the plugin sets `default_agent: "draft"` during config resolution. Use `ask`, `brainstorm`, or `draft` as primary agents the same way you use other OpenCode agents. `explore` is intended for delegated search and retrieval; the primary agent remains responsible for synthesis, correctness judgments, recommendations, and final output.
+### Choose an agent
 
-On OpenCode `>=1.18.2`, the plugin sets the global `subagent_depth` to `3` only when it is unset. To choose a different depth, set `subagent_depth` in your OpenCode config; `0` disables subagent launches. Agent permissions still apply, including `explore`'s denial of nested tasks. Earlier OpenCode versions can load the plugin but do not support the depth setting; adding `subagent_depth` to their config files may fail validation.
+New sessions start with `draft`, which replaces OpenCode's native `plan` agent. You can switch to `ask` or `brainstorm` as you would with any primary agent.
 
-Run `/init-harness-engineering` in a target repository when you want to create or update a harness-engineering documentation scaffold. All the docs will be under `/docs` and that's a requirement, but other than that you can modify the resulting scaffold as you wish, the added agents don't have a bias toward any particular documentation style or structure as long as they are under `/docs` and contain the necessary context for agents to navigate the docs, e.g. with index.md files.
+Primary agents can delegate search and retrieval to `explore`. The primary agent evaluates the evidence, makes recommendations, and writes the final response.
 
-## Fixed Model And Prompt Choices
+### Set up repository documentation
+
+Run `/init-harness-engineering` in the target repository to have the active implementation agent create or update a documentation scaffold. The command uses the active agent's model.
+
+Keep the documentation under the repository's `docs/` directory. You can customize its structure and style as long as agents have a way to find the context they need, such as through `index.md` files.
+
+### Configure subagent depth
+
+On OpenCode `1.18.2` and later, the plugin defaults `subagent_depth` to `3` when it is unset. Set `subagent_depth` in your OpenCode config to choose a different limit, or set it to `0` to disable subagent launches. Agent permissions still apply: `explore` cannot launch nested tasks.
+
+Earlier versions can load the plugin but do not support the depth setting. Adding it to their config may fail validation.
+
+## Fixed Model and Prompt Choices
 
 All bundled agents use the OpenAI provider. The plugin exposes no options to change provider, model, variant, sampling, or bundled prompts. Users who need different behavior should fork and change the plugin or choose not to load it.
+
+Agent configs omit sampling parameters that GPT-6 does not support at non-`none` effort.
 
 The prompts are reviewed against OpenAI's public GPT-6 prompting guidance. Primary agents explicitly prioritize user instructions over skill guidance and identify skill instructions that make them pause or diverge; broader prompt changes should follow evaluations or observed failures.
 
@@ -73,13 +84,17 @@ pnpm run check
 pnpm run build
 ```
 
-Targeted checks while iterating: `pnpm run typecheck`, `pnpm run test`,
-`pnpm run docs:check`, and `pnpm run format:check`.
+Targeted checks while iterating:
+
+- `pnpm run typecheck`
+- `pnpm run test`
+- `pnpm run docs:check`
+- `pnpm run format:check`
 
 ## Releases
 
 The npm package is `@n3ziniuka5/opencode-harness-engineering`, and the exported OpenCode plugin id is `n3ziniuka5.opencode-harness-engineering`.
 
-Release Please owns version and changelog PRs from Conventional Commits. After a release PR is merged, the published GitHub release triggers npm publishing through GitHub Actions OIDC and npm Trusted Publishing. The publish workflow does not use `NPM_TOKEN`.
+Release Please creates version and changelog PRs from Conventional Commits. After a release PR is merged, the published GitHub release triggers npm publishing through GitHub Actions OIDC and npm Trusted Publishing. The publish workflow does not use `NPM_TOKEN`.
 
-See `docs/engineering/release-process.md` for release setup and operating details.
+See the [release process](docs/engineering/release-process.md) for setup and operating details.
