@@ -47,29 +47,9 @@ return {
       permission: { "*": "deny", read: "allow", grep: "allow" },
       prompt: "...",
     };
-    input.agent.ask = {
-      mode: "primary",
-      model: "openai/gpt-6.1-sol",
-      variant: "high",
-      color: "accent",
-      permission: { edit: "deny", task: { explore: "allow" } },
-      prompt: "...",
-    };
-    input.agent.brainstorm = {
-      mode: "primary",
-      model: "openai/gpt-6.1-sol",
-      variant: "high",
-      color: "success",
-      permission: { edit: "deny", task: { explore: "allow" } },
-      prompt: "...",
-    };
-    input.agent.draft = {
-      mode: "all",
-      model: "openai/gpt-6.1-sol",
-      variant: "high",
-      color: "primary",
-      prompt: "...",
-    };
+    input.agent.ask = ASK_AGENT_CONFIG;
+    input.agent.brainstorm = BRAINSTORM_AGENT_CONFIG;
+    input.agent.draft = DRAFT_AGENT_CONFIG;
     input.agent.build ??= {};
     input.agent.build.color = "secondary";
     input.agent.plan = { disable: true };
