@@ -24,6 +24,7 @@
 ## Prompt And Documentation Style
 
 - Keep prompts outcome-first with explicit success criteria, constraints, output shape, and stop rules.
-- Avoid snapshot-driven tests for long prompts; assert behaviorally important sentinels.
+- Avoid snapshot-driven tests for long prompts. Review instruction wording and test actual behavior where meaningful coverage exists, reusing sufficient existing checks.
+- Reject text-presence/absence assertions that merely confirm an instruction edit, including assertions added inside existing tests; do not prescribe a sentinel for each newly written rule.
 - Keep `AGENTS.md` brief and move durable details into focused docs.
 - Do not add backward-compatibility code unless persisted data, shipped behavior, external consumers, or explicit requirements justify it.

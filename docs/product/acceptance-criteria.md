@@ -5,7 +5,9 @@
 - The top-level `AGENTS.md` stays short and points to `README.md`, `ARCHITECTURE.md`, and `docs/index.md`.
 - Durable product, feature, architecture, engineering, quality, operational, and reference knowledge lives under `docs/`.
 - Behavior changes update relevant Markdown docs when they affect user-visible behavior, package contracts, architecture, operating rules, or quality posture.
-- Plugin behavior changes include executable tests under `test/` unless the change is documentation-only.
+- Executable plugin behavior receives meaningful verification, reusing existing coverage under `test/` when sufficient. When coverage must change, prefer cohesive extensions to suitable tests or focused cases where clearer; avoid duplicate coverage and edit-mirroring assertions.
+- Bug fixes prefer meaningful automated fail-before/pass-after reproduction using existing, modified, or new coverage. When meaningful automated reproduction is infeasible, document concrete alternative verification, expected evidence, reasons, and limitations, including absent automated regression protection. Alternatives must satisfy repository verification requirements; surface any unmet mandatory gate.
+- Instruction-wording and documentation-only changes may be verified by review and relevant existing checks without compulsory test changes or assertions that the text was added. This exception does not apply to registration, permissions, config handling, or other executable contracts adjacent to prompts.
 - `pnpm run check` passes before handoff when dependencies are installed.
 
 ## Plugin Product Rules

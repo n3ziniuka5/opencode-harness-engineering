@@ -32,6 +32,8 @@
 - `CLAUDE.md` is optional and only acts as Claude compatibility for directories that already had it. The prompt does not introduce `CLAUDE.md` into new directories, preserves existing Claude compatibility, migrates durable content into same-directory `AGENTS.md` and/or durable docs, and forbids parent or ancestor `AGENTS.md` links. `CLAUDE.md` cannot exist without `AGENTS.md` in the same directory; if no same-directory `AGENTS.md` exists or will be created, the existing `CLAUDE.md` is removed after preserving unique durable content.
 - Optional sibling repository maps belong in `docs/references/sibling-repositories.md` only when sibling repository context is relevant or explicitly requested. Contracts, runtime/package boundaries, and feature behavior discovered from sibling relationships still belong in the corresponding architecture or feature docs.
 - Optional generated and reference docs are created only when relevant and supported by a clear source of truth.
+- The testing-strategy baseline combines entrypoint-first coverage, valuable unit tests, minimal mocking, observable assertions, determinism, and isolation with coverage reuse: extend suitable tests cohesively or add focused cases when needed, avoiding duplicate coverage and tautological or edit-mirroring assertions. Instruction-only changes use review and relevant existing checks; absence assertions remain valid for required public contracts.
+- Bug verification prefers meaningful automated fail-before/pass-after reproduction. If infeasible, the baseline requires concrete alternatives, expected evidence, reasons, limitations, and disclosure of absent automated regression protection under repository requirements, surfacing unmet mandatory gates.
 
 ## Non-Obvious Constraints
 
@@ -39,3 +41,4 @@
 - Agents must ask before adding non-Markdown placeholders, deleting useful content that cannot be migrated confidently, or making unsupported product or security claims.
 - Durable knowledge from tool-specific instruction files should move into the docs knowledge base instead of being duplicated across instruction files.
 - Unique durable content from an existing `CLAUDE.md` must be preserved in same-directory `AGENTS.md` or the appropriate `docs/` file before replacing it with a compatibility pointer.
+- Installing or upgrading the plugin does not rewrite downstream testing strategies. Restart OpenCode to load updated command definitions, then invoke `/init-harness-engineering` to update an existing scaffold while preserving repository-specific guidance. A user-defined command remains preserved by `??=` and may use its own template.
