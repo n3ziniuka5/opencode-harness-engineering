@@ -24,4 +24,4 @@ All bundled agents use `high` reasoning effort. Their configs omit unsupported s
 
 ## Documentation Scaffold Concepts
 
-The scaffold organizes durable knowledge into product, feature, architecture, engineering, runbook, generated, execution-plan, quality, and reference docs. Existing compatibility instruction files such as `CLAUDE.md` preserve Claude-tooling entrypoints only when same-directory `AGENTS.md` exists and never by pointing to ancestor `AGENTS.md` files, and optional sibling repository maps live under references when that context is relevant. Unknown facts should be explicit `TODO:` markers instead of inferred claims.
+The scaffold organizes durable knowledge into product, feature, architecture, engineering, runbook, generated, execution-plan, quality, and reference docs. Optional sibling repository maps live under references when that context is relevant. Unknown facts should be explicit `TODO:` markers instead of inferred claims.
