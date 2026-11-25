@@ -28,7 +28,7 @@
 - `README.md` should include a concise `## Harness-Engineering Posture` section when a repository adopts this scaffold.
 - The scaffold includes product, feature, architecture, engineering, runbook, generated, execution-plan, quality, and reference documentation areas when appropriate for the target repository.
 - Every scaffold `index.md` except `docs/exec-plans/index.md` must include a short purpose and a `## Files` table with columns `File`, `Purpose`, and `Read when`.
-- `docs/exec-plans/index.md` explains lifecycle rules, separates archival rules from source-of-truth rules, and must not list child plan files.
+- The execution-plan scaffold includes only `docs/exec-plans/index.md` and `docs/exec-plans/active/`, with no child plan indexes or completed-plan directory.
 - `AGENTS.md` is the scaffold's instruction entrypoint. The prompt treats existing `CLAUDE.md` files only as migration inputs. Preserve useful guidance at its original scope in `AGENTS.md` or durable docs and update affected references before removing obsolete files.
 - Optional sibling repository maps belong in `docs/references/sibling-repositories.md` only when sibling repository context is relevant or explicitly requested. Contracts, runtime/package boundaries, and feature behavior discovered from sibling relationships still belong in the corresponding architecture or feature docs.
 - Optional generated and reference docs are created only when relevant and supported by a clear source of truth.
@@ -38,6 +38,7 @@
 ## Non-Obvious Constraints
 
 - The command may decisively migrate or delete stale docs after preserving useful content.
+- Scaffold updates replace legacy lifecycle guidance without bulk-deleting existing plan files.
 - Agents must ask before adding non-Markdown placeholders, deleting useful content that cannot be migrated confidently, or making unsupported product or security claims.
 - Durable knowledge from tool-specific instruction files should move into the docs knowledge base instead of being duplicated across instruction files.
-- Installing or upgrading the plugin does not rewrite downstream testing strategies. Restart OpenCode to load updated command definitions, then invoke `/init-harness-engineering` to update an existing scaffold while preserving repository-specific guidance. A user-defined command remains preserved by `??=` and may use its own template.
+- Upgrading the plugin does not rewrite existing scaffolds. Restart OpenCode and rerun the bundled command to update a scaffold.

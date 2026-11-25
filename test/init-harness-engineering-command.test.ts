@@ -36,10 +36,9 @@ describe("init-harness-engineering command", () => {
     assert.match(command.template, /## Harness-Engineering Posture/);
     assert.match(command.template, /keep code\/config\/docs agent-legible/);
     assert.match(command.template, /mechanical checks/);
-    assert.match(command.template, /Then add an archival rule explaining/);
     assert.match(
       command.template,
-      /Completing implementation includes resolving the active plan's lifecycle before reporting the task done/,
+      /delete the active plan before reporting the task done/,
     );
     assert.match(
       command.template,
@@ -48,10 +47,6 @@ describe("init-harness-engineering command", () => {
     assert.match(
       command.template,
       /do not mechanically copy or move stale plan text/,
-    );
-    assert.match(
-      command.template,
-      /Use `docs\/exec-plans\/completed\/` only when the remaining execution history has durable debugging, audit, rollout, or handoff value/,
     );
     assert.match(
       command.template,
@@ -71,7 +66,6 @@ describe("init-harness-engineering command", () => {
       /docs\/references\/sibling-repositories\.md/,
     );
     assert.match(command.template, /sibling repositories/i);
-    assert.match(command.template, /Delete rather than archive when/);
     assert.doesNotMatch(command.template, /product requirement/i);
     assert.doesNotMatch(command.template, /\bprd\b/i);
     assert.equal(command.agent, undefined);
