@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.4.0...v1.5.0) (2026-11-25)
+
+
+### Features
+
+* GPT 6.2-sol ([#30](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/30)) ([ac50cee](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/ac50cee660f99dde5d1234a9294f87e0180cbf60))
+* gpt-6.1-sol ([#27](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/27)) ([803968d](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/803968d9a84b20143f2bf11894aa5c319d93c8ab))
+
+
+### Bug Fixes
+
+* attempt to reduce the number of useless tests ([#29](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/29)) ([7801995](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/7801995667c8bc748f6d06acbc93fc63a86d7b39))
+* do not archive completed exec plans ([#32](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/32)) ([4228d55](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/4228d556fac8ecf5be79eeca3fb88c52a6f6c5f4))
+* init command shouldn't keep CLAUDE.md files ([#31](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/31)) ([ae00187](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/ae0018746d504a9891f4ae0b9c102f6719cda050))
+
 ## [1.4.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.3.0...v1.4.0) (2026-09-23)
 
 
