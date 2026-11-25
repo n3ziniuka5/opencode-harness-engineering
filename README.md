@@ -28,16 +28,16 @@ The plugin nudges repositories toward the practices described in OpenAI's [Harne
 
 ## Install From npm
 
-Add the plugin to `~/.config/opencode/opencode.json`:
+To install the latest stable 1.x release, add the plugin to `~/.config/opencode/opencode.json`:
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["@n3ziniuka5/opencode-harness-engineering"]
+  "plugin": ["@n3ziniuka5/opencode-harness-engineering@1.x"]
 }
 ```
 
-Use OpenCode's singular `plugin` key. If you already have an OpenCode config, append `@n3ziniuka5/opencode-harness-engineering` to the existing `plugin` array and preserve the rest of your configuration.
+Use the singular `plugin` key. If the array already exists, append the entry and keep the rest of your configuration unchanged.
 
 Quit and restart OpenCode after adding or upgrading the plugin. OpenCode loads plugin configuration at startup, so a running session keeps using the previously loaded plugin set.
 
