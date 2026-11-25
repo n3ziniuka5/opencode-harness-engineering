@@ -22,7 +22,6 @@ Do not create or update docs for:
 
 - trivial implementation details obvious from code
 - temporary debugging notes
-- one-off plans after completion unless they preserve durable decisions
 - generated facts that should come from source or tooling
 - speculative future ideas without an owner
 

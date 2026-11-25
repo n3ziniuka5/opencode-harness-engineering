@@ -230,10 +230,9 @@ describe("harness agents plugin", () => {
       String(agent.prompt),
       /docs\/exec-plans\/active\/YYYY-MM-DD-slug\.md/,
     );
-    assert.match(String(agent.prompt), /Completion archive instructions/);
     assert.match(
       String(agent.prompt),
-      /Use repository-specific execution-plan lifecycle or completion\/archive instructions/,
+      /Use repository-specific execution-plan lifecycle guidance/,
     );
     assert.match(
       String(agent.prompt),
@@ -241,7 +240,7 @@ describe("harness agents plugin", () => {
     );
     assert.match(
       String(agent.prompt),
-      /completing the implementation includes resolving the active plan's lifecycle/,
+      /delete the active plan before reporting the task done/,
     );
     assert.match(
       String(agent.prompt),
@@ -250,22 +249,6 @@ describe("harness agents plugin", () => {
     assert.match(
       String(agent.prompt),
       /do not mechanically copy or move stale plan text/,
-    );
-    assert.match(
-      String(agent.prompt),
-      /delete the active plan unless the remaining execution history itself still has durable debugging, audit, rollout, or handoff value/,
-    );
-    assert.match(
-      String(agent.prompt),
-      /If there is still long-term value in the remaining plan content, move it to docs\/exec-plans\/completed\/YYYY-MM-DD-slug\.md/,
-    );
-    assert.match(
-      String(agent.prompt),
-      /Delete rather than archive when the plan was only a temporary checklist/,
-    );
-    assert.doesNotMatch(
-      String(agent.prompt),
-      /Do not use completed plans as the source of truth for current behavior/,
     );
     assert.doesNotMatch(String(agent.prompt), /repo-derived requirements/);
     assert.doesNotMatch(String(agent.prompt), /## Review Request/);
