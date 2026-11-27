@@ -13,7 +13,7 @@ $ARGUMENTS
 
 # Goal
 
-Create or update agent-readable Markdown documentation that captures product intent, durable feature behavior, architecture, engineering rules, execution planning, quality posture, and repo-specific references. The scaffold should make future agent work safer by preserving durable project knowledge in versioned docs.
+Create or update Markdown documentation that captures product intent, durable feature behavior, architecture, engineering rules, task guidance, execution planning, quality posture, and repo-specific references. The scaffold should make future agent work safer by preserving durable project knowledge in versioned docs that people can also use directly.
 
 # Required Files And Directories
 
@@ -55,6 +55,9 @@ Create or update this Markdown-focused structure when appropriate for the reposi
     |   |-- performance.md
     |   |-- release-process.md
     |   |-- validation.md
+    +-- guides/
+    |   |-- index.md
+    |   |-- <task>.md
     +-- runbooks/
     |   |-- index.md
     |   |-- <operational-task>.md
@@ -84,6 +87,7 @@ Start by scanning high-signal repository context before writing files:
 - \`README*\`, root manifests, lockfiles, build/test/lint/typecheck/codegen configs, and package manager files.
 - CI workflows and release/deployment configs.
 - Existing agent instruction analogs such as \`AGENTS.md\`, \`CLAUDE.md\`, \`GEMINI.md\`, tool-specific rule files, and local OpenCode config.
+- Existing repository-owned skills and existing guides and runbooks. Identify shared procedures, their canonical docs, and any loader or path references that a skill move would affect.
 - Existing docs, design notes, ADRs, plans, quality/security/reliability docs, and reference notes.
 - Representative entrypoints only when docs and configs do not explain the architecture.
 
@@ -97,6 +101,11 @@ If the repository is non-empty, populate each Markdown file from verified status
 - Use \`AGENTS.md\` as the scaffold's instruction entrypoint. Do not create or retain \`CLAUDE.md\` as a compatibility pointer, symlink, or duplicate instruction file. Treat existing \`CLAUDE.md\` files as migration inputs: move unique, verified guidance into a scope-appropriate \`AGENTS.md\` or durable \`docs/\` file, keeping directory-local instructions scoped to that directory. After preserving any useful content and updating affected references, remove obsolete \`CLAUDE.md\` files, including pointers with no unique guidance.
 - Durable knowledge from tool-specific rule files should generally move into the \`docs/\` knowledge base instead of becoming more duplicated instruction files.
 - Keep \`AGENTS.md\` short as a table of contents and operational rule map. Push durable details into \`docs/\`.
+
+# Repository Skills
+
+- When an existing repository-owned skill contains a shared procedure, reuse the canonical guide or runbook. If none exists, move the verified, reusable steps into an indexed guide, or an indexed runbook for an operational procedure. Preserve any verified details missing from the canonical doc, then replace the duplicated procedure in the skill with a direct link. Keep the trigger and agent-specific instructions in the skill. Do not create a guide for purely agent-specific material, a companion page for every skill, a new skill, or an empty \`.agents/skills/\` directory just to satisfy the scaffold.
+- The canonical location is \`.agents/skills/<name>/SKILL.md\`. Do not move user-global skills or reconfigure skill loaders. Before relocating a legacy skill, verify it will still be discoverable and update affected references. If you cannot verify discovery or safely update references without reconfiguring a loader, leave the skill in place and report the migration blocker.
 
 # What Not To Document
 
@@ -116,7 +125,7 @@ For every \`index.md\` except \`docs/exec-plans/index.md\`, include a short dire
 | File | Purpose | Read when |
 | ---- | ------- | --------- |
 
-Keep index tables practical and repo-specific. Link to nearby files with relative links.
+Keep index tables practical and repo-specific. Link to nearby files with relative links. List guides in \`docs/guides/index.md\` and operational procedures in \`docs/runbooks/index.md\`. Link the area indexes from \`docs/index.md\`.
 
 Exception: \`docs/exec-plans/index.md\` should explain execution-plan lifecycle rules without linking to or listing child files.
 
@@ -124,7 +133,12 @@ Exception: \`docs/exec-plans/index.md\` should explain execution-plan lifecycle 
 
 Use these meanings so generated docs and index tables stay consistent:
 
-- \`AGENTS.md\`: links to \`docs/index.md\` and \`ARCHITECTURE.md\`, and explicit instructions to keep relevant Markdown docs updated when behavior, architecture, product decisions, or operating rules change. Include a minimal documentation preflight rule: Before changing documentation, read \`docs/index.md\`. For each target doc, read the whole file when it is short; otherwise inspect its purpose, headings/table of contents, the section being changed, and enough surrounding context to edit safely. Also follow any relevant parent/sibling \`index.md\`, lifecycle, generated-doc, or local instruction guidance. We want to keep this file as brief as possible to not overload the agent context. Child AGENTS.md files can contain instructions specific to that directory, but the top-level one should be brief. If AGENTS.md file already exists, clean it up according to these rules.
+- \`AGENTS.md\`: links to \`docs/index.md\` and \`ARCHITECTURE.md\`, and explicit instructions to keep relevant Markdown docs updated when behavior, architecture, product decisions, or operating rules change. Include a minimal documentation preflight rule: Before changing documentation, read \`docs/index.md\`. For each target doc, read the whole file when it is short; otherwise inspect its purpose, headings/table of contents, the section being changed, and enough surrounding context to edit safely. Also follow any relevant parent/sibling \`index.md\`, lifecycle, generated-doc, or local instruction guidance. Child \`AGENTS.md\` files may carry directory-specific instructions.
+  On both scaffold creation and updates, write the following operating rules into the resulting top-level \`AGENTS.md\`. Preserve or consolidate equivalent existing guidance rather than duplicating it. The mechanical-check preference does not require adding new tooling to adopt the scaffold. Include the skills and durable-doc rules even if the repository has no skills or guides.
+  - Keep this file short: use it as a map to the docs and a place for essential operating rules. Put durable details in \`docs/\`.
+  - Prefer encoding important rules as tests, scripts, config validation, or other mechanical checks.
+  - Keep repository-owned skills as thin prompts at \`.agents/skills/<name>/SKILL.md\`: keep the trigger and agent-specific instructions in the skill, and link directly to canonical guides or runbooks for shared procedures.
+  - Write guides, runbooks, and other durable docs so people can use them without a coding agent. Put agent-specific instructions in skills.
 - \`ARCHITECTURE.md\`: high-level system/package shape, runtime boundaries, and key flows.
 - \`README.md\`: human-facing setup, usage, project overview, and repository tooling details such as how to run the app, run checks, regenerate code, build artifacts, and perform common local development workflows. Include a concise \`## Harness-Engineering Posture\` section when the repository adopts this scaffold. That section should summarize repo-specific principles: keep \`AGENTS.md\` short, store durable knowledge in \`docs/\`, keep code/config/docs agent-legible, and encode important rules as tests, scripts, or other mechanical checks.
 - \`docs/index.md\`: top-level documentation map and progressive-disclosure entrypoint.
@@ -151,8 +165,10 @@ Use these meanings so generated docs and index tables stay consistent:
 - \`docs/engineering/performance.md\`: latency/throughput budgets, profiling, and known bottlenecks.
 - \`docs/engineering/release-process.md\`: versioning, changelog, deployment, rollback, and release process.
 - \`docs/engineering/validation.md\`: final checks before considering changes complete.
+- \`docs/guides/index.md\`: documentation map for repository-specific task guides.
+- \`docs/guides/<task>.md\`: task-oriented how-to, tutorial, or troubleshooting walkthrough with prerequisites, steps, and checks a person can follow.
 - \`docs/runbooks/index.md\`: runbook documentation map for operational tasks.
-- \`docs/runbooks/<operational-task>.md\`: step-by-step operational procedure for a recurring task, incident response, recovery workflow, or manual maintenance action.
+- \`docs/runbooks/<operational-task>.md\`: established step-by-step procedure for operations, incident response, recovery, or maintenance.
 - \`docs/generated/index.md\`: generated documentation map that explains which files are generated, where their source of truth lives, how to regenerate them, and which generated references are present for this repository.
 - \`docs/generated/<generated-reference>.md\`: optional generated or source-derived reference selected from actual repository tooling. Generated references are useful when understanding current state from many source files would be slower or more error-prone than reading a regenerated summary. Examples include \`db-schema.md\`, \`dependency-graph.md\`, \`openapi.md\`, \`graphql-schema.md\`, \`protobuf.md\`, \`event-catalog.md\`, \`cli-reference.md\`, \`config-reference.md\`, \`env-vars.md\`, \`permissions-matrix.md\`, \`feature-flags.md\`, \`route-map.md\`, or package dependency references. Only create generated docs that can be regenerated from a clear source of truth.
 - \`docs/exec-plans/index.md\`: execution-plan lifecycle rules for creating active plans and deleting them on completion. Do not include references to child files.
@@ -214,7 +230,7 @@ Explain these lifecycle rules in \`docs/exec-plans/index.md\`:
 - Treat files under \`docs/exec-plans/active/\` as single-task active execution plans, not reusable process documentation.
 - Do not create \`docs/exec-plans/active/index.md\`.
 - Do not include references to child files in \`docs/exec-plans/index.md\`; keep it focused on lifecycle rules.
-- After implementation, update the appropriate long-term repo documentation to reflect what was actually built, changed, verified, and decided. Record durable knowledge in ADRs, feature docs, architecture docs, runbooks, quality docs, or engineering docs as appropriate. Use the completed implementation and final code/tests as the source of truth; do not mechanically copy or move stale plan text.
+- After implementation, update the appropriate long-term repo documentation to reflect what was actually built, changed, verified, and decided. Record durable knowledge in ADRs, feature docs, architecture docs, guides, runbooks, quality docs, or engineering docs as appropriate. Use the completed implementation and final code/tests as the source of truth; do not mechanically copy or move stale plan text.
 - Then delete the active plan before reporting the task done. Do not archive it or leave a copy, rewritten summary, redirect, placeholder, or other remnant under \`docs/exec-plans/completed/\`.
 
 # Completion Report
