@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.5.0...v1.6.0) (2026-11-27)
+
+
+### Features
+
+* add guides to the docs structure ([#35](https://github.com/n3ziniuka5/opencode-harness-engineering/issues/35)) ([5f13972](https://github.com/n3ziniuka5/opencode-harness-engineering/commit/5f139725fc3974da4a0a9fc7269a832b8d48e45b))
+
 ## [1.5.0](https://github.com/n3ziniuka5/opencode-harness-engineering/compare/v1.4.0...v1.5.0) (2026-11-25)
 
 
